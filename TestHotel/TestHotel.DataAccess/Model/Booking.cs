@@ -9,18 +9,15 @@ namespace TestHotel.DataAccess.Model
     internal class Booking
     {
         public int BookingId { get; set; }
-        public int HotelCode { get; set; }
         public int GuestId { get; set; }
-        public int RoomNo { get; set; }
-        public int BookingDate { get; set; }
-        public int BookingTime { get; set; }
-        public int ArrivalDate { get; set; }
-        public int DepartureDate { get; set; }
-        public int EstArrivalTime { get; set; }
-        public int EstDepartureTime { get; set; }
-        public int NumAdults { get; set; }
-        public int NumChildren { get; set; }
-        public string SpecialReq { get; set; }
+        public int RoomNumber { get; set; }
+        public DataTime BookingDate { get; set; }
+        public DataTime BookingTime { get; set; }
+        public DataTime ArrivalDate { get; set; }
+        public DataTime DepartureDate { get; set; }
+        public int NumberAdults { get; set; }
+        public int NumberChildren { get; set; }
+        //public string SpecialRequest { get; set; }
 
         public Room Room { get; set; }
         public Hotel Hotel { get; set; }
