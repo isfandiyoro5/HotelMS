@@ -10,7 +10,7 @@ namespace TestHotel.DataAccess.Model
     {
         public int RoleID { get; set; }
         public string RoleTitle { get; set; }
-        public string RoleDesc { get; set; }
+        public string RoleDescription { get; set; }
 
         public Employee Employee { get; set; }
     }
