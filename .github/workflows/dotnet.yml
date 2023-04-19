@@ -1,0 +1,64 @@
+name: TestHotel API CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: npm install
+    - name: Build
+      run: npm run build
+
+---
+
+name: TestHotel DataAccess CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: npm install
+    - name: Test
+      run: npm test
+
+---
+
+name: TestHotel Service CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: npm install
+    - name: Build and deploy to Azure
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'testhotel'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_XXXXX }}
