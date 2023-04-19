@@ -1,0 +1,55 @@
+name: Build and Deploy TestHotel
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-testhotel:
+    runs-on: ubuntu-latest
+    name: Build and Test TestHotel API, DataAccess, and Service
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Build and Test TestHotel API
+        run: |
+          cd TestHotel.API
+          dotnet build
+          dotnet test
+
+      - name: Build and Test TestHotel DataAccess
+        run: |
+          cd TestHotel.DataAccess
+          dotnet build
+          dotnet test
+
+      - name: Build and Test TestHotel Service
+        run: |
+          cd TestHotel.Service
+          dotnet build
+          dotnet test
+
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy TestHotel API, DataAccess, and Service
+    needs: build-testhotel
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Deploy TestHotel API
+        run: |
+          cd TestHotel.API
+           dotnet publish -c Release
+
+      - name: Deploy TestHotel DataAccess
+        run: |
+          cd TestHotel.DataAccess
+           dotnet publish -c Release
+
+      - name: Deploy TestHotel Service
+        run: |
+          cd TestHotel.Service
+           dotnet publish -c Release
