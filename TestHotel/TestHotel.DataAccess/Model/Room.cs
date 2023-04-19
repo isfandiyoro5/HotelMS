@@ -9,7 +9,8 @@ namespace TestHotel.DataAccess.Model
     internal class Room
     {
         public int RoomNumber { get; set; }
-        public Enum RoomType { get; set; }
+        public Enum RoomTypes { get; set; }
+        public int RoomTypeID { get; set; }
         public int HotelId { get; set; }
         public string Occupancy { get; set; }
 
