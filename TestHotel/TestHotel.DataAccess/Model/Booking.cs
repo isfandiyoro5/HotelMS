@@ -19,7 +19,7 @@ namespace TestHotel.DataAccess.Model
         public int NumberAdults { get; set; }
         public int NumberChildren { get; set; }
         //public string SpecialRequest { get; set; } (alohida table qilinadi)
-      
+
         public Room Room { get; set; }
         public Hotel Hotel { get; set; }
         public List<Guest> Guests { get; set;}

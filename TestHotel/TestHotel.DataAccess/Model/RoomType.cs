@@ -9,10 +9,9 @@ namespace TestHotel.DataAccess.Model
     internal class RoomType
     {
         public string RoomTypes { get; set; }
-        public int RoomPrice { get; set; }
-        public int DefaultRoomPrice { get; set; }
-        public string RoomImg { get; set; }
-        public string RoomsDesc { get; set; }
+        public double RoomPrice { get; set; }
+        public string RoomImage { get; set; }
+        public string RoomsDescription { get; set; }
 
         public Room Room { get; set; }
     }
