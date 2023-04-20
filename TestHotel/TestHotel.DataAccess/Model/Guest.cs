@@ -6,13 +6,6 @@ using System.Threading.Tasks;
 
 namespace TestHotel.DataAccess.Model
 {
-    public enum GuestPriority
-    {
-        CIP,
-        VIP,
-        Diplomat
-    }
-
     internal class Guest
     {
         public int GuestID { get; set; }
@@ -48,4 +41,12 @@ namespace TestHotel.DataAccess.Model
         
         public List<Bill> Bills { get; set; }
     }
+    public enum GuestPriority
+    {
+        Standart,
+        CIP,
+        VIP,
+        DIP
+    }
+
 }

@@ -6,14 +6,6 @@ using System.Threading.Tasks;
 
 namespace TestHotel.DataAccess.Model
 {
-    public enum PaymentMode
-    {
-        Uzcard,
-        Humo,
-        VisaCard,
-        Cash
-    }
-
     internal class Bill
     {
         public int InvoiceNumber { get; set; }
@@ -48,5 +40,12 @@ namespace TestHotel.DataAccess.Model
         public Guest Guest { get; set; }
         
         public Booking Booking { get; set; }
+    }
+    public enum PaymentMode
+    {
+        Uzcard,
+        Humo,
+        VisaCard,
+        Cash
     }
 }

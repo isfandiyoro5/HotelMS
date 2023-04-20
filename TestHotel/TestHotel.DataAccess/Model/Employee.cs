@@ -6,13 +6,6 @@ using System.Threading.Tasks;
 
 namespace TestHotel.DataAccess.Model
 {
-    public enum Gender
-    {
-        Male,
-        Female,
-        Other
-    }
-
     internal class Employee
     {
         public int EmployeeID{ get; set; }
@@ -41,5 +34,11 @@ namespace TestHotel.DataAccess.Model
         public Hotel Hotel { get; set; }
         
         public Role Role { get; set; }
+    }
+    public enum Gender
+    {
+        Male,
+        Female,
+        Other
     }
 }

@@ -6,14 +6,6 @@ using System.Threading.Tasks;
 
 namespace TestHotel.DataAccess.Model
 {
-    public enum RoomTypes
-    {
-        Standard,
-        Deluxe,
-        JuniorSuite,
-        SeniourSuite
-    }
-
     internal class Room
     {
         public int RoomNumber { get; set; }
@@ -32,5 +24,12 @@ namespace TestHotel.DataAccess.Model
         public List<Booking> bookings { get; set; }
         
         public Hotel Hotel { get; set; } 
+    }
+    public enum RoomTypes
+    {
+        Standard,
+        Deluxe,
+        JuniorSuite,
+        SeniorSuite
     }
 }
