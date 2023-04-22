@@ -22,7 +22,7 @@ namespace TestHotel.DataAccess.Model
         
         public string PhoneNumber { get; set; }
         
-        public int StarRating { get; set; }
+        public StarRating StarRating { get; set; }
 
 
         public List<Room> Rooms { get; set; }
@@ -30,5 +30,13 @@ namespace TestHotel.DataAccess.Model
         public List<Booking> Bookings { get; set; }
         
         public List<Employee> Employees { get; set; }
+    }
+
+    public enum StarRating
+    {
+       Star_2, 
+       Star_3,
+       Star_4,
+       Star_5
     }
 }

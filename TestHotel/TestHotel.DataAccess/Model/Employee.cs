@@ -35,6 +35,7 @@ namespace TestHotel.DataAccess.Model
         
         public Role Role { get; set; }
     }
+
     public enum Gender
     {
         Male,

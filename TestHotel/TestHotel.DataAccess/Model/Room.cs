@@ -25,6 +25,7 @@ namespace TestHotel.DataAccess.Model
         
         public Hotel Hotel { get; set; } 
     }
+
     public enum RoomTypes
     {
         Standard,

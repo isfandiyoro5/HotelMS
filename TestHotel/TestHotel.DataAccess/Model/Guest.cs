@@ -41,6 +41,7 @@ namespace TestHotel.DataAccess.Model
         
         public List<Bill> Bills { get; set; }
     }
+
     public enum GuestPriority
     {
         Standart,
@@ -48,5 +49,4 @@ namespace TestHotel.DataAccess.Model
         VIP,
         DIP
     }
-
 }

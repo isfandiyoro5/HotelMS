@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestHotel.DataAccess.Model;
 
-namespace TestHotel.DataAccess.Model
+namespace TestHotel.DataAccess.DTO.ResponseDto
 {
-    internal class Bill
+    internal class BillResponseDto
     {
         public int InvoiceNumber { get; set; }
 
@@ -24,29 +25,6 @@ namespace TestHotel.DataAccess.Model
 
         public int MiscellaneousCharges { get; set; }
 
-        public DateTime IfLateCheckout { get; set; }
-
-        public DateTime PaymentDate { get; set; }
-
-        public PaymentMode paymentMode { get; set; }
-       
-        public int CreditCardNumber { get; set; }
-        
-        public DateTime ExpireDate { get; set; }
-        
         public int ChequeNumber { get; set; }
-
-
-        public Guest Guest { get; set; }
-        
-        public Booking Booking { get; set; }
-    }
-
-    public enum PaymentMode
-    {
-        Uzcard,
-        Humo,
-        VisaCard,
-        Cash
     }
 }
