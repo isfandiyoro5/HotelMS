@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestHotel.DataAccess.Model
 {
-    internal class Booking
+    public class Booking
     {
         public int BookingId { get; set; }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestHotel.DataAccess.Model
 {
-    internal class Employee
+    public class Employee
     {
         public int EmployeeID{ get; set; }
         
@@ -28,13 +28,14 @@ namespace TestHotel.DataAccess.Model
         
         public string Password { get; set; }
         
-        public int Salary { get; set; }
+        public double Salary { get; set; }
 
 
         public Hotel Hotel { get; set; }
         
         public Role Role { get; set; }
     }
+
     public enum Gender
     {
         Male,

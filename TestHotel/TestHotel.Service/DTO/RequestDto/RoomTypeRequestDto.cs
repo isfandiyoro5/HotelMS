@@ -3,20 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestHotel.DataAccess.Model;
 
-namespace TestHotel.DataAccess.Model
+namespace TestHotel.Service.DTO.RequestDto
 {
-    public class RoomType
+    public class RoomTypeRequestDto
     {
         public RoomTypes RoomTypes { get; set; }
 
-        public double RoomPrice { get; set; }
-
-        public string RoomImage { get; set; }
-
         public string RoomsDescription { get; set; }
-
-
-        public Room Room { get; set; }
     }
 }

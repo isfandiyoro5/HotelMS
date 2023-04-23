@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestHotel.DataAccess.Model
 {
-    internal class Room
+    public class Room
     {
         public int RoomNumber { get; set; }
 
@@ -25,6 +25,7 @@ namespace TestHotel.DataAccess.Model
         
         public Hotel Hotel { get; set; } 
     }
+
     public enum RoomTypes
     {
         Standard,
