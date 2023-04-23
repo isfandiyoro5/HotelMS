@@ -23,6 +23,6 @@ namespace TestHotel.DataAccess.DTO.RequestDto
 
         public string Password { get; set; }
 
-        public int Salary { get; set; }
+        public double Salary { get; set; }
     }
 }

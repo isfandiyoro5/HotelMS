@@ -8,7 +8,7 @@ namespace TestHotel.DataAccess.Model
 {
     internal class RoomType
     {
-        public string RoomTypes { get; set; }
+        public RoomTypes RoomTypes { get; set; }
 
         public double RoomPrice { get; set; }
 

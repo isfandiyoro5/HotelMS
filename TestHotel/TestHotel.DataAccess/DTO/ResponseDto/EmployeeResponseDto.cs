@@ -21,6 +21,6 @@ namespace TestHotel.DataAccess.DTO.ResponseDto
 
         public string Email { get; set; }
 
-        public int Salary { get; set; }
+        public double Salary { get; set; }
     }
 }

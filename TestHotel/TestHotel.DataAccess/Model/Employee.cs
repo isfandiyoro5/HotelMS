@@ -28,7 +28,7 @@ namespace TestHotel.DataAccess.Model
         
         public string Password { get; set; }
         
-        public int Salary { get; set; }
+        public double Salary { get; set; }
 
 
         public Hotel Hotel { get; set; }
