@@ -10,20 +10,20 @@ namespace TestHotel.DataAccess.DbConnection
         {
         }
 
-        DbSet<Bill> Bills { get; set; }
+        public DbSet<Bill> Bills { get; set; }
 
-        DbSet<Booking> Bookings { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
 
-        DbSet<Employee> Employees { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
-        DbSet<Guest> Guests { get; set; }
+        public DbSet<Guest> Guests { get; set; }
 
-        DbSet<Hotel> Hotels { get; set; }
+        public DbSet<Hotel> Hotels { get; set; }
 
-        DbSet<Role> Roles { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
-        DbSet<Room> Rooms { get; set; }
+        public DbSet<Room> Rooms { get; set; }
 
-        DbSet<RoomType> RoomTypes { get; set; }
+        public DbSet<RoomType> RoomTypes { get; set; }
     }
 }
