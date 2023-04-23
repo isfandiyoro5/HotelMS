@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestHotel.DataAccess.DTO.RequestDto
+namespace TestHotel.Service.DTO.RequestDto
 {
-    internal class BookingRequestDto
+    public class BookingRequestDto
     {
         public DateTime BookingDate { get; set; }
 

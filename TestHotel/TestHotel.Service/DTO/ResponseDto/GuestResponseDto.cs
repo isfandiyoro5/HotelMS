@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 
-namespace TestHotel.DataAccess.DTO.ResponseDto
+namespace TestHotel.Service.DTO.ResponseDto
 {
-    internal class GuestResponseDto
+    public class GuestResponseDto
     {
         public int GuestID { get; set; }
 

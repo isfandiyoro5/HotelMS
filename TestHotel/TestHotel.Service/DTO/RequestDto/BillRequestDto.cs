@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 
-namespace TestHotel.DataAccess.DTO.RequestDto
+namespace TestHotel.Service.DTO.RequestDto
 {
-    internal class BillRequestDto
+    public class BillRequestDto
     {
         public DateTime IfLateCheckout { get; set; }
 

@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestHotel.DataAccess.Model;
 
-namespace TestHotel.DataAccess.DTO.ResponseDto
+namespace TestHotel.Service.DTO.ResponseDto
 {
-    internal class BillResponseDto
+    public class BillResponseDto
     {
         public int InvoiceNumber { get; set; }
 

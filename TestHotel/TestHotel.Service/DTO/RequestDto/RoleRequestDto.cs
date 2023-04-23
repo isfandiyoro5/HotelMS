@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestHotel.DataAccess.DTO.ResponseDto
+namespace TestHotel.Service.DTO.RequestDto
 {
-    internal class RoleResponseDto
+    public class RoleRequestDto
     {
-        public int RoleID { get; set; }
+        public string RoleTitle { get; set; }
 
         public string RoleDescription { get; set; }
     }

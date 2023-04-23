@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestHotel.DataAccess.DTO.ResponseDto
+namespace TestHotel.Service.DTO.ResponseDto
 {
-    internal class RoomTypeResponseDto
+    public class RoomTypeResponseDto
     {
         public double RoomPrice { get; set; }
 

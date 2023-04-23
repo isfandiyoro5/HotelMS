@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 
-namespace TestHotel.DataAccess.DTO.RequestDto
+namespace TestHotel.Service.DTO.RequestDto
 {
-    internal class RoomTypeRequestDto
+    public class RoomTypeRequestDto
     {
         public RoomTypes RoomTypes { get; set; }
 

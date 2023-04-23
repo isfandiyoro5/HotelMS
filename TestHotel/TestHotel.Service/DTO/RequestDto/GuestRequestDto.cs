@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 
-namespace TestHotel.DataAccess.DTO.RequestDto
+namespace TestHotel.Service.DTO.RequestDto
 {
-    internal class EmployeeRequestDto
+    public class GuestRequestDto
     {
+        public GuestPriority GuestPriority { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -23,6 +25,12 @@ namespace TestHotel.DataAccess.DTO.RequestDto
 
         public string Password { get; set; }
 
-        public double Salary { get; set; }
+        public string PassportNumber { get; set; }
+
+        public string Address { get; set; }
+
+        public string City { get; set; }
+
+        public string Country { get; set; }
     }
 }

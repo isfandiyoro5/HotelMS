@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestHotel.DataAccess.Model
 {
-    internal class Bill
+    public class Bill
     {
         public int InvoiceNumber { get; set; }
 
