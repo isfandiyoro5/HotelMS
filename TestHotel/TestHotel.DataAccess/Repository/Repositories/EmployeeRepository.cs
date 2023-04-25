@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TestHotel.DataAccess.DbConnection;
 using TestHotel.DataAccess.Model;
+using TestHotel.DataAccess.Repository.IRepositories;
 
-namespace TestHotel.DataAccess.Repository.InterfaceRepository
+namespace TestHotel.DataAccess.Repository.Repositories
 {
     public class EmployeeRepository : IEmployeeRepository
     {
@@ -33,10 +34,14 @@ namespace TestHotel.DataAccess.Repository.InterfaceRepository
         }
 
         public List<Employee> GetAllEmployees() => _context.Employees
-            .Include(u => u.Role).Include(u => u.Hotel).ToList();
+            .Include(u => u.Role)
+            .Include(u => u.Hotel)
+            .ToList();
 
         public Employee GetEmployeeById(int id) => _context.Employees
-            .Include(u => u.Role).Include(u => u.Hotel).FirstOrDefault(u => u.EmployeeID == id);
+            .Include(u => u.Role)
+            .Include(u => u.Hotel)
+            .FirstOrDefault(u => u.EmployeeID == id);
 
         public int UpdateEmployee(Employee employee)
         {

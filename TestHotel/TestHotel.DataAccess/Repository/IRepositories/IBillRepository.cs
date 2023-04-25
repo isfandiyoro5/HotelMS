@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 
-namespace TestHotel.DataAccess.Repository.InterfaceRepository
+namespace TestHotel.DataAccess.Repository.IRepositories
 {
     public interface IBillRepository
     {
-        public Bill AddBill(Bill bill);
+        public int AddBill(Bill bill);
 
         public Bill GetBillByInvoiceNumber(int invoiceNumber);
 

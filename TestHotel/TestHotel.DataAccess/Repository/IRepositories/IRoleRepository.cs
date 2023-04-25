@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 
-namespace TestHotel.DataAccess.Repository.InterfaceRepository
+namespace TestHotel.DataAccess.Repository.IRepositories
 {
     public interface IRoleRepository
     {

@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TestHotel.DataAccess.DbConnection;
 using TestHotel.DataAccess.Model;
+using TestHotel.DataAccess.Repository.IRepositories;
 
-namespace TestHotel.DataAccess.Repository.InterfaceRepository
+namespace TestHotel.DataAccess.Repository.Repositories
 {
     public class RoleRepository : IRoleRepository
     {
@@ -33,10 +34,12 @@ namespace TestHotel.DataAccess.Repository.InterfaceRepository
         }
 
         public List<Role> GetAllRoles() => _context.Roles
-            .Include(u => u.Employee).ToList();
+            .Include(u => u.Employee)
+            .ToList();
 
         public Role GetRoleById(int id) => _context.Roles
-            .Include(u => u.Employee).FirstOrDefault(u => u.RoleID == id);
+            .Include(u => u.Employee)
+            .FirstOrDefault(u => u.RoleID == id);
 
         public int UpdateRole(Role role)
         {

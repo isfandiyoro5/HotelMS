@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TestHotel.DataAccess.DbConnection;
 using TestHotel.DataAccess.Model;
+using TestHotel.DataAccess.Repository.IRepositories;
 
-namespace TestHotel.DataAccess.Repository.InterfaceRepository
+namespace TestHotel.DataAccess.Repository.Repositories
 {
     public class RoomTypeRepository : IRoomTypeRepository
     {
@@ -18,30 +19,33 @@ namespace TestHotel.DataAccess.Repository.InterfaceRepository
             _context = context;
         }
 
-        public RoomTypes AddRoomType(RoomType roomType)
+        public int AddRoomType(RoomType roomType)
         {
             _context.RoomTypes.Add(roomType);
             _context.SaveChanges();
-            return roomType.RoomTypes;
+            return roomType.RoomTypeId;
         }
 
-        public RoomTypes DeleteRoomType(RoomType roomType)
+        public int DeleteRoomType(RoomType roomType)
         {
             _context.RoomTypes.Remove(roomType);
             _context.SaveChanges();
-            return roomType.RoomTypes;
+            return roomType.RoomTypeId;
         }
 
-        public List<RoomType> GetAllRoomTypes() => _context.RoomTypes.Include(u => u.Room).ToList();
+        public List<RoomType> GetAllRoomTypes() => _context.RoomTypes
+            .Include(u => u.Room)
+            .ToList();
 
         public RoomType GetRoomTypeById(RoomTypes roomTypes) => _context.RoomTypes
-            .Include(u => u.Room).FirstOrDefault(u => u.RoomTypes == roomTypes);
+            .Include(u => u.Room)
+            .FirstOrDefault(u => u.RoomTypes == roomTypes);
 
-        public RoomTypes UpdateRoomType(RoomType roomType)
+        public int UpdateRoomType(RoomType roomType)
         {
             _context.RoomTypes.Update(roomType);
             _context.SaveChanges();
-            return roomType.RoomTypes;
+            return roomType.RoomTypeId;
         }
     }
 }

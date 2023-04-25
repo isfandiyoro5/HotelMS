@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TestHotel.DataAccess.DbConnection;
 using TestHotel.DataAccess.Model;
-using TestHotel.DataAccess.Repository.InterfaceRepository;
+using TestHotel.DataAccess.Repository.IRepositories;
 
-namespace TestHotel.DataAccess.Repository.InterfaceRepository
+namespace TestHotel.DataAccess.Repository.Repositories
 {
     public class BillRepository : IBillRepository
     {
@@ -19,11 +19,11 @@ namespace TestHotel.DataAccess.Repository.InterfaceRepository
             _context = context;
         }
 
-        public Bill AddBill(Bill bill)
+        public int AddBill(Bill bill)
         {
             _context.Bills.Add(bill);
             _context.SaveChanges();
-            return bill;
+            return bill.InvoiceNumber;
         }
 
         public int DeleteBill(Bill bill)
@@ -34,10 +34,14 @@ namespace TestHotel.DataAccess.Repository.InterfaceRepository
         }
 
         public List<Bill> GetAllBills() => _context.Bills
-            .Include(u => u.Guest).ThenInclude(n => n.Bookings).ToList();
+            .Include(u => u.Guest)
+            .Include(u => u.Booking)
+            .ToList();
 
-        public Bill GetBillByInvoiceNumber(int invoiceNumber) => _context.Bills.Include(u => u.Guest)
-            .ThenInclude(n => n.Bookings).FirstOrDefault(u => u.InvoiceNumber == invoiceNumber);
+        public Bill GetBillByInvoiceNumber(int invoiceNumber) => _context.Bills
+            .Include(u => u.Guest)
+            .Include(u => u.Booking)
+            .FirstOrDefault(u => u.InvoiceNumber == invoiceNumber);
 
         public int UpdateBill(Bill bill)
         {

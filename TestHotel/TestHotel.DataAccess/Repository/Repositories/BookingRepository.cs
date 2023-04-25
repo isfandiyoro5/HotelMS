@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.DbConnection;
 using Microsoft.EntityFrameworkCore;
+using TestHotel.DataAccess.Repository.IRepositories;
 
-namespace TestHotel.DataAccess.Repository.InterfaceRepository
+namespace TestHotel.DataAccess.Repository.Repositories
 {
     public class BookingRepository : IBookingRepository
     {
@@ -32,11 +33,19 @@ namespace TestHotel.DataAccess.Repository.InterfaceRepository
             return booking.BookingId;
         }
 
-        public List<Booking> GetAllBookings() => _context.Bookings.Include(u => u.Bills).ThenInclude(u => u.Guest)
-            .Include(u => u.Hotel).ThenInclude(u => u.Rooms).ToList();
+        public List<Booking> GetAllBookings() => _context.Bookings
+            .Include(u => u.Bills)
+            .Include(u => u.Guests)
+            .Include(u => u.Hotel)
+            .Include(u => u.Room)
+            .ToList();
 
-        public Booking GetBookingById(int id) => _context.Bookings.Include(u => u.Bills).ThenInclude(u => u.Guest)
-            .Include(u => u.Hotel).ThenInclude(u => u.Rooms).FirstOrDefault(u => u.BookingId == id);
+        public Booking GetBookingById(int id) => _context.Bookings
+            .Include(u => u.Bills)
+            .Include(u => u.Guests)
+            .Include(u => u.Hotel)
+            .Include(u => u.Room)
+            .FirstOrDefault(u => u.BookingId == id);
 
         public int UpdateBooking(Booking booking)
         {

@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TestHotel.DataAccess.DbConnection;
 using TestHotel.DataAccess.Model;
+using TestHotel.DataAccess.Repository.IRepositories;
 
-namespace TestHotel.DataAccess.Repository.InterfaceRepository
+namespace TestHotel.DataAccess.Repository.Repositories
 {
     public class RoomRepository : IRoomRepository
     {
@@ -32,11 +33,17 @@ namespace TestHotel.DataAccess.Repository.InterfaceRepository
             return room.RoomNumber;
         }
 
-        public List<Room> GetAllRooms() => _context.Rooms.Include(u => u.roomType)
-            .Include(u => u.bookings).Include(u => u.Hotel).ToList();
+        public List<Room> GetAllRooms() => _context.Rooms
+            .Include(u => u.roomType)
+            .Include(u => u.bookings)
+            .Include(u => u.Hotel)
+            .ToList();
 
-        public Room GetRoomById(int roomNumber) => _context.Rooms.Include(u => u.roomType)
-            .Include(u => u.bookings).Include(u => u.Hotel).FirstOrDefault(u => u.RoomNumber == roomNumber);
+        public Room GetRoomById(int roomNumber) => _context.Rooms
+            .Include(u => u.roomType)
+            .Include(u => u.bookings)
+            .Include(u => u.Hotel)
+            .FirstOrDefault(u => u.RoomNumber == roomNumber);
 
         public int UpdateRoom(Room room)
         {
