@@ -8,6 +8,8 @@ namespace TestHotel.DataAccess.Model
 {
     public class RoomType
     {
+        public int RoomTypeId { get; set; }
+
         public RoomTypes RoomTypes { get; set; }
 
         public double RoomPrice { get; set; }
