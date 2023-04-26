@@ -9,14 +9,14 @@ namespace TestHotel.DataAccess.Repository.IRepositories
 {
     public interface IBillRepository
     {
-        public int AddBill(Bill bill);
+        Task<int> AddBillAsync(Bill bill);
 
-        public Bill GetBillByInvoiceNumber(int invoiceNumber);
+        Task<Bill> GetBillByInvoiceNumberAsync(int invoiceNumber);
 
-        public List<Bill> GetAllBills();
+        Task<List<Bill>> GetAllBillsAsync();
 
-        public int UpdateBill(Bill bill);
+        Task<int> UpdateBillAsync(Bill bill);
 
-        public int DeleteBill(Bill bill);
+        Task<int> DeleteBillAsync(Bill bill);
     }
 }

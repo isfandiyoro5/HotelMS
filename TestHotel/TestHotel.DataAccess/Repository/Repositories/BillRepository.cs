@@ -19,34 +19,34 @@ namespace TestHotel.DataAccess.Repository.Repositories
             _context = context;
         }
 
-        public int AddBill(Bill bill)
+        public async Task<int> AddBillAsync(Bill bill)
         {
             _context.Bills.Add(bill);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return bill.InvoiceNumber;
         }
 
-        public int DeleteBill(Bill bill)
+        public async Task<int> DeleteBillAsync(Bill bill)
         {
             _context.Bills.Remove(bill);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return bill.InvoiceNumber;
         }
 
-        public List<Bill> GetAllBills() => _context.Bills
+        public async Task<List<Bill>> GetAllBillsAsync() => await _context.Bills
             .Include(u => u.Guest)
             .Include(u => u.Booking)
-            .ToList();
+            .ToListAsync();
 
-        public Bill GetBillByInvoiceNumber(int invoiceNumber) => _context.Bills
+        public async Task<Bill> GetBillByInvoiceNumberAsync(int invoiceNumber) => await _context.Bills
             .Include(u => u.Guest)
             .Include(u => u.Booking)
-            .FirstOrDefault(u => u.InvoiceNumber == invoiceNumber);
+            .FirstOrDefaultAsync(u => u.InvoiceNumber == invoiceNumber);
 
-        public int UpdateBill(Bill bill)
+        public async Task<int> UpdateBillAsync(Bill bill)
         {
             _context.Bills.Update(bill);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return bill.InvoiceNumber;
         }
     }

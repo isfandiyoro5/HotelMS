@@ -9,14 +9,14 @@ namespace TestHotel.DataAccess.Repository.IRepositories
 {
     public interface IBookingRepository
     {
-        public int AddBooking(Booking booking);
+        Task<int> AddBookingAsync(Booking booking);
 
-        public Booking GetBookingById(int id);
+        Task<Booking> GetBookingByIdAsync(int id);
 
-        public List<Booking> GetAllBookings();
+        Task<List<Booking>> GetAllBookingsAsync();
 
-        public int UpdateBooking(Booking booking);
+        Task<int> UpdateBookingAsync(Booking booking);
 
-        public int DeleteBooking(Booking booking);
+        Task<int> DeleteBookingAsync(Booking booking);
     }
 }

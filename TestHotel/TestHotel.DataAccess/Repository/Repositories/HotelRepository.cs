@@ -19,36 +19,36 @@ namespace TestHotel.DataAccess.Repository.Repositories
             _context = context;
         }
 
-        public int AddHotel(Hotel hotel)
+        public async Task<int> AddHotelAsync(Hotel hotel)
         {
             _context.Hotels.Add(hotel);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return hotel.HotelId;
         }
 
-        public int DeleteHotel(Hotel hotel)
+        public async Task<int> DeleteHotelAsync(Hotel hotel)
         {
             _context.Hotels.Remove(hotel);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return hotel.HotelId;
         }
 
-        public List<Hotel> GetAllHotels() => _context.Hotels
+        public async Task<List<Hotel>> GetAllHotelsAsync() => await _context.Hotels
             .Include(u => u.Rooms)
             .Include(u => u.Bookings)
             .Include(u => u.Employees)
-            .ToList();
+            .ToListAsync();
 
-        public Hotel GetHotelById(int id) => _context.Hotels
+        public async Task<Hotel> GetHotelByIdAsync(int id) => await _context.Hotels
             .Include(u => u.Rooms)
             .Include(u => u.Bookings)
             .Include(u => u.Employees)
-            .FirstOrDefault(u => u.HotelId == id);
+            .FirstOrDefaultAsync(u => u.HotelId == id);
 
-        public int UpdateHotel(Hotel hotel)
+        public async Task<int> UpdateHotelAsync(Hotel hotel)
         {
             _context.Hotels.Update(hotel);
-            _context.SaveChanges();
+             await _context.SaveChangesAsync();
             return hotel.HotelId;
         }
     }

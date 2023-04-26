@@ -9,14 +9,14 @@ namespace TestHotel.DataAccess.Repository.IRepositories
 {
     public interface IRoomTypeRepository
     {
-        public int AddRoomType(RoomType roomType);
+        Task<int> AddRoomTypeAsync(RoomType roomType);
 
-        public RoomType GetRoomTypeById(RoomTypes roomTypes);
+        Task<RoomType> GetRoomTypeByIdAsync(RoomTypes roomTypes);
 
-        public List<RoomType> GetAllRoomTypes();
+        Task<List<RoomType>> GetAllRoomTypesAsync();
 
-        public int UpdateRoomType(RoomType roomType);
+        Task<int> UpdateRoomTypeAsync(RoomType roomType);
 
-        public int DeleteRoomType(RoomType roomType);
+        Task<int> DeleteRoomTypeAsync(RoomType roomType);
     }
 }

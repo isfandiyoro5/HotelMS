@@ -19,32 +19,32 @@ namespace TestHotel.DataAccess.Repository.Repositories
             _context = context;
         }
 
-        public int AddRoomType(RoomType roomType)
+        public async Task<int> AddRoomTypeAsync(RoomType roomType)
         {
             _context.RoomTypes.Add(roomType);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return roomType.RoomTypeId;
         }
 
-        public int DeleteRoomType(RoomType roomType)
+        public async Task<int> DeleteRoomTypeAsync(RoomType roomType)
         {
             _context.RoomTypes.Remove(roomType);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return roomType.RoomTypeId;
         }
 
-        public List<RoomType> GetAllRoomTypes() => _context.RoomTypes
+        public async Task<List<RoomType>> GetAllRoomTypesAsync() => await _context.RoomTypes
             .Include(u => u.Room)
-            .ToList();
+            .ToListAsync();
 
-        public RoomType GetRoomTypeById(RoomTypes roomTypes) => _context.RoomTypes
+        public async Task<RoomType> GetRoomTypeByIdAsync(RoomTypes roomTypes) => await _context.RoomTypes
             .Include(u => u.Room)
-            .FirstOrDefault(u => u.RoomTypes == roomTypes);
+            .FirstOrDefaultAsync(u => u.RoomTypes == roomTypes);
 
-        public int UpdateRoomType(RoomType roomType)
+        public async Task<int> UpdateRoomTypeAsync(RoomType roomType)
         {
             _context.RoomTypes.Update(roomType);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return roomType.RoomTypeId;
         }
     }
