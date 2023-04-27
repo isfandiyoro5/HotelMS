@@ -21,16 +21,30 @@ namespace TestHotel.DataAccess.Repository.Repositories
 
         public async Task<int> AddEmployeeAsync(Employee employee)
         {
-            _context.Employees.Add(employee);
-            await _context.SaveChangesAsync();
-            return employee.EmployeeID;
+            try
+            {
+                _context.Employees.Add(employee);
+                await _context.SaveChangesAsync();
+                return employee.EmployeeID;
+            }
+            catch
+            {
+                throw new Exception("Employee qo'shilmadi");
+            }
         }
 
         public async Task<int> DeleteEmployeeAsync(Employee employee)
         {
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
-            return employee.EmployeeID;
+            try
+            {
+                _context.Employees.Remove(employee);
+                await _context.SaveChangesAsync();
+                return employee.EmployeeID;
+            }
+            catch
+            {
+                throw new Exception("Employee o'chirilmadi");
+            }
         }
 
         public async Task<List<Employee>> GetAllEmployeesAsync() => await _context.Employees
@@ -38,16 +52,33 @@ namespace TestHotel.DataAccess.Repository.Repositories
             .Include(u => u.Hotel)
             .ToListAsync();
 
-        public async Task<Employee> GetEmployeeByIdAsync(int id) => await _context.Employees
-            .Include(u => u.Role)
-            .Include(u => u.Hotel)
-            .FirstOrDefaultAsync(u => u.EmployeeID == id);
+        public async Task<Employee> GetEmployeeByIdAsync(int id)
+        {
+            try
+            {
+                return await _context.Employees
+                    .Include(u => u.Role)
+                    .Include(u => u.Hotel)
+                    .FirstOrDefaultAsync(u => u.EmployeeID == id);
+            }
+            catch
+            {
+                throw new Exception("Employee ID topilmadi");
+            }
+        }
 
         public async Task<int> UpdateEmployeeAsync(Employee employee)
         {
-            _context.Employees.Update(employee);
-            await _context.SaveChangesAsync();
-            return employee.EmployeeID;
+            try
+            {
+                _context.Employees.Update(employee);
+                await _context.SaveChangesAsync();
+                return employee.EmployeeID;
+            }
+            catch
+            {
+                throw new Exception("O'zgartirish kiritilmadi");
+            }
         }
     }
 }

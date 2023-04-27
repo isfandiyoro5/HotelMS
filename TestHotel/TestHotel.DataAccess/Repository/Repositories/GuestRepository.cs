@@ -21,16 +21,30 @@ namespace TestHotel.DataAccess.Repository.Repositories
 
         public async Task<int> AddGuestAsync(Guest guest)
         {
-            _context.Guests.Add(guest);
-            await _context.SaveChangesAsync();
-            return guest.GuestID;
+            try
+            {
+                _context.Guests.Add(guest);
+                await _context.SaveChangesAsync();
+                return guest.GuestID;
+            }
+            catch
+            {
+                throw new Exception("Guest qo'shilmadi");
+            }
         }
 
         public async Task<int> DeleteGuestAsync(Guest guest)
         {
-            _context.Guests.Remove(guest);
-            await _context.SaveChangesAsync();
-            return guest.GuestID;
+            try
+            {
+                _context.Guests.Remove(guest);
+                await _context.SaveChangesAsync();
+                return guest.GuestID;
+            }
+            catch
+            {
+                throw new Exception("Guest o'chirilmadi");
+            }
         }
 
         public async Task<List<Guest>> GetAllGuestsAsync() => await _context.Guests
@@ -38,16 +52,33 @@ namespace TestHotel.DataAccess.Repository.Repositories
             .Include(u => u.Bills)
             .ToListAsync();
 
-        public async Task<Guest> GetGuestByIdAsync(int id) => await _context.Guests
-            .Include(u => u.Bookings)
-            .Include(u => u.Bills)
-            .FirstOrDefaultAsync(u => u.GuestID == id);
-
+        public async Task<Guest> GetGuestByIdAsync(int id)
+        {
+            try
+            {
+                return await _context.Guests
+                    .Include(u => u.Bookings)
+                    .Include(u => u.Bills)
+                    .FirstOrDefaultAsync(u => u.GuestID == id);
+            }
+            catch
+            {
+                throw new Exception("Guest ID topilmadi"); 
+            }
+        }
+            
         public async Task<int> UpdateGuestAsync(Guest guest)
         {
-            _context.Guests.Update(guest);
-            await _context.SaveChangesAsync();
-            return guest.GuestID;
+            try
+            {
+                _context.Guests.Update(guest);
+                await _context.SaveChangesAsync();
+                return guest.GuestID;
+            }
+            catch
+            {
+                throw new Exception("Guest o'zgartirilmadi");
+            }
         }
     }
 }
