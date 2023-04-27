@@ -21,16 +21,30 @@ namespace TestHotel.DataAccess.Repository.Repositories
 
         public async Task<int> AddBillAsync(Bill bill)
         {
-            _context.Bills.Add(bill);
-            await _context.SaveChangesAsync();
-            return bill.InvoiceNumber;
+            try
+            {
+                _context.Bills.Add(bill);
+                await _context.SaveChangesAsync();
+                return bill.InvoiceNumber;
+            }
+            catch 
+            {
+                throw new Exception("Invoice qo'shilmadi");
+            }
         }
 
         public async Task<int> DeleteBillAsync(Bill bill)
         {
-            _context.Bills.Remove(bill);
-            await _context.SaveChangesAsync();
-            return bill.InvoiceNumber;
+            try
+            {
+                _context.Bills.Remove(bill);
+                await _context.SaveChangesAsync();
+                return bill.InvoiceNumber;
+            }
+            catch
+            {
+                throw new Exception("Invoiceda o'chirilmadi");
+            }
         }
 
         public async Task<List<Bill>> GetAllBillsAsync() => await _context.Bills
@@ -38,16 +52,32 @@ namespace TestHotel.DataAccess.Repository.Repositories
             .Include(u => u.Booking)
             .ToListAsync();
 
-        public async Task<Bill> GetBillByInvoiceNumberAsync(int invoiceNumber) => await _context.Bills
-            .Include(u => u.Guest)
-            .Include(u => u.Booking)
-            .FirstOrDefaultAsync(u => u.InvoiceNumber == invoiceNumber);
-
+        public async Task<Bill> GetBillByInvoiceNumberAsync(int invoiceNumber)
+        {
+            try
+            {
+                return await _context.Bills
+                    .Include(u => u.Guest)
+                    .Include(u => u.Booking)
+                    .FirstOrDefaultAsync(u => u.InvoiceNumber == invoiceNumber);
+            }
+            catch
+            {
+                throw new Exception("Invoice number topilmadi");
+            }
+        }
         public async Task<int> UpdateBillAsync(Bill bill)
         {
-            _context.Bills.Update(bill);
-            await _context.SaveChangesAsync();
-            return bill.InvoiceNumber;
+            try
+            {
+                _context.Bills.Update(bill);
+                await _context.SaveChangesAsync();
+                return bill.InvoiceNumber;
+            }
+            catch
+            {
+                throw new Exception("O'zgartirish kiritilmadi");
+            }
         }
     }
 }
