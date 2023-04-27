@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using TestHotel.DataAccess.DbConnection;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
@@ -12,10 +8,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
 {
     public class GuestRepository : IGuestRepository
     {
+        private readonly ILogger<GuestRepository> _logger;
         private readonly HotelDbContext _context;
 
-        public GuestRepository(HotelDbContext context)
+        public GuestRepository(HotelDbContext context, ILogger<GuestRepository> logger)
         {
+            _logger = logger;
             _context = context;
         }
 
@@ -25,10 +23,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Guests.Add(guest);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("AddGuestAsync() Chaqirildi");
                 return guest.GuestID;
             }
             catch
             {
+                _logger.LogError("AddGuestAsync() Qo'shilmadi");
                 throw new Exception("Guest qo'shilmadi");
             }
         }
@@ -39,10 +39,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Guests.Remove(guest);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("DeleteGuestAsync() Chaqirildi");
                 return guest.GuestID;
             }
             catch
             {
+                _logger.LogError("DeleteGuestAsync() O'chirilmadi");
                 throw new Exception("Guest o'chirilmadi");
             }
         }
@@ -56,6 +58,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
         {
             try
             {
+                _logger.LogInformation("GetGuestByIdAsync() Chaqirildi");
                 return await _context.Guests
                     .Include(u => u.Bookings)
                     .Include(u => u.Bills)
@@ -63,20 +66,23 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
             catch
             {
-                throw new Exception("Guest ID topilmadi"); 
+                _logger.LogError("GetGuestByIdAsync() Topilmadi");
+                throw new Exception("Guest ID topilmadi");
             }
         }
-            
+
         public async Task<int> UpdateGuestAsync(Guest guest)
         {
             try
             {
                 _context.Guests.Update(guest);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("UpdateGuestAsync() Chaqirildi");
                 return guest.GuestID;
             }
             catch
             {
+                _logger.LogError("UpdateGuestAsync() O'zartirilmadi");
                 throw new Exception("Guest o'zgartirilmadi");
             }
         }

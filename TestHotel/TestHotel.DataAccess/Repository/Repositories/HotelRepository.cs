@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using TestHotel.DataAccess.DbConnection;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
@@ -12,10 +8,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
 {
     public class HotelRepository : IHotelRepository
     {
+        private readonly ILogger<HotelRepository> _logger;
         private readonly HotelDbContext _context;
 
-        public HotelRepository(HotelDbContext context)
+        public HotelRepository(HotelDbContext context, ILogger<HotelRepository> logger)
         {
+            _logger = logger;
             _context = context;
         }
 
@@ -25,10 +23,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Hotels.Add(hotel);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("AddHotelAsync() Chaqirildi");
                 return hotel.HotelId;
             }
             catch
             {
+                _logger.LogError("AddHotelAsync() Qo'shilmadi");
                 throw new Exception("Hotel qo'shilmadi");
             }
         }
@@ -39,10 +39,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Hotels.Remove(hotel);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("DeleteHotelAsync() Chaqirildi");
                 return hotel.HotelId;
             }
             catch
             {
+                _logger.LogError("DeleteHotelAsync() O'chirilmadi");
                 throw new Exception("Hotel o'chirilmadi");
             }
         }
@@ -57,7 +59,8 @@ namespace TestHotel.DataAccess.Repository.Repositories
         {
             try
             {
-                 return await _context.Hotels
+                _logger.LogInformation("GetHotelByIdAsync() Chaqirildi");
+                return await _context.Hotels
                     .Include(u => u.Rooms)
                     .Include(u => u.Bookings)
                     .Include(u => u.Employees)
@@ -65,6 +68,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
             catch
             {
+                _logger.LogError("GetHotelByIdAsync() Topilmadi");
                 throw new Exception("Hotel ID topilmadi");
             }
         }
@@ -75,10 +79,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Hotels.Update(hotel);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("UpdateHotelAsync() Chaqirildi");
                 return hotel.HotelId;
             }
             catch
             {
+                _logger.LogError("UpdateHotelAsync() O'gartirilmadi");
                 throw new Exception("O'zgartirish kiritilmadi");
             }
         }

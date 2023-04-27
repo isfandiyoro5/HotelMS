@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using TestHotel.DataAccess.DbConnection;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
@@ -12,10 +8,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
 {
     public class BillRepository : IBillRepository
     {
+        private readonly ILogger<BillRepository> _logger;
         private readonly HotelDbContext _context;
 
-        public BillRepository(HotelDbContext context)
+        public BillRepository(HotelDbContext context, ILogger<BillRepository> logger)
         {
+            _logger = logger;
             _context = context;
         }
 
@@ -25,10 +23,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Bills.Add(bill);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("AddBillAsync() Chaqirildi");
                 return bill.InvoiceNumber;
             }
-            catch 
+            catch
             {
+                _logger.LogError("AddBillAsync() Qo'shilmadi");
                 throw new Exception("Invoice qo'shilmadi");
             }
         }
@@ -39,10 +39,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Bills.Remove(bill);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("DeleteBillAsync() Chaqirildi");
                 return bill.InvoiceNumber;
             }
             catch
             {
+                _logger.LogError("DeleteBillAsync() O'chirilmadi");
                 throw new Exception("Invoiceda o'chirilmadi");
             }
         }
@@ -56,6 +58,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
         {
             try
             {
+                _logger.LogInformation("GetBillByInvoceNumberAsync() Chaqirildi");
                 return await _context.Bills
                     .Include(u => u.Guest)
                     .Include(u => u.Booking)
@@ -63,6 +66,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
             catch
             {
+                _logger.LogError("GetBillByInvoceNumberAsync() Topilmadi");
                 throw new Exception("Invoice number topilmadi");
             }
         }
@@ -72,10 +76,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Bills.Update(bill);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("UpdateBillAsync() Chaqirildi");
                 return bill.InvoiceNumber;
             }
             catch
             {
+                _logger.LogError("UpdateBillAsync() O'zgartirilmadi");
                 throw new Exception("O'zgartirish kiritilmadi");
             }
         }
