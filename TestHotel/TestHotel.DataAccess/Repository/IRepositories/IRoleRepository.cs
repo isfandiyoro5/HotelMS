@@ -9,14 +9,14 @@ namespace TestHotel.DataAccess.Repository.IRepositories
 {
     public interface IRoleRepository
     {
-        public int AddRole(Role role);
+        Task<int> AddRoleAsync(Role role);
 
-        public Role GetRoleById(int id);
+        Task<Role> GetRoleByIdAsync(int id);
 
-        public List<Role> GetAllRoles();
+        Task<List<Role>> GetAllRolesAsync();
 
-        public int UpdateRole(Role role);
+        Task<int> UpdateRoleAsync(Role role);
 
-        public int DeleteRole(Role role);
+        Task<int> DeleteRoleAsync(Role role);
     }
 }

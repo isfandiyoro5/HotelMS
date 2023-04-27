@@ -19,34 +19,34 @@ namespace TestHotel.DataAccess.Repository.Repositories
             _context = context;
         }
 
-        public int AddEmployee(Employee employee)
+        public async Task<int> AddEmployeeAsync(Employee employee)
         {
             _context.Employees.Add(employee);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return employee.EmployeeID;
         }
 
-        public int DeleteEmployee(Employee employee)
+        public async Task<int> DeleteEmployeeAsync(Employee employee)
         {
             _context.Employees.Remove(employee);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return employee.EmployeeID;
         }
 
-        public List<Employee> GetAllEmployees() => _context.Employees
+        public async Task<List<Employee>> GetAllEmployeesAsync() => await _context.Employees
             .Include(u => u.Role)
             .Include(u => u.Hotel)
-            .ToList();
+            .ToListAsync();
 
-        public Employee GetEmployeeById(int id) => _context.Employees
+        public async Task<Employee> GetEmployeeByIdAsync(int id) => await _context.Employees
             .Include(u => u.Role)
             .Include(u => u.Hotel)
-            .FirstOrDefault(u => u.EmployeeID == id);
+            .FirstOrDefaultAsync(u => u.EmployeeID == id);
 
-        public int UpdateEmployee(Employee employee)
+        public async Task<int> UpdateEmployeeAsync(Employee employee)
         {
             _context.Employees.Update(employee);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return employee.EmployeeID;
         }
     }

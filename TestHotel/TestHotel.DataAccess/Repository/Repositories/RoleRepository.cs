@@ -19,32 +19,32 @@ namespace TestHotel.DataAccess.Repository.Repositories
             _context = context;
         }
 
-        public int AddRole(Role role)
+        public async Task<int> AddRoleAsync(Role role)
         {
             _context.Roles.Add(role);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return role.RoleID;
         }
 
-        public int DeleteRole(Role role)
+        public async Task<int> DeleteRoleAsync(Role role)
         {
             _context.Roles.Remove(role);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return role.RoleID;
         }
 
-        public List<Role> GetAllRoles() => _context.Roles
+        public async Task<List<Role>> GetAllRolesAsync() => await _context.Roles
             .Include(u => u.Employee)
-            .ToList();
+            .ToListAsync();
 
-        public Role GetRoleById(int id) => _context.Roles
+        public async Task<Role> GetRoleByIdAsync(int id) => await _context.Roles
             .Include(u => u.Employee)
-            .FirstOrDefault(u => u.RoleID == id);
+            .FirstOrDefaultAsync(u => u.RoleID == id);
 
-        public int UpdateRole(Role role)
+        public async Task<int> UpdateRoleAsync(Role role)
         {
             _context.Roles.Update(role);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return role.RoleID;
         }
     }

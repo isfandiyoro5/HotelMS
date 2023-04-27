@@ -9,14 +9,14 @@ namespace TestHotel.DataAccess.Repository.IRepositories
 {
     public interface IEmployeeRepository
     {
-        public int AddEmployee(Employee employee);
+        Task<int> AddEmployeeAsync(Employee employee);
 
-        public Employee GetEmployeeById(int id);
+        Task<Employee> GetEmployeeByIdAsync(int id);
 
-        public List<Employee> GetAllEmployees();
+        Task<List<Employee>> GetAllEmployeesAsync();
 
-        public int UpdateEmployee(Employee employee);
+        Task<int> UpdateEmployeeAsync(Employee employee);
 
-        public int DeleteEmployee(Employee employee);
+        Task<int> DeleteEmployeeAsync(Employee employee);
     }
 }

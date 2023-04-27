@@ -19,34 +19,34 @@ namespace TestHotel.DataAccess.Repository.Repositories
             _context = context;
         }
 
-        public int AddGuest(Guest guest)
+        public async Task<int> AddGuestAsync(Guest guest)
         {
             _context.Guests.Add(guest);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return guest.GuestID;
         }
 
-        public int DeleteGuest(Guest guest)
+        public async Task<int> DeleteGuestAsync(Guest guest)
         {
             _context.Guests.Remove(guest);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return guest.GuestID;
         }
 
-        public List<Guest> GetAllGuests() => _context.Guests
+        public async Task<List<Guest>> GetAllGuestsAsync() => await _context.Guests
             .Include(u => u.Bookings)
             .Include(u => u.Bills)
-            .ToList();
+            .ToListAsync();
 
-        public Guest GetGuestById(int id) => _context.Guests
+        public async Task<Guest> GetGuestByIdAsync(int id) => await _context.Guests
             .Include(u => u.Bookings)
             .Include(u => u.Bills)
-            .FirstOrDefault(u => u.GuestID == id);
+            .FirstOrDefaultAsync(u => u.GuestID == id);
 
-        public int UpdateGuest(Guest guest)
+        public async Task<int> UpdateGuestAsync(Guest guest)
         {
             _context.Guests.Update(guest);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return guest.GuestID;
         }
     }

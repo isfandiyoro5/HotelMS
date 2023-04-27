@@ -19,38 +19,38 @@ namespace TestHotel.DataAccess.Repository.Repositories
             _context = context;
         }
 
-        public int AddBooking(Booking booking)
+        public async Task<int> AddBookingAsync(Booking booking)
         {
             _context.Bookings.Add(booking);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return booking.BookingId;
         }
 
-        public int DeleteBooking(Booking booking)
+        public async Task<int> DeleteBookingAsync(Booking booking)
         {
             _context.Bookings.Remove(booking);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return booking.BookingId;
         }
 
-        public List<Booking> GetAllBookings() => _context.Bookings
+        public async Task<List<Booking>> GetAllBookingsAsync() => await _context.Bookings
             .Include(u => u.Bills)
             .Include(u => u.Guests)
             .Include(u => u.Hotel)
             .Include(u => u.Room)
-            .ToList();
+            .ToListAsync();
 
-        public Booking GetBookingById(int id) => _context.Bookings
+        public async Task<Booking> GetBookingByIdAsync(int id) => await _context.Bookings
             .Include(u => u.Bills)
             .Include(u => u.Guests)
             .Include(u => u.Hotel)
             .Include(u => u.Room)
-            .FirstOrDefault(u => u.BookingId == id);
+            .FirstOrDefaultAsync(u => u.BookingId == id);
 
-        public int UpdateBooking(Booking booking)
+        public async Task<int> UpdateBookingAsync(Booking booking)
         {
             _context.Bookings.Update(booking);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return booking.BookingId;
         }
     }
