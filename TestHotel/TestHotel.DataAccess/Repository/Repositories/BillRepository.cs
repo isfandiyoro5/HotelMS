@@ -23,12 +23,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Bills.Add(bill);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("AddBillAsync() Chaqirildi");
+                _logger.LogInformation("Bill muvaffaqiyatli qoshildi");
                 return bill.InvoiceNumber;
             }
             catch
             {
-                _logger.LogError("AddBillAsync() Qo'shilmadi");
+                _logger.LogError("Billni yaratishda xatolik yuzaga keldi");
                 throw new Exception("Invoice qo'shilmadi");
             }
         }
@@ -39,12 +39,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Bills.Remove(bill);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("DeleteBillAsync() Chaqirildi");
+                _logger.LogInformation("Bill muvaffaqiyatli o'chirildi");
                 return bill.InvoiceNumber;
             }
             catch
             {
-                _logger.LogError("DeleteBillAsync() O'chirilmadi");
+                _logger.LogError("Billni o'chirishda xatolik yuzaga keldi");
                 throw new Exception("Invoiceda o'chirilmadi");
             }
         }
@@ -58,7 +58,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
         {
             try
             {
-                _logger.LogInformation("GetBillByInvoceNumberAsync() Chaqirildi");
+                _logger.LogInformation("BillByInvoiceNumber muvaffaqiyatli topildi");
                 return await _context.Bills
                     .Include(u => u.Guest)
                     .Include(u => u.Booking)
@@ -66,7 +66,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
             catch
             {
-                _logger.LogError("GetBillByInvoceNumberAsync() Topilmadi");
+                _logger.LogError("BillByInvoiceNumberni qidirishda xatolik yuzaga keldi");
                 throw new Exception("Invoice number topilmadi");
             }
         }
@@ -76,12 +76,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Bills.Update(bill);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("UpdateBillAsync() Chaqirildi");
+                _logger.LogInformation("Bill muvaffaqiyatli yangilandi");
                 return bill.InvoiceNumber;
             }
             catch
             {
-                _logger.LogError("UpdateBillAsync() O'zgartirilmadi");
+                _logger.LogError("Billni yangilashda xatolik yuzaga keldi");
                 throw new Exception("O'zgartirish kiritilmadi");
             }
         }

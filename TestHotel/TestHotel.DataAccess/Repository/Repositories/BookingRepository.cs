@@ -23,12 +23,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Bookings.Add(booking);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("AddBookingAsync() Chaqirildi");
+                _logger.LogInformation("Booking muvaffaqiyatli qo'shildi");
                 return booking.BookingId;
             }
             catch
             {
-                _logger.LogError("AddBookingAsync() Qo'shilmadi");
+                _logger.LogError("Bookingni yaratishda xatolik yuzaga keldi");
                 throw new Exception("Booking qo'shilmadi");
             }
         }
@@ -39,12 +39,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Bookings.Remove(booking);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("DeleteBookingAsync() Chaqirildi");
+                _logger.LogInformation("Booking muvaffaqiyatli o'chirildi");
                 return booking.BookingId;
             }
             catch
             {
-                _logger.LogError("DeleteBookingAsync() O'chirilmadi");
+                _logger.LogError("Bookingni o'chirishda xatolik yuzaga keldi");
                 throw new Exception("Booking o'chirilmadi");
             }
         }
@@ -60,7 +60,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
         {
             try
             {
-                _logger.LogInformation("GetBookingByIdAsync() Chaqirildi");
+                _logger.LogInformation("BookingById muvaffaqiyatli topildi");
                 return await _context.Bookings
                     .Include(u => u.Bills)
                     .Include(u => u.Guests)
@@ -70,7 +70,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
             catch
             {
-                _logger.LogError("DeleteBookingByIdAsync() Topilmadi");
+                _logger.LogError("BookingByIdni qidirishda xatolik yuzaga keldi");
                 throw new Exception("Booking ID topilmadi");
             }
         }
@@ -81,12 +81,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Bookings.Update(booking);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("UpdateBookingAsync() Chaqirildi");
+                _logger.LogInformation("Booking muvaffaqiyatli yangilandi");
                 return booking.BookingId;
             }
             catch
             {
-                _logger.LogError("UpdateBookingAsync() O'zgartirilmadi");
+                _logger.LogError("Bookingni yangilashda xatolik yuzaga keldi");
                 throw new Exception("O'zgartirish kiritilmadi");
             }
         }

@@ -23,12 +23,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Guests.Add(guest);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("AddGuestAsync() Chaqirildi");
+                _logger.LogInformation("Guest muvaffaqiyatli qo'shildi");
                 return guest.GuestID;
             }
             catch
             {
-                _logger.LogError("AddGuestAsync() Qo'shilmadi");
+                _logger.LogError("Guestni qoshilishida xatolik yuzaga keldi");
                 throw new Exception("Guest qo'shilmadi");
             }
         }
@@ -39,12 +39,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Guests.Remove(guest);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("DeleteGuestAsync() Chaqirildi");
+                _logger.LogInformation("Guest muvaffaqiyatli o'chirildi");
                 return guest.GuestID;
             }
             catch
             {
-                _logger.LogError("DeleteGuestAsync() O'chirilmadi");
+                _logger.LogError("Guestni o'chirishda xatolik yuzaga keldi");
                 throw new Exception("Guest o'chirilmadi");
             }
         }
@@ -58,7 +58,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
         {
             try
             {
-                _logger.LogInformation("GetGuestByIdAsync() Chaqirildi");
+                _logger.LogInformation("Guest muvaffaqiyatli topildi");
                 return await _context.Guests
                     .Include(u => u.Bookings)
                     .Include(u => u.Bills)
@@ -66,7 +66,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
             catch
             {
-                _logger.LogError("GetGuestByIdAsync() Topilmadi");
+                _logger.LogError("GuestByIdni qidirishda xatolik yuzaga keldi");
                 throw new Exception("Guest ID topilmadi");
             }
         }
@@ -77,12 +77,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Guests.Update(guest);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("UpdateGuestAsync() Chaqirildi");
+                _logger.LogInformation("Guest muvaffaqiyatli yangilandi");
                 return guest.GuestID;
             }
             catch
             {
-                _logger.LogError("UpdateGuestAsync() O'zartirilmadi");
+                _logger.LogError("Guestni yangilashda xatolik yuzaga keldi");
                 throw new Exception("Guest o'zgartirilmadi");
             }
         }

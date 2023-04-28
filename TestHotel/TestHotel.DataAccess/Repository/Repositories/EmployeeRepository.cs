@@ -23,12 +23,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Employees.Add(employee);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("AddEmployeeAsync() Chaqirildi");
+                _logger.LogInformation("Employee muvaffaqiyatli qo'shildi");
                 return employee.EmployeeID;
             }
             catch
             {
-                _logger.LogError("AddEmployeeAsync() Qo'shilmadi");
+                _logger.LogError("Employeeni qo'shilishida xatolik yuzaga keldi");
                 throw new Exception("Employee qo'shilmadi");
             }
         }
@@ -39,12 +39,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Employees.Remove(employee);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("DeleteEmployeeAsync() Chaqirildi");
+                _logger.LogInformation("Employee muvaffaqiyatli o'chirildi");
                 return employee.EmployeeID;
             }
             catch
             {
-                _logger.LogError("DeleteEmployeeAsync() O'chirilmadi");
+                _logger.LogError("Employeeni o'chirishda xatolik yuzaga keldi");
                 throw new Exception("Employee o'chirilmadi");
             }
         }
@@ -58,7 +58,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
         {
             try
             {
-                _logger.LogInformation("GetEmployeeByIdAsync() Chaqirildi");
+                _logger.LogInformation("Employee muvaffaqiyatli topildi");
                 return await _context.Employees
                     .Include(u => u.Role)
                     .Include(u => u.Hotel)
@@ -66,7 +66,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
             catch
             {
-                _logger.LogError("GetEmployeeByIdAsync() Topilmadi");
+                _logger.LogError("EmployeeByIdni qidirishda xatolik yuzaga keldi");
                 throw new Exception("Employee ID topilmadi");
             }
         }
@@ -77,12 +77,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Employees.Update(employee);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("UpdateEmployeeAsync() Chaqirildi");
+                _logger.LogInformation("Employee muvaffaqiyatli yangilandi");
                 return employee.EmployeeID;
             }
             catch
             {
-                _logger.LogError("UpdateEmployeeAsync() O'zgartirilmadi");
+                _logger.LogError("Employeeni yangilashda xatolik yuzaga keldi");
                 throw new Exception("O'zgartirish kiritilmadi");
             }
         }
