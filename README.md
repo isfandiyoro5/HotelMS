@@ -17,5 +17,5 @@ _____
     "DefaultConnect": "user id=postgres; password=PgAdmin kodini kiriting; server=localhost; port=5432; database=Database nomini kiriting; pooling=true"},
 ```
 2. *`Tools/NuGet Package Manager/Package Manager Console`* ga kiriladi
-3. `add-database` o'zingiz `nom kritasiz` kiritiladi
+3. `add-database`  `nom kritasiz` kiritiladi
 4. *`update-database`* kiritiladi
