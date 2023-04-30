@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TestHotel.DataAccess.DbConnection;
+using TestHotel.DataAccess.Repository.IRepositories;
+using TestHotel.DataAccess.Repository.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,15 @@ builder.Services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.
 
 var config = builder.Configuration.GetSection("ConnectionStrings");
 builder.Services.AddDbContext<HotelDbContext>(option => option.UseNpgsql(config["Connect"]));
+builder.Services.AddScoped<IBillRepository, BillRepository>();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IGuestRepository, GuestRepository>();
+builder.Services.AddScoped<IHotelRepository, HotelRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
+builder.Services.AddScoped<HotelDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
