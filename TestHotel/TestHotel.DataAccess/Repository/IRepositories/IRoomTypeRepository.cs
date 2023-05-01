@@ -11,7 +11,7 @@ namespace TestHotel.DataAccess.Repository.IRepositories
     {
         Task<int> AddRoomTypeAsync(RoomType roomType);
 
-        Task<RoomType> GetRoomTypeByIdAsync(int id);
+        Task<RoomType> GetRoomTypeByIdAsync(RoomTypes roomTypes);
 
         Task<List<RoomType>> GetAllRoomTypesAsync();
 
