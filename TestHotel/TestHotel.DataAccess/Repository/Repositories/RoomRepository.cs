@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using TestHotel.DataAccess.DbConnection;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
@@ -12,10 +8,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
 {
     public class RoomRepository : IRoomRepository
     {
+        private readonly ILogger<RoomRepository> _logger;
         private readonly HotelDbContext _context;
 
-        public RoomRepository(HotelDbContext context)
+        public RoomRepository(HotelDbContext context, ILogger<RoomRepository> logger)
         {
+            _logger = logger;
             _context = context;
         }
 
@@ -25,10 +23,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Rooms.Add(room);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("Room muvaffaqiyatli qo'shildi");
                 return room.RoomNumber;
             }
             catch
             {
+                _logger.LogError("Roomni yaratishda xatolik yuzaga keldi");
                 throw new Exception("Room qo'shilmadi");
             }
         }
@@ -39,10 +39,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Rooms.Remove(room);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("Room muvaffaqiyatli o'chirildi");
                 return room.RoomNumber;
             }
             catch
             {
+                _logger.LogError("Roomni o'chirishda xatolik yuzaga keldi");
                 throw new Exception("Room o'chirilmadi");
             }
         }
@@ -57,6 +59,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
         {
             try
             {
+                _logger.LogInformation("RoomById muvaffaqiyatli topildi");
                 return await _context.Rooms
                     .Include(u => u.roomType)
                     .Include(u => u.bookings)
@@ -65,20 +68,23 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
             catch
             {
+                _logger.LogError("RoomByIdni qidirishda xatolik yuzaga keldi");
                 throw new Exception("Room ID topilmadi");
             }
         }
-            
+
         public async Task<int> UpdateRoomAsync(Room room)
         {
             try
             {
                 _context.Rooms.Update(room);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("Room muvaffaqiyatli yangilandi");
                 return room.RoomNumber;
             }
             catch
             {
+                _logger.LogError("Roomni yangilashda xatolik yuzaga keldi");
                 throw new Exception("Room o'zgartirilmadi");
             }
         }

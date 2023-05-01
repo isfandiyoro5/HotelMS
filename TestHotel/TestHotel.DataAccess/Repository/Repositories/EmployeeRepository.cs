@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using TestHotel.DataAccess.DbConnection;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
@@ -12,10 +8,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
 {
     public class EmployeeRepository : IEmployeeRepository
     {
+        private readonly ILogger<EmployeeRepository> _logger;
         private readonly HotelDbContext _context;
 
-        public EmployeeRepository(HotelDbContext context)
+        public EmployeeRepository(HotelDbContext context, ILogger<EmployeeRepository> logger)
         {
+            _logger = logger;
             _context = context;
         }
 
@@ -25,10 +23,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Employees.Add(employee);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("Employee muvaffaqiyatli qo'shildi");
                 return employee.EmployeeID;
             }
             catch
             {
+                _logger.LogError("Employeeni qo'shilishida xatolik yuzaga keldi");
                 throw new Exception("Employee qo'shilmadi");
             }
         }
@@ -39,10 +39,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Employees.Remove(employee);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("Employee muvaffaqiyatli o'chirildi");
                 return employee.EmployeeID;
             }
             catch
             {
+                _logger.LogError("Employeeni o'chirishda xatolik yuzaga keldi");
                 throw new Exception("Employee o'chirilmadi");
             }
         }
@@ -56,6 +58,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
         {
             try
             {
+                _logger.LogInformation("Employee muvaffaqiyatli topildi");
                 return await _context.Employees
                     .Include(u => u.Role)
                     .Include(u => u.Hotel)
@@ -63,6 +66,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
             catch
             {
+                _logger.LogError("EmployeeByIdni qidirishda xatolik yuzaga keldi");
                 throw new Exception("Employee ID topilmadi");
             }
         }
@@ -73,10 +77,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Employees.Update(employee);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("Employee muvaffaqiyatli yangilandi");
                 return employee.EmployeeID;
             }
             catch
             {
+                _logger.LogError("Employeeni yangilashda xatolik yuzaga keldi");
                 throw new Exception("O'zgartirish kiritilmadi");
             }
         }
