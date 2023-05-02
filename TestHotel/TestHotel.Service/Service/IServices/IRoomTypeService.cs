@@ -5,18 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 
-namespace TestHotel.DataAccess.Repository.IRepositories
+namespace TestHotel.Service.Service.IServices
 {
-    public interface IRoomTypeRepository
+    internal interface IRoomTypeService
     {
         Task<int> AddRoomTypeAsync(RoomType roomType);
-
-        Task<RoomType> GetRoomTypeByIdAsync(int id);
-
-        Task<List<RoomType>> GetAllRoomTypesAsync();
 
         Task<int> UpdateRoomTypeAsync(RoomType roomType);
 
         Task<int> DeleteRoomTypeAsync(RoomType roomType);
+
+        Task<RoomType> GetRoomTypeByIdAsync(int id);
+
+        Task<List<RoomType>> GetAllRoomTypesAsync();
     }
 }
