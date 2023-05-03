@@ -16,7 +16,7 @@ namespace TestHotel.Service.Service.Services
 
         public HotelService(HotelRepository hotelRepository)
         {
-            _hotelRepository= hotelRepository;
+            _hotelRepository = hotelRepository;
         }
 
         public async Task<int> AddHotelAsync(Hotel hotel)

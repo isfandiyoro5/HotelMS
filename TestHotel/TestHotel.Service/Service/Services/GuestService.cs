@@ -16,7 +16,7 @@ namespace TestHotel.Service.Service.Services
 
         public GuestService(GuestRepository guestRepository)
         {
-            _guestRepository= guestRepository;
+            _guestRepository = guestRepository;
         }
 
         public async Task<int> AddGuestAsync(Guest guest)

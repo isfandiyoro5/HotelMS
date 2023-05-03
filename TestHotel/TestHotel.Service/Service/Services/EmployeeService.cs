@@ -14,9 +14,9 @@ namespace TestHotel.Service.Service.Services
     {
         private readonly IEmployeeRepository _employeeRepository;
 
-        public EmployeeService(EmployeeRepository employeerepository)
+        public EmployeeService(EmployeeRepository employeeRepository)
         {
-            _employeeRepository= employeerepository;
+            _employeeRepository = employeeRepository;
         }
 
         public async Task<int> AddEmployeeAsync(Employee employee)
