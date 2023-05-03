@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,9 +25,17 @@ namespace TestHotel.Service.Service.Services
             return await _roleRepository.AddRoleAsync(role);
         }
 
-        public async Task<int> DeleteRoleAsync(Role role)
+        public async Task<int> DeleteRoleAsync(int id)
         {
-            return await _roleRepository.DeleteRoleAsync(role);
+            var roleExist = await GetRoleByIdAsync(id);
+            if (roleExist != null)
+            {
+                return await _roleRepository.DeleteRoleAsync(roleExist);
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public async Task<List<Role>> GetAllRolesAsync()
@@ -41,7 +50,15 @@ namespace TestHotel.Service.Service.Services
 
         public async Task<int> UpdateRoleAsync(Role role)
         {
-            return await _roleRepository.UpdateRoleAsync(role);
+            var roleExist = await GetRoleByIdAsync(role.RoleId);
+            if (roleExist != null)
+            {
+                return await _roleRepository.UpdateRoleAsync(roleExist);
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

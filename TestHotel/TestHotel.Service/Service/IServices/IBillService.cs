@@ -13,7 +13,7 @@ namespace TestHotel.Service.Service.IServices
 
         Task<int> UpdateBillAsync(Bill bill);
 
-        Task<int> DeleteBillAsync(Bill bill);
+        Task<int> DeleteBillAsync(int invoiceNumber);
 
         Task<Bill> GetBillByIdAsync(int invoiceNumber);
 

@@ -24,9 +24,17 @@ namespace TestHotel.Service.Service.Services
             return await _employeeRepository.AddEmployeeAsync(employee);
         }
 
-        public async Task<int> DeleteEmployeeAsync(Employee employee)
+        public async Task<int> DeleteEmployeeAsync(int id)
         {
-            return await _employeeRepository.DeleteEmployeeAsync(employee);
+            var employeeExist = await GetEmployeeByIdAsync(id);
+            if(employeeExist != null)
+            {
+                return await _employeeRepository.DeleteEmployeeAsync(employeeExist);
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public async Task<List<Employee>> GetAllEmployeesAsync()
@@ -41,7 +49,15 @@ namespace TestHotel.Service.Service.Services
 
         public async Task<int> UpdateEmployeeAsync(Employee employee)
         {
-            return await _employeeRepository.UpdateEmployeeAsync(employee);
+            var employeeExist = await GetEmployeeByIdAsync(employee.EmployeeId);
+            if(employeeExist != null)
+            {
+                return await _employeeRepository.UpdateEmployeeAsync(employee);
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

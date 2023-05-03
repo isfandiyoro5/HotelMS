@@ -26,12 +26,29 @@ namespace TestHotel.Service.Service.Services
 
         public async Task<int> UpdateBookingAsync(Booking booking)
         {
-            return await _bookingRepository.UpdateBookingAsync(booking);
+            var bookingExist = GetBookingByIdAsync(booking.BookingId);
+            if (bookingExist != null)
+            {
+                return await _bookingRepository.UpdateBookingAsync(booking);
+            }
+            else
+            {
+                return 0;
+            }
         }
 
-        public async Task<int> DeleteBookingAsync(Booking booking)
+        public async Task<int> DeleteBookingAsync(int id)
         {
-            return await _bookingRepository.DeleteBookingAsync(booking);
+            var bookingExist = await GetBookingByIdAsync(id);
+            if (bookingExist != null)
+            {
+                return await _bookingRepository.DeleteBookingAsync(bookingExist);
+
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public async Task<Booking> GetBookingByIdAsync(int id)

@@ -13,7 +13,7 @@ namespace TestHotel.Service.Service.IServices
 
         Task<int> UpdateRoomTypeAsync(RoomType roomType);
 
-        Task<int> DeleteRoomTypeAsync(RoomType roomType);
+        Task<int> DeleteRoomTypeAsync(int id);
 
         Task<RoomType> GetRoomTypeByIdAsync(int id);
 

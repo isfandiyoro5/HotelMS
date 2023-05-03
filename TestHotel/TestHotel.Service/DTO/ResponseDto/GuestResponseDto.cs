@@ -9,9 +9,9 @@ namespace TestHotel.Service.DTO.ResponseDto
 {
     public class GuestResponseDto
     {
-        public int GuestID { get; set; }
+        public int GuestId { get; set; }
 
-        public int BookingID { get; set; }
+        public int BookingId { get; set; }
 
         public GuestPriority GuestPriority { get; set; }
 

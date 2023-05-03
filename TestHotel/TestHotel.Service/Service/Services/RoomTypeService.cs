@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,9 +24,17 @@ namespace TestHotel.Service.Service.Services
             return await _roomTypeRepository.AddRoomTypeAsync(roomType);
         }
 
-        public async Task<int> DeleteRoomTypeAsync(RoomType roomType)
+        public async Task<int> DeleteRoomTypeAsync(int id)
         {
-            return await _roomTypeRepository.DeleteRoomTypeAsync(roomType);
+            var roomTypeExist = await GetRoomTypeByIdAsync(id);
+            if (roomTypeExist != null)
+            {
+                return await _roomTypeRepository.DeleteRoomTypeAsync(roomTypeExist);
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public async Task<List<RoomType>> GetAllRoomTypesAsync()
@@ -40,7 +49,15 @@ namespace TestHotel.Service.Service.Services
 
         public async Task<int> UpdateRoomTypeAsync(RoomType roomType)
         {
-            return await _roomTypeRepository.UpdateRoomTypeAsync(roomType);
+            var roomTypeExist = await GetRoomTypeByIdAsync(roomType.RoomTypeId);
+            if (roomTypeExist != null)
+            {
+                return await _roomTypeRepository.UpdateRoomTypeAsync(roomTypeExist);
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

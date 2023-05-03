@@ -24,7 +24,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _context.Roles.Add(role);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Role muvaffaqiyatli qo'shildi");
-                return role.RoleID;
+                return role.RoleId;
             }
             catch
             {
@@ -40,7 +40,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _context.Roles.Remove(role);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Role muvaffaqiyatli o'chirildi");
-                return role.RoleID;
+                return role.RoleId;
             }
             catch
             {
@@ -60,7 +60,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("RoleById muvaffaqiyatli topildi");
                 return await _context.Roles
                     .Include(u => u.Employee)
-                    .FirstOrDefaultAsync(u => u.RoleID == id);
+                    .FirstOrDefaultAsync(u => u.RoleId == id);
             }
             catch
             {
@@ -76,7 +76,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _context.Roles.Update(role);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Role muvaffaqiyatli yangilandi");
-                return role.RoleID;
+                return role.RoleId;
             }
             catch
             {

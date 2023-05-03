@@ -13,7 +13,7 @@ namespace TestHotel.Service.Service.IServices
 
         Task<int> UpdateEmployeeAsync(Employee employee);
 
-        Task<int> DeleteEmployeeAsync(Employee employee);
+        Task<int> DeleteEmployeeAsync(int id);
 
         Task<Employee> GetEmployeeByIdAsync(int id);
 

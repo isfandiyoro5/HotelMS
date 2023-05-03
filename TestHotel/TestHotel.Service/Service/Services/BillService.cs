@@ -25,12 +25,28 @@ namespace TestHotel.Service.Service.Services
 
         public async Task<int> UpdateBillAsync(Bill bill)
         {
-            return await _billRepository.UpdateBillAsync(bill);
+            var billExist = await GetBillByIdAsync(bill.InvoiceNumber);
+            if (billExist != null)
+            {
+                return await _billRepository.UpdateBillAsync(bill);
+            }
+            else
+            {
+                return 0;
+            }
         }
 
-        public async Task<int> DeleteBillAsync(Bill bill)
+        public async Task<int> DeleteBillAsync(int invoiceNumber)
         {
-            return await _billRepository.DeleteBillAsync(bill);
+            var billExist = await GetBillByIdAsync(invoiceNumber);
+            if(billExist != null)
+            {
+                return await _billRepository.DeleteBillAsync(billExist);
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public async Task<List<Bill>> GetAllBillsAsync()

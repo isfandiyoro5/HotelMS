@@ -24,9 +24,17 @@ namespace TestHotel.Service.Service.Services
             return await _guestRepository.AddGuestAsync(guest);
         }
 
-        public async Task<int> DeleteGuestAsync(Guest guest)
+        public async Task<int> DeleteGuestAsync(int id)
         {
-            return await _guestRepository.DeleteGuestAsync(guest);
+            var guestExist = await GetGuestByIdAsync(id);
+            if(guestExist != null)
+            {
+                return await _guestRepository.DeleteGuestAsync(guestExist);
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public async Task<List<Guest>> GetAllGuestsAsync()
@@ -41,7 +49,15 @@ namespace TestHotel.Service.Service.Services
 
         public async Task<int> UpdateGuestAsync(Guest guest)
         {
-            return await _guestRepository.UpdateGuestAsync(guest);
+            var guestExist = await GetGuestByIdAsync(guest.GuestId);
+            if(guestExist != null)
+            {
+                return await _guestRepository.UpdateGuestAsync(guestExist);
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }
