@@ -26,10 +26,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("RoomType muvaffaqiyatli qo'shildi");
                 return roomType.RoomTypeId;
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("RoomTypeni yaratishda xatolik yuzaga keldi");
-                throw new Exception("Room Type qo'shilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
 
@@ -42,16 +42,27 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("RoomType muvaffaqiyatli o'chirildi");
                 return roomType.RoomTypeId;
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("RoomTypeni o'chirishda xatolik yuzaga keldi");
-                throw new Exception("Room Type o'chirilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
 
-        public async Task<List<RoomType>> GetAllRoomTypesAsync() => await _context.RoomTypes
-            .Include(u => u.Room)
-            .ToListAsync();
+        public async Task<List<RoomType>> GetAllRoomTypesAsync()
+        {
+            try
+            {
+                return await _context.RoomTypes
+                    .Include(u => u.Room)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new Exception();
+            }
+        }
 
         public async Task<RoomType> GetRoomTypeByIdAsync(RoomTypes roomTypes)
         {
@@ -62,10 +73,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.Room)
                     .FirstOrDefaultAsync(u => u.RoomTypes == roomTypes);
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("RoomTypeByIdni qidirishda xatolik yuzaga keldi");
-                throw new Exception("Room Type ID topilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
 
@@ -78,10 +89,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("RoomType muvaffaqiyatli yangilandi");
                 return roomType.RoomTypeId;
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("RoomTypeni yangilashda xatolik yuzaga keldi");
-                throw new Exception("Room Type o'zgartirilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
     }

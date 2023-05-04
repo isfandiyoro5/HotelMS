@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TestHotel.DataAccess.DbConnection;
 using TestHotel.DataAccess.Model;
@@ -26,10 +27,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Booking muvaffaqiyatli qo'shildi");
                 return booking.BookingId;
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("Bookingni yaratishda xatolik yuzaga keldi");
-                throw new Exception("Booking qo'shilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
 
@@ -42,19 +43,30 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Booking muvaffaqiyatli o'chirildi");
                 return booking.BookingId;
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("Bookingni o'chirishda xatolik yuzaga keldi");
-                throw new Exception("Booking o'chirilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
 
-        public async Task<List<Booking>> GetAllBookingsAsync() => await _context.Bookings
-            .Include(u => u.Bills)
-            .Include(u => u.Guests)
-            .Include(u => u.Hotel)
-            .Include(u => u.Room)
-            .ToListAsync();
+        public async Task<List<Booking>> GetAllBookingsAsync()
+        {
+            try
+            {
+               return await _context.Bookings
+                .Include(u => u.Bills)
+                .Include(u => u.Guests)
+                .Include(u => u.Hotel)
+                .Include(u => u.Room)
+                .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new Exception();
+            }
+        }
 
         public async Task<Booking> GetBookingByIdAsync(int id)
         {
@@ -68,10 +80,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.Room)
                     .FirstOrDefaultAsync(u => u.BookingId == id);
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("BookingByIdni qidirishda xatolik yuzaga keldi");
-                throw new Exception("Booking ID topilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
 
@@ -84,10 +96,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Booking muvaffaqiyatli yangilandi");
                 return booking.BookingId;
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("Bookingni yangilashda xatolik yuzaga keldi");
-                throw new Exception("O'zgartirish kiritilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
     }

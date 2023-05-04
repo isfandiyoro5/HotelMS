@@ -26,10 +26,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Role muvaffaqiyatli qo'shildi");
                 return role.RoleID;
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("Roleni yaratishda xatolik yuzaga keldi");
-                throw new Exception("Role qo'shilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
 
@@ -42,17 +42,28 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Role muvaffaqiyatli o'chirildi");
                 return role.RoleID;
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("Roleni o'chirishda xatolik yuzaga keldi");
-                throw new Exception("Role o'chirilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
 
-        public async Task<List<Role>> GetAllRolesAsync() => await _context.Roles
-            .Include(u => u.Employee)
-            .ToListAsync();
-
+        public async Task<List<Role>> GetAllRolesAsync()
+        {
+            try
+            {
+                return await _context.Roles
+                    .Include(u => u.Employee)
+                    .ToListAsync();
+            }
+            catch (Exception ex) 
+            {
+                _logger.LogError(ex.Message);
+                throw new Exception();
+            }
+        }
+          
         public async Task<Role> GetRoleByIdAsync(int id)
         {
             try
@@ -62,10 +73,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.Employee)
                     .FirstOrDefaultAsync(u => u.RoleID == id);
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("RoleByIdni qidirishda xatolik yuzaga keldi");
-                throw new Exception("Role ID topilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
 
@@ -78,10 +89,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Role muvaffaqiyatli yangilandi");
                 return role.RoleID;
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("Roleni yangilashda xatolik yuzaga keldi");
-                throw new Exception("O'zgartirish kiritilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
     }

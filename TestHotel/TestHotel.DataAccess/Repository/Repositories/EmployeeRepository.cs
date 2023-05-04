@@ -26,10 +26,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Employee muvaffaqiyatli qo'shildi");
                 return employee.EmployeeID;
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("Employeeni qo'shilishida xatolik yuzaga keldi");
-                throw new Exception("Employee qo'shilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
 
@@ -42,17 +42,28 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Employee muvaffaqiyatli o'chirildi");
                 return employee.EmployeeID;
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("Employeeni o'chirishda xatolik yuzaga keldi");
-                throw new Exception("Employee o'chirilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
 
-        public async Task<List<Employee>> GetAllEmployeesAsync() => await _context.Employees
-            .Include(u => u.Role)
-            .Include(u => u.Hotel)
-            .ToListAsync();
+        public async Task<List<Employee>> GetAllEmployeesAsync()
+        {
+            try
+            {
+                return await _context.Employees
+                    .Include(u => u.Role)
+                    .Include(u => u.Hotel)
+                    .ToListAsync();
+            }
+            catch (Exception ex) 
+            {
+                _logger.LogError(ex.Message);
+                throw new Exception();
+            }
+        }
 
         public async Task<Employee> GetEmployeeByIdAsync(int id)
         {
@@ -64,10 +75,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.Hotel)
                     .FirstOrDefaultAsync(u => u.EmployeeID == id);
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("EmployeeByIdni qidirishda xatolik yuzaga keldi");
-                throw new Exception("Employee ID topilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
 
@@ -80,10 +91,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Employee muvaffaqiyatli yangilandi");
                 return employee.EmployeeID;
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("Employeeni yangilashda xatolik yuzaga keldi");
-                throw new Exception("O'zgartirish kiritilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
     }

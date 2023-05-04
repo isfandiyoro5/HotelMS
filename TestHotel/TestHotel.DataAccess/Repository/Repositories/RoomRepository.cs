@@ -26,10 +26,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Room muvaffaqiyatli qo'shildi");
                 return room.RoomNumber;
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("Roomni yaratishda xatolik yuzaga keldi");
-                throw new Exception("Room qo'shilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
 
@@ -42,19 +42,30 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Room muvaffaqiyatli o'chirildi");
                 return room.RoomNumber;
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("Roomni o'chirishda xatolik yuzaga keldi");
-                throw new Exception("Room o'chirilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
 
-        public async Task<List<Room>> GetAllRoomsAsync() => await _context.Rooms
-            .Include(u => u.roomType)
-            .Include(u => u.bookings)
-            .Include(u => u.Hotel)
-            .ToListAsync();
-
+        public async Task<List<Room>> GetAllRoomsAsync()
+        {
+            try
+            {
+                return await _context.Rooms
+                    .Include(u => u.roomType)
+                    .Include(u => u.bookings)
+                    .Include(u => u.Hotel)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new Exception();
+            }
+        }
+            
         public async Task<Room> GetRoomByIdAsync(int roomNumber)
         {
             try
@@ -66,10 +77,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.Hotel)
                     .FirstOrDefaultAsync(u => u.RoomNumber == roomNumber);
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("RoomByIdni qidirishda xatolik yuzaga keldi");
-                throw new Exception("Room ID topilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
 
@@ -82,10 +93,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Room muvaffaqiyatli yangilandi");
                 return room.RoomNumber;
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.LogError("Roomni yangilashda xatolik yuzaga keldi");
-                throw new Exception("Room o'zgartirilmadi");
+                _logger.LogError(ex.Message);
+                throw new Exception();
             }
         }
     }
