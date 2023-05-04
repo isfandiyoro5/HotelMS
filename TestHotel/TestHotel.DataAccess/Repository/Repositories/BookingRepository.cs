@@ -49,12 +49,23 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
         }
 
-        public async Task<List<Booking>> GetAllBookingsAsync() => await _context.Bookings
+        public async Task<List<Booking>> GetAllBookingsAsync()
+        {
+            var allBookingsExist = await _context.Bookings
             .Include(u => u.Bills)
             .Include(u => u.Guests)
             .Include(u => u.Hotel)
             .Include(u => u.Room)
             .ToListAsync();
+            if(allBookingsExist is not null)
+            {
+                return allBookingsExist;
+            }
+            else
+            {
+                throw new Exception();
+            }
+        }
 
         public async Task<Booking> GetBookingByIdAsync(int id)
         {

@@ -49,9 +49,20 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
         }
 
-        public async Task<List<Role>> GetAllRolesAsync() => await _context.Roles
+        public async Task<List<Role>> GetAllRolesAsync()
+        {
+            var allRolesExist = await _context.Roles
             .Include(u => u.Employee)
             .ToListAsync();
+            if (allRolesExist is not null)
+            {
+                return allRolesExist;
+            }
+            else
+            {
+                throw new Exception();
+            }
+        }
 
         public async Task<Role> GetRoleByIdAsync(int id)
         {

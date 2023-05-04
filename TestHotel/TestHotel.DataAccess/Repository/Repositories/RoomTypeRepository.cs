@@ -49,9 +49,20 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
         }
 
-        public async Task<List<RoomType>> GetAllRoomTypesAsync() => await _context.RoomTypes
+        public async Task<List<RoomType>> GetAllRoomTypesAsync()
+        {
+            var allRoomTypesExist = await _context.RoomTypes
             .Include(u => u.Room)
             .ToListAsync();
+            if (allRoomTypesExist is not null)
+            {
+                return allRoomTypesExist;
+            }
+            else
+            {
+                throw new Exception();
+            }
+        }
 
         public async Task<RoomType> GetRoomTypeByIdAsync(RoomTypes roomTypes)
         {

@@ -49,10 +49,21 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
         }
 
-        public async Task<List<Bill>> GetAllBillsAsync() => await _context.Bills
-            .Include(u => u.Guest)
-            .Include(u => u.Booking)
-            .ToListAsync();
+        public async Task<List<Bill>> GetAllBillsAsync()
+        {
+            var allBillsExist = await _context.Bills
+                .Include(u => u.Guest)
+                .Include(u => u.Booking)
+                .ToListAsync();
+            if (allBillsExist is not null)
+            {
+                return allBillsExist;
+            }
+            else
+            {
+                throw new Exception();
+            }
+        }
 
         public async Task<Bill> GetBillByInvoiceNumberAsync(int invoiceNumber)
         {
