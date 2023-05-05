@@ -18,34 +18,35 @@ namespace TestHotel.Service.Service.Services
         {
             _billRepository = billRepository;
         }
+
         public async Task<int> AddBillAsync(Bill bill)
         {
             return await _billRepository.AddBillAsync(bill);
         }
 
-        public async Task<int> UpdateBillAsync(Bill bill)
+        public async Task<int> UpdateBillAsync(int invoiceNumber)
         {
-            var billExist = await GetBillByIdAsync(bill.InvoiceNumber);
-            if (billExist != null)
+            var billResult = await GetBillByIdAsync(invoiceNumber);
+            if (billResult is not null)
             {
-                return await _billRepository.UpdateBillAsync(bill);
+                return await _billRepository.UpdateBillAsync(billResult);
             }
             else
             {
-                return 0;
+                throw new Exception("Update uchun Bill mavjud emas");
             }
         }
 
         public async Task<int> DeleteBillAsync(int invoiceNumber)
         {
-            var billExist = await GetBillByIdAsync(invoiceNumber);
-            if(billExist != null)
+            var billResult = await GetBillByIdAsync(invoiceNumber);
+            if(billResult is not null)
             {
-                return await _billRepository.DeleteBillAsync(billExist);
+                return await _billRepository.DeleteBillAsync(billResult);
             }
             else
             {
-                return 0;
+                throw new Exception("Delete uchun bunday Bill mavjud emas");
             }
         }
 

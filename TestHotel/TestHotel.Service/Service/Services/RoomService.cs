@@ -26,14 +26,14 @@ namespace TestHotel.Service.Service.Services
 
         public async Task<int> DeleteRoomAsync(int id)
         {
-            var roomExist = await GetRoomByIdAsync(id);
-            if (roomExist != null)
+            var roomResult = await GetRoomByIdAsync(id);
+            if (roomResult is not null)
             {
-                return await _roomRepository.DeleteRoomAsync(roomExist);
+                return await _roomRepository.DeleteRoomAsync(roomResult);
             }
             else
             {
-                return 0;
+                throw new Exception("Delete uchun Room mavjud emas");
             }
         }
 
@@ -47,16 +47,16 @@ namespace TestHotel.Service.Service.Services
             return await _roomRepository.GetRoomByIdAsync(id);
         }
 
-        public async Task<int> UpdateRoomAsync(Room room)
+        public async Task<int> UpdateRoomAsync(int id)
         {
-            var roomExist = await GetRoomByIdAsync(room.RoomNumber);
-            if (roomExist != null)
+            var roomResult = await GetRoomByIdAsync(id);
+            if (roomResult is not null)
             {
-                return await _roomRepository.DeleteRoomAsync(roomExist);
+                return await _roomRepository.DeleteRoomAsync(roomResult);
             }
             else
             {
-                return 0;
+                throw new Exception("Update uchun Room mavjud emas");
             }
         }
     }

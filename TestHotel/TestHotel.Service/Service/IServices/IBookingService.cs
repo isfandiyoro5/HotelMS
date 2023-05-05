@@ -11,7 +11,7 @@ namespace TestHotel.Service.Service.IServices
     {
         Task<int> AddBookingAsync(Booking booking);
 
-        Task<int> UpdateBookingAsync(Booking booking);
+        Task<int> UpdateBookingAsync(int id);
 
         Task<int> DeleteBookingAsync(int id);
 

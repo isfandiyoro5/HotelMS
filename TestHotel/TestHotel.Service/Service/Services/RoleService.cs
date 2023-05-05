@@ -27,14 +27,14 @@ namespace TestHotel.Service.Service.Services
 
         public async Task<int> DeleteRoleAsync(int id)
         {
-            var roleExist = await GetRoleByIdAsync(id);
-            if (roleExist != null)
+            var roleResult = await GetRoleByIdAsync(id);
+            if (roleResult is not null)
             {
-                return await _roleRepository.DeleteRoleAsync(roleExist);
+                return await _roleRepository.DeleteRoleAsync(roleResult);
             }
             else
             {
-                return 0;
+                throw new Exception("Delete uchun Role mavjud emas");
             }
         }
 
@@ -48,16 +48,16 @@ namespace TestHotel.Service.Service.Services
             return await _roleRepository.GetRoleByIdAsync(id);
         }
 
-        public async Task<int> UpdateRoleAsync(Role role)
+        public async Task<int> UpdateRoleAsync(int id)
         {
-            var roleExist = await GetRoleByIdAsync(role.RoleId);
-            if (roleExist != null)
+            var roleResult = await GetRoleByIdAsync(id);
+            if (roleResult is not null)
             {
-                return await _roleRepository.UpdateRoleAsync(roleExist);
+                return await _roleRepository.UpdateRoleAsync(roleResult);
             }
             else
             {
-                return 0;
+                throw new Exception("Update uchun Role mavjud emas");
             }
         }
     }

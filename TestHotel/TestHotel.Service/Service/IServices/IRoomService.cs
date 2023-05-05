@@ -11,7 +11,7 @@ namespace TestHotel.Service.Service.IServices
     {
         Task<int> AddRoomAsync(Room room);
 
-        Task<int> UpdateRoomAsync(Room room);
+        Task<int> UpdateRoomAsync(int id);
 
         Task<int> DeleteRoomAsync(int id);
 

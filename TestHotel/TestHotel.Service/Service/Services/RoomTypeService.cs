@@ -26,14 +26,14 @@ namespace TestHotel.Service.Service.Services
 
         public async Task<int> DeleteRoomTypeAsync(int id)
         {
-            var roomTypeExist = await GetRoomTypeByIdAsync(id);
-            if (roomTypeExist != null)
+            var roomTypeResult = await GetRoomTypeByIdAsync(id);
+            if (roomTypeResult is not null)
             {
-                return await _roomTypeRepository.DeleteRoomTypeAsync(roomTypeExist);
+                return await _roomTypeRepository.DeleteRoomTypeAsync(roomTypeResult);
             }
             else
             {
-                return 0;
+                throw new Exception("Delete uchun RoomType mavjud emas");
             }
         }
 
@@ -47,16 +47,16 @@ namespace TestHotel.Service.Service.Services
             return await _roomTypeRepository.GetRoomTypeByIdAsync(id);
         }
 
-        public async Task<int> UpdateRoomTypeAsync(RoomType roomType)
+        public async Task<int> UpdateRoomTypeAsync(int id)
         {
-            var roomTypeExist = await GetRoomTypeByIdAsync(roomType.RoomTypeId);
-            if (roomTypeExist != null)
+            var roomTypeResult = await GetRoomTypeByIdAsync(id);
+            if (roomTypeResult is not null)
             {
-                return await _roomTypeRepository.UpdateRoomTypeAsync(roomTypeExist);
+                return await _roomTypeRepository.UpdateRoomTypeAsync(roomTypeResult);
             }
             else
             {
-                return 0;
+                throw new Exception("Update uchun RoomType mavjud emas");
             }
         }
     }

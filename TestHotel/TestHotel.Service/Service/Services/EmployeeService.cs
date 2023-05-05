@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,14 +27,14 @@ namespace TestHotel.Service.Service.Services
 
         public async Task<int> DeleteEmployeeAsync(int id)
         {
-            var employeeExist = await GetEmployeeByIdAsync(id);
-            if(employeeExist != null)
+            var employeeResult = await GetEmployeeByIdAsync(id);
+            if(employeeResult is not null)
             {
-                return await _employeeRepository.DeleteEmployeeAsync(employeeExist);
+                return await _employeeRepository.DeleteEmployeeAsync(employeeResult);
             }
             else
             {
-                return 0;
+                throw new Exception("Delete uchun Employee mavjud emas");
             }
         }
 
@@ -47,16 +48,16 @@ namespace TestHotel.Service.Service.Services
            return await _employeeRepository.GetEmployeeByIdAsync(id);
         }
 
-        public async Task<int> UpdateEmployeeAsync(Employee employee)
+        public async Task<int> UpdateEmployeeAsync(int id)
         {
-            var employeeExist = await GetEmployeeByIdAsync(employee.EmployeeId);
-            if(employeeExist != null)
+            var employeeResult = await GetEmployeeByIdAsync(id);
+            if(employeeResult is not  null)
             {
-                return await _employeeRepository.UpdateEmployeeAsync(employee);
+                return await _employeeRepository.UpdateEmployeeAsync(employeeResult);
             }
             else
             {
-                return 0;
+                throw new Exception("Update uchun Employee mavjud emas");
             }
         }
     }

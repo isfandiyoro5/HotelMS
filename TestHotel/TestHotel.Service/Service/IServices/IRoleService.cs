@@ -11,7 +11,7 @@ namespace TestHotel.Service.Service.IServices
     {
         Task<int> AddRoleAsync(Role role);
 
-        Task<int> UpdateRoleAsync(Role role);
+        Task<int> UpdateRoleAsync(int id);
 
         Task<int> DeleteRoleAsync(int id);
 

@@ -11,7 +11,7 @@ namespace TestHotel.Service.Service.IServices
     {
         Task<int> AddBillAsync(Bill bill);
 
-        Task<int> UpdateBillAsync(Bill bill);
+        Task<int> UpdateBillAsync(int invoiceNumber);
 
         Task<int> DeleteBillAsync(int invoiceNumber);
 

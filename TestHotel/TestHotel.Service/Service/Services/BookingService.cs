@@ -24,30 +24,30 @@ namespace TestHotel.Service.Service.Services
             return await _bookingRepository.AddBookingAsync(booking);
         }
 
-        public async Task<int> UpdateBookingAsync(Booking booking)
+        public async Task<int> UpdateBookingAsync(int id)
         {
-            var bookingExist = GetBookingByIdAsync(booking.BookingId);
-            if (bookingExist != null)
+            var bookingResult = await GetBookingByIdAsync(id);
+            if (bookingResult is not null)
             {
-                return await _bookingRepository.UpdateBookingAsync(booking);
+                return await _bookingRepository.UpdateBookingAsync(bookingResult);
             }
             else
             {
-                return 0;
+                throw new Exception("Update uchun Booking mavjud emas");
             }
         }
 
         public async Task<int> DeleteBookingAsync(int id)
         {
-            var bookingExist = await GetBookingByIdAsync(id);
-            if (bookingExist != null)
+            var bookingResult = await GetBookingByIdAsync(id);
+            if (bookingResult is not null)
             {
-                return await _bookingRepository.DeleteBookingAsync(bookingExist);
+                return await _bookingRepository.DeleteBookingAsync(bookingResult);
 
             }
             else
             {
-                return 0;
+                throw new Exception("Delet uchun Booking mavjud emas");
             }
         }
 
