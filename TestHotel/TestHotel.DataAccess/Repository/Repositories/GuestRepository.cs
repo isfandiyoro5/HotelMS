@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Data.SqlClient;
 using TestHotel.DataAccess.DbConnection;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
@@ -26,10 +27,15 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Guest muvaffaqiyatli qo'shildi");
                 return guest.GuestID;
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError("Guestni databazaga qoʻshishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Guestni databazaga qoʻshishda xatolik yuz berdi.Iltimos keyinroq qayta urinib ko'ring.");
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw new Exception();
+                _logger.LogError("Guestni databazaga saqlashda kutilmagan xatolik: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Guestni saqlashda kutilmagan xatolik. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
 
@@ -42,10 +48,15 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Guest muvaffaqiyatli o'chirildi");
                 return guest.GuestID;
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError("Guestni databazadan o'chirishda xatolik mavjud: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Guestni o'chirishda xatolik yuz berdi.Iltimos keyinroq qayta urinib ko'ring");
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw new Exception();
+                _logger.LogError("Guestni o'chirishda databazada kutilmagan xatolik: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Guestni o'chirishda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
 
@@ -58,10 +69,20 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.Bills)
                     .ToListAsync();
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
                 _logger.LogError(ex.Message);
-                throw new Exception();
+                throw new Exception("An error occurred while executing the SQL query.", ex);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError("Databazada barcha Guestlarni olishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Guestlarni olishda xatolik yuz berdi. Iltimos, qaytadan xarakat qilib ko'ring");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Barcha Guestlarni databazadan olishda xatolik mavjud: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Guestlarni olishda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring");
             }
         }
 
@@ -75,10 +96,20 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.Bills)
                     .FirstOrDefaultAsync(u => u.GuestID == id);
             }
+            catch (ArgumentNullException ex)
+            {
+                _logger.LogError("ArgumentNullException in GetGuestByIdAsync: {0}StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new ArgumentNullException();
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError("Databazadan GetGuestByIdAsync boʻyicha Billni olishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("GetGuestByIdAsync olishda xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw new Exception();
+                _logger.LogError("Databazadan GetGuestByIdAsync olishda kutilmagan xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("GetGuestByIdAsync olishda kutilmagan xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko'ring");
             }
         }
 
@@ -91,10 +122,15 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Guest muvaffaqiyatli yangilandi");
                 return guest.GuestID;
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError("Databazada Guestni yangilashda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Guestni yangilashda xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw new Exception();
+                _logger.LogError("Databazada Guestni yangilashda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Guestni yangilashda xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
     }

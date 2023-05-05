@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Data.SqlClient;
 using TestHotel.DataAccess.DbConnection;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
@@ -26,10 +27,16 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Room muvaffaqiyatli qo'shildi");
                 return room.RoomNumber;
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError("Roomni databazaga qo'shishda xatolik bor: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roomni saqlashda xatolik bor. Iltimos keyinroq qayta urinib ko'ring");
+            }
+
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw new Exception();
+                _logger.LogError("Roomni databazaga saqlashda kutilmagan xatolik: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roomni saqlashda kutilmagan xatolik. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
 
@@ -42,10 +49,15 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Room muvaffaqiyatli o'chirildi");
                 return room.RoomNumber;
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError("Roomni databazadan o'chirishda xatolik mavjud: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roomni o'chirishda xatolik yuz berdi.Iltimos keyinroq qayta urinib ko'ring");
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw new Exception();
+                _logger.LogError("Roomni o'chirishda databazada kutilmagan xatolik: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roomni o'chirishda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
 
@@ -59,13 +71,18 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.Hotel)
                     .ToListAsync();
             }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError("Databazada barcha Roomni olishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roomlarni olishda xatolik yuz berdi. Iltimos, qaytadan xarakat qilib ko'ring");
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw new Exception();
+                _logger.LogError("Barcha Roomlarni databazadan olishda xatolik mavjud: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roomlarni olishda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring");
             }
         }
-            
+
         public async Task<Room> GetRoomByIdAsync(int roomNumber)
         {
             try
@@ -77,10 +94,15 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.Hotel)
                     .FirstOrDefaultAsync(u => u.RoomNumber == roomNumber);
             }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError("Databazadan Roomlar boʻyicha Roomni olishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roomni olishda xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw new Exception();
+                _logger.LogError("Databazadan Roomni olishda kutilmagan xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roomni olishda kutilmagan xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko'ring");
             }
         }
 
@@ -93,10 +115,15 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Room muvaffaqiyatli yangilandi");
                 return room.RoomNumber;
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError("Databazada Roomni yangilashda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roomni yangilashda xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw new Exception();
+                _logger.LogError("Databazada Roomni yangilanishida kutilmagan xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roomni yangilashda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
     }

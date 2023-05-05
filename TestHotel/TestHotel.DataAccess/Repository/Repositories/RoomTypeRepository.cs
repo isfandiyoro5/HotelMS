@@ -26,10 +26,16 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("RoomType muvaffaqiyatli qo'shildi");
                 return roomType.RoomTypeId;
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError("RoomTypeni databazaga qo'shishda xatolik bor: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("RoomTypeni saqlashda xatolik bor. Iltimos keyinroq qayta urinib ko'ring");
+            }
+
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw new Exception();
+                _logger.LogError("RoomTypeni databazaga saqlashda kutilmagan xatolik: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("RoomTypeni saqlashda kutilmagan xatolik. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
 
@@ -42,10 +48,15 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("RoomType muvaffaqiyatli o'chirildi");
                 return roomType.RoomTypeId;
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError("RoomTypeni databazadan o'chirishda xatolik mavjud: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("RoomTypeni o'chirishda xatolik yuz berdi.Iltimos keyinroq qayta urinib ko'ring");
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw new Exception();
+                _logger.LogError("RoomTypeni o'chirishda databazada kutilmagan xatolik: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("RoomTypeni o'chirishda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
 
@@ -57,26 +68,36 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.Room)
                     .ToListAsync();
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError("Databazada barcha RoomTypelarni olishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("RoomTypelarni olishda xatolik yuz berdi. Iltimos, qaytadan xarakat qilib ko'ring");
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw new Exception();
+                _logger.LogError("Barcha RoomTypelarni databazadan olishda xatolik mavjud: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("RoomTypelarni olishda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring");
             }
         }
 
-        public async Task<RoomType> GetRoomTypeByIdAsync(RoomTypes roomTypes)
+        public async Task<RoomType> GetRoomTypeByIdAsync(int roomTypeId)
         {
             try
             {
                 _logger.LogInformation("RoomTypeById muvaffaqiyatli topildi");
                 return await _context.RoomTypes
                     .Include(u => u.Room)
-                    .FirstOrDefaultAsync(u => u.RoomTypes == roomTypes);
+                    .FirstOrDefaultAsync(u => u.RoomTypeId == roomTypeId);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError("Databazadan RoomTypelar boʻyicha RoomTypeni olishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("RoomTypeni olishda xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw new Exception();
+                _logger.LogError("Databazadan RoomTypeni olishda kutilmagan xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("RoomTypeni olishda kutilmagan xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko'ring");
             }
         }
 
@@ -89,10 +110,15 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("RoomType muvaffaqiyatli yangilandi");
                 return roomType.RoomTypeId;
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError("Databazada RoomTypeni yangilashda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Billni yangilashda xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw new Exception();
+                _logger.LogError("Databazada RoomTypeni yangilanishida kutilmagan xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("RoomTypeni yangilashda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
     }

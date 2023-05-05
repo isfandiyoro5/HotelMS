@@ -28,13 +28,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
             catch (DbUpdateException ex)
             {
-                _logger.LogError($"Billni databazaga qo'shishda xatolik bor: {ex.Message}");
+                _logger.LogError("Billni databazaga qo'shishda xatolik bor: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
                 throw new Exception("Billni saqlashda xatolik bor. Iltimos keyinroq qayta urinib ko'ring");
             }
-
             catch (Exception ex)
             {
-                _logger.LogError($"Billni databazaga saqlashda kutilmagan xatolik: {ex.Message}");
+                _logger.LogError("Billni databazaga saqlashda kutilmagan xatolik: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
                 throw new Exception("Billni saqlashda kutilmagan xatolik. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
@@ -48,19 +47,14 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Bill muvaffaqiyatli o'chirildi");
                 return bill.InvoiceNumber;
             }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                _logger.LogError($"Billni o'chirishda databazada xatolik bor: {ex.Message}");
-                throw new Exception("O'chirmoqchi bo'lgan Bilingiz allaqachon o'zgartirilgan yoki boshqa foydalanuvchi tomondan o'chirilgan");
-            }
             catch (DbUpdateException ex)
             {
-                _logger.LogError($"Billni databazadan o'chirishda xatolik mavjud: {ex.Message}");
+                _logger.LogError("Billni databazadan o'chirishda xatolik mavjud: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
                 throw new Exception("Billni o'chirishda xatolik yuz berdi.Iltimos keyinroq qayta urinib ko'ring");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Billni o'chirishda databazada kutilmagan xatolik: {ex.Message}");
+                _logger.LogError("Billni o'chirishda databazada kutilmagan xatolik: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
                 throw new Exception("Billni o'chirishda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
@@ -76,12 +70,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogError($"Databazada barcha Billarni olishda xatolik yuz berdi.: {ex.Message}");
-                throw new Exception("Billarni olishda xatolik yuz berdi. Iltimos, qaytadan xarakat qilib ko'ring.");
+                _logger.LogError("Databazada barcha Billarni olishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Billarni olishda xatolik yuz berdi. Iltimos, qaytadan xarakat qilib ko'ring");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Barcha billarni databazadan olishda xatolik mavjud: {ex.Message}");
+                _logger.LogError("Barcha billarni databazadan olishda xatolik mavjud: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
                 throw new Exception("Billarni olishda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring");
             }
         }
@@ -98,15 +92,16 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogError($"Databazadan Billar boʻyicha Billni olishda xatolik yuz berdi: {ex.Message}");
+                _logger.LogError("Databazadan Billar boʻyicha Billni olishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
                 throw new Exception("Billni olishda xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Databazadan Billni olishda kutilmagan xatolik yuz berdi: {ex.Message}");
+                _logger.LogError("Databazadan Billni olishda kutilmagan xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
                 throw new Exception("Billni olishda kutilmagan xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko'ring");
             }
         }
+
         public async Task<int> UpdateBillAsync(Bill bill)
         {
             try
@@ -116,19 +111,14 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Bill muvaffaqiyatli yangilandi");
                 return bill.InvoiceNumber;
             }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                _logger.LogError($"Databazada Billni {bill.InvoiceNumber} o'zgartirishda kutilmagan xatolik yuz berdi: {ex.Message}");
-                throw new Exception("Siz yangilamoqchi bo‘lgan Bill boshqa foydalanuvchi tomonidan o‘zgartirilgan. Iltimos, yangilang va qayta urinib ko'ring.");
-            }
             catch (DbUpdateException ex)
             {
-                _logger.LogError($"Databazada {bill.InvoiceNumber} Billni yangilashda xatolik yuz berdi: {ex.Message}");
+                _logger.LogError("Databazada {2} Billni yangilashda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace, bill.InvoiceNumber);
                 throw new Exception("Billni yangilashda xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Databazada Billni {bill.InvoiceNumber} yangilanishida kutilmagan xatolik yuz berdi: {ex.Message}");
+                _logger.LogError("Databazada Billni {2} yangilanishida kutilmagan xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace, bill.InvoiceNumber);
                 throw new Exception("Billni yangilashda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
