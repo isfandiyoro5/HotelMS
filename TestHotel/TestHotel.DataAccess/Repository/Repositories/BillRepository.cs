@@ -66,6 +66,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 return await _context.Bills
                     .Include(u => u.Guest)
                     .Include(u => u.Booking)
+                    .AsSplitQuery()
                     .ToListAsync();
             }
             catch (InvalidOperationException ex)
@@ -88,6 +89,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 return await _context.Bills
                     .Include(u => u.Guest)
                     .Include(u => u.Booking)
+                    .AsSplitQuery()
                     .FirstOrDefaultAsync(u => u.InvoiceNumber == invoiceNumber);
             }
             catch (InvalidOperationException ex)

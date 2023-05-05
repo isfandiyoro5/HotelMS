@@ -66,6 +66,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 return await _context.Employees
                     .Include(u => u.Role)
                     .Include(u => u.Hotel)
+                    .AsSplitQuery()
                     .ToListAsync();
             }
             catch (DbUpdateException ex)
@@ -88,6 +89,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 return await _context.Employees
                     .Include(u => u.Role)
                     .Include(u => u.Hotel)
+                    .AsSplitQuery()
                     .FirstOrDefaultAsync(u => u.EmployeeID == id);
             }
             catch (InvalidOperationException ex)

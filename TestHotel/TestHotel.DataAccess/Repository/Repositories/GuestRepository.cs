@@ -67,6 +67,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 return await _context.Guests
                     .Include(u => u.Bookings)
                     .Include(u => u.Bills)
+                    .AsSplitQuery()
                     .ToListAsync();
             }
             catch (SqlException ex)
@@ -94,6 +95,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 return await _context.Guests
                     .Include(u => u.Bookings)
                     .Include(u => u.Bills)
+                    .AsSplitQuery()
                     .FirstOrDefaultAsync(u => u.GuestID == id);
             }
             catch (ArgumentNullException ex)

@@ -66,6 +66,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 return await _context.Roles
                     .Include(u => u.Employee)
+                    .AsSplitQuery()
                     .ToListAsync();
             }
             catch (InvalidOperationException ex)
@@ -87,6 +88,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("RoleById muvaffaqiyatli topildi");
                 return await _context.Roles
                     .Include(u => u.Employee)
+                    .AsSplitQuery()
                     .FirstOrDefaultAsync(u => u.RoleID == id);
             }
             catch (InvalidOperationException ex)

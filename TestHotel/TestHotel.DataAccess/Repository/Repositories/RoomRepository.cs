@@ -69,6 +69,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.roomType)
                     .Include(u => u.bookings)
                     .Include(u => u.Hotel)
+                    .AsSplitQuery()
                     .ToListAsync();
             }
             catch (InvalidOperationException ex)
@@ -92,6 +93,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.roomType)
                     .Include(u => u.bookings)
                     .Include(u => u.Hotel)
+                    .AsSplitQuery()
                     .FirstOrDefaultAsync(u => u.RoomNumber == roomNumber);
             }
             catch (InvalidOperationException ex)

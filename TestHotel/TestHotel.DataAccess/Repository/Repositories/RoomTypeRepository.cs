@@ -66,6 +66,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 return await _context.RoomTypes
                     .Include(u => u.Room)
+                    .AsSplitQuery()
                     .ToListAsync();
             }
             catch (DbUpdateException ex)
@@ -87,6 +88,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("RoomTypeById muvaffaqiyatli topildi");
                 return await _context.RoomTypes
                     .Include(u => u.Room)
+                    .AsSplitQuery()
                     .FirstOrDefaultAsync(u => u.RoomTypeId == roomTypeId);
             }
             catch (InvalidOperationException ex)
