@@ -72,8 +72,8 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex.Message);
-                throw new Exception("An error occurred while executing the SQL query.", ex);
+                _logger.LogError("SQL so'rovini bajarishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("SQL so'rovini bajarishda xatolik yuz berdi.");
             }
             catch (InvalidOperationException ex)
             {
