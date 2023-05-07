@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,8 @@ namespace TestHotel.DataAccess.Model
 {
     public class Room
     {
+        [Required]
+        [Key]
         public int RoomNumber { get; set; }
 
         public RoomTypes RoomTypes { get; set; }
@@ -16,7 +19,7 @@ namespace TestHotel.DataAccess.Model
 
         public int HotelId { get; set; }
 
-        public string Occupancy { get; set; }
+        public Occupancy Occupancy { get; set; }
 
 
         public List<RoomType> roomType { get; set; }
@@ -32,5 +35,12 @@ namespace TestHotel.DataAccess.Model
         Deluxe,
         JuniorSuite,
         SeniorSuite
+    }
+
+    public enum Occupancy
+    {
+        Busy,
+        Empty,
+        NotReady
     }
 }
