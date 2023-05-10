@@ -70,11 +70,6 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .AsSplitQuery()
                     .ToListAsync();
             }
-            catch (SqlException ex)
-            {
-                _logger.LogError("SQL so'rovini bajarishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
-                throw new Exception("SQL so'rovini bajarishda xatolik yuz berdi.");
-            }
             catch (InvalidOperationException ex)
             {
                 _logger.LogError("Databazada barcha Guestlarni olishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
@@ -97,11 +92,6 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.Bills)
                     .AsSplitQuery()
                     .FirstOrDefaultAsync(u => u.GuestID == id);
-            }
-            catch (ArgumentNullException ex)
-            {
-                _logger.LogError("ArgumentNullException in GetGuestByIdAsync: {0}StackTrace: {1}", ex.Message, ex.StackTrace);
-                throw new ArgumentNullException();
             }
             catch (InvalidOperationException ex)
             {

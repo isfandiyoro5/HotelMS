@@ -88,11 +88,6 @@ namespace TestHotel.DataAccess.Repository.Repositories
         {
             try
             {
-                if (id == null)
-                {
-                    throw new ArgumentNullException(nameof(id), "Id parameter is required.");
-                }
-
                 _logger.LogInformation("Hotel muvaffaqiyatli topildi");
                 return await _context.Hotels
                     .Include(u => u.Rooms)
@@ -100,11 +95,6 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.Employees)
                     .AsSplitQuery()
                     .FirstOrDefaultAsync(u => u.HotelId == id);
-            }
-            catch (ArgumentNullException ex)
-            {
-                _logger.LogError(ex.Message);
-                throw;
             }
             catch (InvalidOperationException ex)
             {
