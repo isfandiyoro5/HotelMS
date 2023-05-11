@@ -9,7 +9,7 @@ namespace TestHotel.DataAccess.Model
 {
     public class Role
     {
-        public int RoleID { get; set; }
+        public int RoleId { get; set; }
 
         [Required]
         [StringLength(50)]

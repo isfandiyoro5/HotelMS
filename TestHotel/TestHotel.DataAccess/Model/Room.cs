@@ -15,7 +15,7 @@ namespace TestHotel.DataAccess.Model
 
         public RoomTypes RoomTypes { get; set; }
 
-        public int RoomTypeID { get; set; }
+        public int RoomTypeId { get; set; }
 
         public int HotelId { get; set; }
 

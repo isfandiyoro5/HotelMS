@@ -24,7 +24,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _context.Guests.Add(guest);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Guest muvaffaqiyatli qo'shildi");
-                return guest.GuestID;
+                return guest.GuestId;
             }
             catch
             {
@@ -40,7 +40,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _context.Guests.Remove(guest);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Guest muvaffaqiyatli o'chirildi");
-                return guest.GuestID;
+                return guest.GuestId;
             }
             catch
             {
@@ -62,7 +62,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 return await _context.Guests
                     .Include(u => u.Bookings)
                     .Include(u => u.Bills)
-                    .FirstOrDefaultAsync(u => u.GuestID == id);
+                    .FirstOrDefaultAsync(u => u.GuestId == id);
             }
             catch
             {
@@ -78,7 +78,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _context.Guests.Update(guest);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Guest muvaffaqiyatli yangilandi");
-                return guest.GuestID;
+                return guest.GuestId;
             }
             catch
             {

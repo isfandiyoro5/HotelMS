@@ -9,11 +9,11 @@ namespace TestHotel.DataAccess.Model
 {
     public class Employee
     {
-        public int EmployeeID{ get; set; }
+        public int EmployeeId { get; set; }
         
         public int HotelId { get; set; }
         
-        public int RoleID { get; set; }
+        public int RoleId { get; set; }
 
         [Required]
         [MaxLength(20)]

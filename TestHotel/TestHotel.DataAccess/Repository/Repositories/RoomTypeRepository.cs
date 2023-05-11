@@ -53,14 +53,14 @@ namespace TestHotel.DataAccess.Repository.Repositories
             .Include(u => u.Room)
             .ToListAsync();
 
-        public async Task<RoomType> GetRoomTypeByIdAsync(RoomTypes roomTypes)
+        public async Task<RoomType> GetRoomTypeByIdAsync(int id)
         {
             try
             {
                 _logger.LogInformation("RoomTypeById muvaffaqiyatli topildi");
                 return await _context.RoomTypes
                     .Include(u => u.Room)
-                    .FirstOrDefaultAsync(u => u.RoomTypes == roomTypes);
+                    .FirstOrDefaultAsync(u => u.RoomTypeId == id);
             }
             catch
             {
