@@ -11,9 +11,6 @@ namespace TestHotel.DataAccess.Model
     {
         public int RoleId { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        [MinLength(1)]
         public string RoleTitle { get; set; }
         
         public string RoleDescription { get; set; }

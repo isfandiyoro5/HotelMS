@@ -13,7 +13,7 @@ namespace TestHotel.Service.DTO.RequestDto
 
         public DateTime PaymentDate { get; set; }
 
-        public PaymentMode paymentMode { get; set; }
+        public PaymentMode PaymentMode { get; set; }
 
         public int CreditCardNumber { get; set; }
 
