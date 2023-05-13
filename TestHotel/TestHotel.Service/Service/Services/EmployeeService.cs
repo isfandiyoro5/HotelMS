@@ -1,30 +1,34 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using TestHotel.DataAccess.DbConnection;
+using System;
+using System.CodeDom;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
+using TestHotel.DataAccess.Repository.Repositories;
+using TestHotel.Service.Service.IServices;
 
-namespace TestHotel.DataAccess.Repository.Repositories
+namespace TestHotel.Service.Service.Services
 {
-    public class EmployeeRepository : IEmployeeRepository
+    internal class EmployeeService: IEmployeeService
     {
-        private readonly ILogger<EmployeeRepository> _logger;
-        private readonly HotelDbContext _context;
+        private readonly IEmployeeRepository _employeeRepository;
+        private readonly ILogger<EmployeeService> _logger;
 
-        public EmployeeRepository(HotelDbContext context, ILogger<EmployeeRepository> logger)
+        public EmployeeService(EmployeeRepository employeeRepository, ILogger<EmployeeService> logger)
         {
+            _employeeRepository = employeeRepository;
             _logger = logger;
-            _context = context;
         }
 
         public async Task<int> AddEmployeeAsync(Employee employee)
         {
             try
             {
-                _context.Employees.Add(employee);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Employee muvaffaqiyatli qo'shildi");
-                return employee.EmployeeId;
+                return await _employeeRepository.AddEmployeeAsync(employee);
             }
             catch (DbUpdateException ex)
             {
@@ -38,14 +42,19 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
         }
 
-        public async Task<int> DeleteEmployeeAsync(Employee employee)
+        public async Task<int> DeleteEmployeeAsync(int id)
         {
             try
             {
-                _context.Employees.Remove(employee);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Employee muvaffaqiyatli o'chirildi");
-                return employee.EmployeeId;
+                var employeeResult = await GetEmployeeByIdAsync(id);
+                if (employeeResult is not null)
+                {
+                    return await _employeeRepository.DeleteEmployeeAsync(employeeResult);
+                }
+                else
+                {
+                    throw new Exception("Delete uchun Employee mavjud emas");
+                }
             }
             catch (DbUpdateException ex)
             {
@@ -63,11 +72,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
         {
             try
             {
-                return await _context.Employees
-                    .Include(u => u.Role)
-                    .Include(u => u.Hotel)
-                    .AsSplitQuery()
-                    .ToListAsync();
+                return await _employeeRepository.GetAllEmployeesAsync();
             }
             catch (DbUpdateException ex)
             {
@@ -85,12 +90,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
         {
             try
             {
-                _logger.LogInformation("Employee muvaffaqiyatli topildi");
-                return await _context.Employees
-                    .Include(u => u.Role)
-                    .Include(u => u.Hotel)
-                    .AsSplitQuery()
-                    .FirstOrDefaultAsync(u => u.EmployeeId == id);
+                return await _employeeRepository.GetEmployeeByIdAsync(id);
             }
             catch (InvalidOperationException ex)
             {
@@ -104,14 +104,19 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
         }
 
-        public async Task<int> UpdateEmployeeAsync(Employee employee)
+        public async Task<int> UpdateEmployeeAsync(int id)
         {
             try
             {
-                _context.Employees.Update(employee);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Employee muvaffaqiyatli yangilandi");
-                return employee.EmployeeId;
+                var employeeResult = await GetEmployeeByIdAsync(id);
+                if (employeeResult is not null)
+                {
+                    return await _employeeRepository.UpdateEmployeeAsync(employeeResult);
+                }
+                else
+                {
+                    throw new Exception("Update uchun Employee mavjud emas");
+                }
             }
             catch (DbUpdateException ex)
             {

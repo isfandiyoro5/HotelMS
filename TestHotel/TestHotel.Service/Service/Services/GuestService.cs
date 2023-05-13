@@ -1,31 +1,34 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
-using TestHotel.DataAccess.DbConnection;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
+using TestHotel.DataAccess.Repository.Repositories;
+using TestHotel.Service.Service.IServices;
 
-namespace TestHotel.DataAccess.Repository.Repositories
+namespace TestHotel.Service.Service.Services
 {
-    public class GuestRepository : IGuestRepository
+    internal class GuestService: IGuestService
     {
-        private readonly ILogger<GuestRepository> _logger;
-        private readonly HotelDbContext _context;
+        private readonly IGuestRepository _guestRepository;
+        private readonly ILogger<GuestService> _logger;
 
-        public GuestRepository(HotelDbContext context, ILogger<GuestRepository> logger)
+        public GuestService(GuestRepository guestRepository, ILogger<GuestService> logger)
         {
+            _guestRepository = guestRepository;
             _logger = logger;
-            _context = context;
         }
 
         public async Task<int> AddGuestAsync(Guest guest)
         {
             try
             {
-                _context.Guests.Add(guest);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Guest muvaffaqiyatli qo'shildi");
-                return guest.GuestId;
+                return await _guestRepository.AddGuestAsync(guest);
             }
             catch (DbUpdateException ex)
             {
@@ -39,14 +42,19 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
         }
 
-        public async Task<int> DeleteGuestAsync(Guest guest)
+        public async Task<int> DeleteGuestAsync(int id)
         {
             try
             {
-                _context.Guests.Remove(guest);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Guest muvaffaqiyatli o'chirildi");
-                return guest.GuestId;
+                var guestResult = await GetGuestByIdAsync(id);
+                if (guestResult is not null)
+                {
+                    return await _guestRepository.DeleteGuestAsync(guestResult);
+                }
+                else
+                {
+                    throw new Exception("Delete uchun Guest mavjud emas");
+                }
             }
             catch (DbUpdateException ex)
             {
@@ -64,11 +72,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
         {
             try
             {
-                return await _context.Guests
-                    .Include(u => u.Bookings)
-                    .Include(u => u.Bills)
-                    .AsSplitQuery()
-                    .ToListAsync();
+                return await _guestRepository.GetAllGuestsAsync();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new Exception("SQL so'rovini bajarishda xatolik yuz berdi.", ex);
             }
             catch (InvalidOperationException ex)
             {
@@ -86,12 +95,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
         {
             try
             {
-                _logger.LogInformation("Guest muvaffaqiyatli topildi");
-                return await _context.Guests
-                    .Include(u => u.Bookings)
-                    .Include(u => u.Bills)
-                    .AsSplitQuery()
-                    .FirstOrDefaultAsync(u => u.GuestId == id);
+                return await _guestRepository.GetGuestByIdAsync(id);
+            }
+            catch (ArgumentNullException ex)
+            {
+                _logger.LogError("ArgumentNullException in GetGuestByIdAsync: {0}StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new ArgumentNullException();
             }
             catch (InvalidOperationException ex)
             {
@@ -105,14 +114,19 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
         }
 
-        public async Task<int> UpdateGuestAsync(Guest guest)
+        public async Task<int> UpdateGuestAsync(int id)
         {
             try
             {
-                _context.Guests.Update(guest);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Guest muvaffaqiyatli yangilandi");
-                return guest.GuestId;
+                var guestResult = await GetGuestByIdAsync(id);
+                if (guestResult is not null)
+                {
+                    return await _guestRepository.UpdateGuestAsync(guestResult);
+                }
+                else
+                {
+                    throw new Exception("Update uchun Guest mavjud emas");
+                }
             }
             catch (DbUpdateException ex)
             {

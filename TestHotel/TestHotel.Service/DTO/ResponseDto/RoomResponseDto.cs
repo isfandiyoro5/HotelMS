@@ -8,7 +8,7 @@ namespace TestHotel.Service.DTO.ResponseDto
 {
     public class RoomResponseDto
     {
-        public int RoomTypeID { get; set; }
+        public int RoomTypeId { get; set; }
 
         public int HotelId { get; set; }
 

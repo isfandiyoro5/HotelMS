@@ -8,11 +8,11 @@ namespace TestHotel.Service.DTO.ResponseDto
 {
     public class EmployeeResponseDto
     {
-        public int EmployeeID { get; set; }
+        public int EmployeeId { get; set; }
 
         public int HotelId { get; set; }
 
-        public int RoleID { get; set; }
+        public int RoleId { get; set; }
 
         public string FullName { get; set; }
 

@@ -1,30 +1,34 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using TestHotel.DataAccess.DbConnection;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
+using TestHotel.DataAccess.Repository.Repositories;
+using TestHotel.Service.Service.IServices;
 
-namespace TestHotel.DataAccess.Repository.Repositories
+namespace TestHotel.Service.Service.Services
 {
-    public class RoleRepository : IRoleRepository
+    internal class RoleService:IRoleService
     {
-        private readonly ILogger<RoleRepository> _logger;
-        private readonly HotelDbContext _context;
+        private readonly IRoleRepository _roleRepository;
+        private readonly ILogger<RoleService> _logger;
 
-        public RoleRepository(HotelDbContext context, ILogger<RoleRepository> logger)
+        public RoleService(RoleRepository roleRepository, ILogger<RoleService> logger)
         {
+            _roleRepository = roleRepository;
             _logger = logger;
-            _context = context;
         }
 
         public async Task<int> AddRoleAsync(Role role)
         {
             try
             {
-                _context.Roles.Add(role);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Role muvaffaqiyatli qo'shildi");
-                return role.RoleId;
+                return await _roleRepository.AddRoleAsync(role);
             }
             catch (DbUpdateException ex)
             {
@@ -39,14 +43,19 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
         }
 
-        public async Task<int> DeleteRoleAsync(Role role)
+        public async Task<int> DeleteRoleAsync(int id)
         {
             try
             {
-                _context.Roles.Remove(role);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Role muvaffaqiyatli o'chirildi");
-                return role.RoleId;
+                var roleResult = await GetRoleByIdAsync(id);
+                if (roleResult is not null)
+                {
+                    return await _roleRepository.DeleteRoleAsync(roleResult);
+                }
+                else
+                {
+                    throw new Exception("Delete uchun Role mavjud emas");
+                }
             }
             catch (DbUpdateException ex)
             {
@@ -64,10 +73,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
         {
             try
             {
-                return await _context.Roles
-                    .Include(u => u.Employee)
-                    .AsSplitQuery()
-                    .ToListAsync();
+                return await _roleRepository.GetAllRolesAsync();
             }
             catch (InvalidOperationException ex)
             {
@@ -85,11 +91,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
         {
             try
             {
-                _logger.LogInformation("RoleById muvaffaqiyatli topildi");
-                return await _context.Roles
-                    .Include(u => u.Employee)
-                    .AsSplitQuery()
-                    .FirstOrDefaultAsync(u => u.RoleId == id);
+                return await _roleRepository.GetRoleByIdAsync(id);
             }
             catch (InvalidOperationException ex)
             {
@@ -103,14 +105,19 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
         }
 
-        public async Task<int> UpdateRoleAsync(Role role)
+        public async Task<int> UpdateRoleAsync(int id)
         {
             try
             {
-                _context.Roles.Update(role);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Role muvaffaqiyatli yangilandi");
-                return role.RoleId;
+                var roleResult = await GetRoleByIdAsync(id);
+                if (roleResult is not null)
+                {
+                    return await _roleRepository.UpdateRoleAsync(roleResult);
+                }
+                else
+                {
+                    throw new Exception("Update uchun Role mavjud emas");
+                }
             }
             catch (DbUpdateException ex)
             {
