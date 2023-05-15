@@ -9,9 +9,6 @@ namespace TestHotel.Service.DTO.RequestDto
 {
     public class RoleRequestDto
     {
-        [Required]
-        [StringLength(50)]
-        [MinLength(1)]
         public string RoleTitle { get; set; }
 
         public string RoleDescription { get; set; }
