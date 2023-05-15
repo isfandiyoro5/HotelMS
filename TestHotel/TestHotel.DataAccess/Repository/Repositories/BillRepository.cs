@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TestHotel.DataAccess.DbConnection;
 using TestHotel.DataAccess.Model;
@@ -10,21 +12,31 @@ namespace TestHotel.DataAccess.Repository.Repositories
     {
         private readonly ILogger<BillRepository> _logger;
         private readonly HotelDbContext _context;
+        private IValidator<Bill> _validator;
 
-        public BillRepository(HotelDbContext context, ILogger<BillRepository> logger)
+        public BillRepository(HotelDbContext context, ILogger<BillRepository> logger, IValidator<Bill> validator)
         {
             _logger = logger;
             _context = context;
+            _validator = validator;
         }
 
         public async Task<int> AddBillAsync(Bill bill)
         {
             try
             {
-                _context.Bills.Add(bill);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Bill muvaffaqiyatli qoshildi");
-                return bill.InvoiceNumber;
+                ValidationResult validationResult = await _validator.ValidateAsync(bill);
+                if (validationResult.IsValid)
+                {
+                    _context.Bills.Add(bill);
+                    await _context.SaveChangesAsync();
+                    _logger.LogInformation("Bill muvaffaqiyatli qoshildi");
+                    return bill.InvoiceNumber;
+                }
+                else
+                {
+                    throw new Exception("Kiritilgan Bill talabga javob bermaydi");
+                }
             }
             catch
             {

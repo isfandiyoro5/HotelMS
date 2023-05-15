@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using TestHotel.DataAccess.DbConnection;
+using TestHotel.DataAccess.Model.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
