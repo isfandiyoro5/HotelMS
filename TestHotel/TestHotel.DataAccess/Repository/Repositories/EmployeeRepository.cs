@@ -26,10 +26,15 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Employee muvaffaqiyatli qo'shildi");
                 return employee.EmployeeId;
             }
-            catch
+            catch (DbUpdateException ex)
             {
-                _logger.LogError("Employeeni qo'shilishida xatolik yuzaga keldi");
-                throw new Exception("Employee qo'shilmadi");
+                _logger.LogError("Employee qo'shishda databaza xatolik bor: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Employee qo'shishda xatolik bor. Iltimos keyinroq qayta urinib ko'ring");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Employee qo'shishda xatolik: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Employee qo'shishda xatolik. Iltimos keyinroq qayta urinib ko'ring");
             }
         }
 
@@ -42,17 +47,39 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Employee muvaffaqiyatli o'chirildi");
                 return employee.EmployeeId;
             }
-            catch
+            catch (DbUpdateException ex)
             {
-                _logger.LogError("Employeeni o'chirishda xatolik yuzaga keldi");
-                throw new Exception("Employee o'chirilmadi");
+                _logger.LogError("Employeeni databazadan o'chirishda xatolik mavjud: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Employeeni o'chirishda xatolik yuz berdi.Iltimos keyinroq qayta urinib ko'ring");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Employeeni o'chirishda databazada kutilmagan xatolik: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Employeeni o'chirishda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
 
-        public async Task<List<Employee>> GetAllEmployeesAsync() => await _context.Employees
-            .Include(u => u.Role)
-            .Include(u => u.Hotel)
-            .ToListAsync();
+        public async Task<List<Employee>> GetAllEmployeesAsync()
+        {
+            try
+            {
+                return await _context.Employees
+                    .Include(u => u.Role)
+                    .Include(u => u.Hotel)
+                    .AsSplitQuery()
+                    .ToListAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError("Databazada barcha Employeelarni olishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Employeelarni olishda xatolik yuz berdi. Iltimos, qaytadan xarakat qilib ko'ring");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Barcha Employeelarni databazadan olishda xatolik mavjud: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Employeelarni olishda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring");
+            }
+        }
 
         public async Task<Employee> GetEmployeeByIdAsync(int id)
         {
@@ -62,12 +89,18 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 return await _context.Employees
                     .Include(u => u.Role)
                     .Include(u => u.Hotel)
+                    .AsSplitQuery()
                     .FirstOrDefaultAsync(u => u.EmployeeId == id);
             }
-            catch
+            catch (InvalidOperationException ex)
             {
-                _logger.LogError("EmployeeByIdni qidirishda xatolik yuzaga keldi");
-                throw new Exception("Employee ID topilmadi");
+                _logger.LogError("Databazadan EmployeeByIdlar boʻyicha EmployeeById olishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("EmployeeById olishda xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Databazadan EmployeeByIdni olishda kutilmagan xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("EmployeeByIdni olishda kutilmagan xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko'ring");
             }
         }
 
@@ -80,10 +113,15 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Employee muvaffaqiyatli yangilandi");
                 return employee.EmployeeId;
             }
-            catch
+            catch (DbUpdateException ex)
             {
-                _logger.LogError("Employeeni yangilashda xatolik yuzaga keldi");
-                throw new Exception("O'zgartirish kiritilmadi");
+                _logger.LogError("Databazada Employeeni yangilashda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Employeeni yangilashda xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Databazada Employeeni yangilanishida kutilmagan xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Employeeni yangilashda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
     }

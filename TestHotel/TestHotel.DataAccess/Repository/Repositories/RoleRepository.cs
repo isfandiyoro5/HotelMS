@@ -26,10 +26,16 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Role muvaffaqiyatli qo'shildi");
                 return role.RoleId;
             }
-            catch
+            catch (DbUpdateException ex)
             {
-                _logger.LogError("Roleni yaratishda xatolik yuzaga keldi");
-                throw new Exception("Role qo'shilmadi");
+                _logger.LogError("Roleni databazaga qo'shishda xatolik bor: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roleni saqlashda xatolik bor. Iltimos keyinroq qayta urinib ko'ring");
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError("Roleni databazaga saqlashda kutilmagan xatolik: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roleni saqlashda kutilmagan xatolik. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
 
@@ -42,16 +48,38 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Role muvaffaqiyatli o'chirildi");
                 return role.RoleId;
             }
-            catch
+            catch (DbUpdateException ex)
             {
-                _logger.LogError("Roleni o'chirishda xatolik yuzaga keldi");
-                throw new Exception("Role o'chirilmadi");
+                _logger.LogError("Roleni databazadan o'chirishda xatolik mavjud: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roleni o'chirishda xatolik yuz berdi.Iltimos keyinroq qayta urinib ko'ring");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Roleni o'chirishda databazada kutilmagan xatolik: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roleni o'chirishda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
 
-        public async Task<List<Role>> GetAllRolesAsync() => await _context.Roles
-            .Include(u => u.Employee)
-            .ToListAsync();
+        public async Task<List<Role>> GetAllRolesAsync()
+        {
+            try
+            {
+                return await _context.Roles
+                    .Include(u => u.Employee)
+                    .AsSplitQuery()
+                    .ToListAsync();
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError("Databazada barcha Rolelarni olishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Rolelarni olishda xatolik yuz berdi. Iltimos, qaytadan xarakat qilib ko'ring");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Barcha Rolelarni databazadan olishda xatolik mavjud: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Rolelarni olishda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring");
+            }
+        }
 
         public async Task<Role> GetRoleByIdAsync(int id)
         {
@@ -60,12 +88,18 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("RoleById muvaffaqiyatli topildi");
                 return await _context.Roles
                     .Include(u => u.Employee)
+                    .AsSplitQuery()
                     .FirstOrDefaultAsync(u => u.RoleId == id);
             }
-            catch
+            catch (InvalidOperationException ex)
             {
-                _logger.LogError("RoleByIdni qidirishda xatolik yuzaga keldi");
-                throw new Exception("Role ID topilmadi");
+                _logger.LogError("Databazadan Rolelar boʻyicha Roleni olishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roleni olishda xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Databazadan Roleni olishda kutilmagan xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roleni olishda kutilmagan xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko'ring");
             }
         }
 
@@ -78,10 +112,15 @@ namespace TestHotel.DataAccess.Repository.Repositories
                 _logger.LogInformation("Role muvaffaqiyatli yangilandi");
                 return role.RoleId;
             }
-            catch
+            catch (DbUpdateException ex)
             {
-                _logger.LogError("Roleni yangilashda xatolik yuzaga keldi");
-                throw new Exception("O'zgartirish kiritilmadi");
+                _logger.LogError("Databazada Roleni yangilashda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roleni yangilashda xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Databazada Roleni yangilanishida kutilmagan xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
+                throw new Exception("Roleni yangilashda kutilmagan xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
     }
