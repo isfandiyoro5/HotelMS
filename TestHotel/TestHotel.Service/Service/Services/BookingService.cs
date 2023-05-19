@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -10,25 +11,30 @@ using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
 using TestHotel.DataAccess.Repository.Repositories;
 using TestHotel.Service.Service.IServices;
+using TestHotel.Service.DTO.RequestDto;
+using TestHotel.Service.DTO.ResponseDto;
+using AutoMapper;
 
 namespace TestHotel.Service.Service.Services
 {
-    internal class BookingService : IBookingService
+    public class BookingService : IBookingService
     {
         private readonly IBookingRepository _bookingRepository;
         private readonly ILogger<BookingService> _logger;
+        private readonly IMapper _mapper;
 
-        public BookingService(BookingRepository bookingRepository, ILogger<BookingService> logger)
+        public BookingService(BookingRepository bookingRepository, ILogger<BookingService> logger, IMapper mapper)
         {
             _bookingRepository = bookingRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
-        public async Task<int> AddBookingAsync(Booking booking)
+        public async Task<int> AddBookingAsync(BookingRequestDto bookingRequestDto)
         {
             try 
             {
-                return await _bookingRepository.AddBookingAsync(booking);
+                return await _bookingRepository.AddBookingAsync(_mapper.Map<Booking>(bookingRequestDto));
             }
             catch (DbUpdateException ex)
             {
@@ -42,13 +48,19 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<int> UpdateBookingAsync(int id)
+        public async Task<int> UpdateBookingAsync(int id, BookingRequestDto bookingRequestDto)
         {
             try
             {
-                var bookingResult = await GetBookingByIdAsync(id);
+                var bookingResult = await _bookingRepository.GetBookingByIdAsync(id);
                 if (bookingResult is not null)
                 {
+                    bookingResult.BookingDate = bookingRequestDto.BookingDate;
+                    bookingResult.BookingTime = bookingRequestDto.BookingTime;
+                    bookingResult.ArrivalDate = bookingRequestDto.ArrivalDate;
+                    bookingResult.DepartureDate = bookingRequestDto.DepartureDate;
+                    bookingResult.NumberAdults = bookingRequestDto.NumberAdults;
+                    bookingResult.NumberChildren = bookingRequestDto.NumberChildren;
                     return await _bookingRepository.UpdateBookingAsync(bookingResult);
                 }
                 else
@@ -72,11 +84,10 @@ namespace TestHotel.Service.Service.Services
         {
             try
             {
-                var bookingResult = await GetBookingByIdAsync(id);
+                var bookingResult = await _bookingRepository.GetBookingByIdAsync(id);
                 if (bookingResult is not null)
                 {
                     return await _bookingRepository.DeleteBookingAsync(bookingResult);
-
                 }
                 else
                 {
@@ -95,11 +106,11 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<Booking> GetBookingByIdAsync(int id)
+        public async Task<BookingResponseDto> GetBookingByIdAsync(int id)
         {
             try
             {
-                return await _bookingRepository.GetBookingByIdAsync(id);
+                return _mapper.Map<BookingResponseDto>(await _bookingRepository.GetBookingByIdAsync(id));
             }
             catch (DbException ex)
             {
@@ -113,11 +124,11 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<List<Booking>> GetAllBookingsAsync()
+        public async Task<List<BookingResponseDto>> GetAllBookingsAsync()
         {
             try
             {
-                return await _bookingRepository.GetAllBookingsAsync();
+                return _mapper.Map<List<BookingResponseDto>>(await _bookingRepository.GetAllBookingsAsync());
             }
             catch (InvalidOperationException ex)
             {

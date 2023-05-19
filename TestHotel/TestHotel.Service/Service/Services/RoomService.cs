@@ -9,25 +9,30 @@ using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
 using TestHotel.DataAccess.Repository.Repositories;
 using TestHotel.Service.Service.IServices;
+using TestHotel.Service.DTO.RequestDto;
+using TestHotel.Service.DTO.ResponseDto;
+using AutoMapper;
 
 namespace TestHotel.Service.Service.Services
 {
-    internal class RoomService: IRoomService
+    public class RoomService : IRoomService
     {
         private readonly IRoomRepository _roomRepository;
         private readonly ILogger<RoomService> _logger;
+        private readonly IMapper _mapper;
 
-        public RoomService(RoomRepository roomRepository, ILogger<RoomService> logger)
+        public RoomService(RoomRepository roomRepository, ILogger<RoomService> logger, IMapper mapper)
         {
             _roomRepository = roomRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
-        public async Task<int> AddRoomAsync(Room room)
+        public async Task<int> AddRoomAsync(RoomRequestDto roomRequestDto)
         {
             try
             {
-                return await _roomRepository.AddRoomAsync(room);
+                return await _roomRepository.AddRoomAsync(_mapper.Map<Room>(roomRequestDto));
             }
             catch (DbUpdateException ex)
             {
@@ -46,7 +51,7 @@ namespace TestHotel.Service.Service.Services
         {
             try
             {
-                var roomResult = await GetRoomByIdAsync(id);
+                var roomResult = await _roomRepository.GetRoomByIdAsync(id);
                 if (roomResult is not null)
                 {
                     return await _roomRepository.DeleteRoomAsync(roomResult);
@@ -68,7 +73,7 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<List<Room>> GetAllRoomsAsync()
+        public async Task<List<>> GetAllRoomsAsync()
         {
             try
             {
@@ -104,14 +109,16 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<int> UpdateRoomAsync(int id)
+        public async Task<int> UpdateRoomAsync(int id, RoomRequestDto roomRequestDto)
         {
             try
             {
-                var roomResult = await GetRoomByIdAsync(id);
+                var roomResult = await _roomRepository.GetRoomByIdAsync(id);
                 if (roomResult is not null)
                 {
-                    return await _roomRepository.DeleteRoomAsync(roomResult);
+                    roomResult.RoomNumber = roomResult.RoomNumber;
+                    roomResult.roomType = roomResult.roomType;
+                    return await _roomRepository.UpdateRoomAsync(roomResult);
                 }
                 else
                 {

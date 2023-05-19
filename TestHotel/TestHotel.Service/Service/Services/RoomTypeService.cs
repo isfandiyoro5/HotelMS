@@ -9,25 +9,30 @@ using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
 using TestHotel.Service.Service.IServices;
+using TestHotel.Service.DTO.RequestDto;
+using TestHotel.Service.DTO.ResponseDto;
+using AutoMapper;
 
 namespace TestHotel.Service.Service.Services
 {
-    internal class RoomTypeService:IRoomTypeService
+    public class RoomTypeService : IRoomTypeService
     {
         private readonly IRoomTypeRepository _roomTypeRepository;
-        private readonly ILogger<RoomTypeService> _logger; 
+        private readonly ILogger<RoomTypeService> _logger;
+        private readonly IMapper _mapper;
 
-        public RoomTypeService(IRoomTypeRepository roomTypeRepository, ILogger<RoomTypeService> logger)
+        public RoomTypeService(IRoomTypeRepository roomTypeRepository, ILogger<RoomTypeService> logger, IMapper mapper)
         {
             _roomTypeRepository = roomTypeRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
-        public async Task<int> AddRoomTypeAsync(RoomType roomType)
+        public async Task<int> AddRoomTypeAsync(RoomTypeRequestDto roomTypeRequestDto)
         {
             try
             {
-                return await _roomTypeRepository.AddRoomTypeAsync(roomType);
+                return await _roomTypeRepository.AddRoomTypeAsync(_mapper.Map<RoomType>(roomTypeRequestDto));
             }
             catch (DbUpdateException ex)
             {
@@ -46,7 +51,7 @@ namespace TestHotel.Service.Service.Services
         {
             try
             {
-                var roomTypeResult = await GetRoomTypeByIdAsync(id);
+                var roomTypeResult = await _roomTypeRepository.GetRoomTypeByIdAsync(id);
                 if (roomTypeResult is not null)
                 {
                     return await _roomTypeRepository.DeleteRoomTypeAsync(roomTypeResult);
@@ -68,11 +73,11 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<List<RoomType>> GetAllRoomTypesAsync()
+        public async Task<List<RoomTypeResponseDto>> GetAllRoomTypesAsync()
         {
             try
             {
-                return await _roomTypeRepository.GetAllRoomTypesAsync();
+                return _mapper.Map<List<RoomTypeResponseDto>>(await _roomTypeRepository.GetAllRoomTypesAsync());
             }
             catch (DbUpdateException ex)
             {
@@ -86,11 +91,11 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<RoomType> GetRoomTypeByIdAsync(int id)
+        public async Task<RoomTypeResponseDto> GetRoomTypeByIdAsync(int id)
         {
             try
             {
-                return await _roomTypeRepository.GetRoomTypeByIdAsync(id);
+                return _mapper.Map<RoomTypeResponseDto>(await _roomTypeRepository.GetRoomTypeByIdAsync(id));
             }
             catch (InvalidOperationException ex)
             {
@@ -104,13 +109,15 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<int> UpdateRoomTypeAsync(int id)
+        public async Task<int> UpdateRoomTypeAsync(int id, RoomTypeRequestDto roomTypeRequestDto)
         {
             try
             {
-                var roomTypeResult = await GetRoomTypeByIdAsync(id);
+                var roomTypeResult = await _roomTypeRepository.GetRoomTypeByIdAsync(id);
                 if (roomTypeResult is not null)
                 {
+                    roomTypeResult.RoomTypes = roomTypeResult.RoomTypes;
+                    roomTypeResult.RoomsDescription = roomTypeResult.RoomsDescription;
                     return await _roomTypeRepository.UpdateRoomTypeAsync(roomTypeResult);
                 }
                 else

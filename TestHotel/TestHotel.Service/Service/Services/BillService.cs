@@ -9,25 +9,30 @@ using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
 using TestHotel.DataAccess.Repository.Repositories;
 using TestHotel.Service.Service.IServices;
+using TestHotel.Service.DTO.RequestDto;
+using TestHotel.Service.DTO.ResponseDto;
+using AutoMapper;
 
 namespace TestHotel.Service.Service.Services
 {
-    internal class BillService: IBillService
+    public class BillService : IBillService
     {
         private readonly IBillRepository _billRepository;
         private readonly ILogger<BillService> _logger;
+        private readonly IMapper _mapper;
 
-        public BillService(IBillRepository billRepository, ILogger<BillService> logger)
+        public BillService(IBillRepository billRepository, ILogger<BillService> logger, IMapper mapper)
         {
             _billRepository = billRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
-        public async Task<int> AddBillAsync(Bill bill)
+        public async Task<int> AddBillAsync(BillRequestDto billRequestDto)
         {
             try
             {
-                return await _billRepository.AddBillAsync(bill);
+                return await _billRepository.AddBillAsync(_mapper.Map<Bill>(billRequestDto));
             }
             catch (DbUpdateException ex)
             {
@@ -41,13 +46,18 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<int> UpdateBillAsync(int invoiceNumber)
+        public async Task<int> UpdateBillAsync(int invoiceNumber, BillRequestDto billRequestDto)
         {
             try
             {
-                var billResult = await GetBillByIdAsync(invoiceNumber);
+                var billResult = await _billRepository.GetBillByInvoiceNumberAsync(invoiceNumber);
                 if (billResult is not null)
                 {
+                    billResult.IfLateCheckout = billRequestDto.IfLateCheckout;
+                    billResult.PaymentDate = billRequestDto.PaymentDate;
+                    billResult.paymentMode = billRequestDto.paymentMode;
+                    billResult.CreditCardNumber = billRequestDto.CreditCardNumber;
+                    billResult.ExpireDate = billRequestDto.ExpireDate;
                     return await _billRepository.UpdateBillAsync(billResult);
                 }
                 else
@@ -71,7 +81,7 @@ namespace TestHotel.Service.Service.Services
         {
             try
             {
-                var billResult = await GetBillByIdAsync(invoiceNumber);
+                var billResult = await _billRepository.GetBillByInvoiceNumberAsync(invoiceNumber);
                 if (billResult is not null)
                 {
                     return await _billRepository.DeleteBillAsync(billResult);
@@ -93,11 +103,11 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<List<Bill>> GetAllBillsAsync()
+        public async Task<List<BillResponseDto>> GetAllBillsAsync()
         {
             try
             {
-                return await _billRepository.GetAllBillsAsync();
+                return _mapper.Map<List<BillResponseDto>>(await _billRepository.GetAllBillsAsync());
             }
             catch (InvalidOperationException ex)
             {
@@ -111,11 +121,11 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<Bill> GetBillByIdAsync(int invoiceNumber)
+        public async Task<BillResponseDto> GetBillByInvoiceNumberAsync(int invoiceNumber)
         {
             try
             {
-                return await _billRepository.GetBillByInvoiceNumberAsync(invoiceNumber);
+                return _mapper.Map<BillResponseDto>(await _billRepository.GetBillByInvoiceNumberAsync(invoiceNumber));
             }
             catch (InvalidOperationException ex)
             {

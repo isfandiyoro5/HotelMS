@@ -9,25 +9,31 @@ using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
 using TestHotel.DataAccess.Repository.Repositories;
 using TestHotel.Service.Service.IServices;
+using TestHotel.Service.DTO.RequestDto;
+using TestHotel.Service.DTO.ResponseDto;
+using AutoMapper;
+using System.Security.AccessControl;
 
 namespace TestHotel.Service.Service.Services
 {
-    internal class HotelService:IHotelService
+    public class HotelService : IHotelService
     {
         private readonly IHotelRepository _hotelRepository;
         private readonly ILogger<HotelService> _logger;
+        private readonly IMapper _mapper;
 
-        public HotelService(HotelRepository hotelRepository, ILogger<HotelService> logger)
+        public HotelService(HotelRepository hotelRepository, ILogger<HotelService> logger, IMapper mapper)
         {
             _hotelRepository = hotelRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
-        public async Task<int> AddHotelAsync(Hotel hotel)
+        public async Task<int> AddHotelAsync(HotelRequestDto hotelRequestDto)
         {
             try
             {
-                return await _hotelRepository.AddHotelAsync(hotel);
+                return await _hotelRepository.AddHotelAsync(_mapper.Map<Hotel>(hotelRequestDto));
             }
             catch (DbUpdateException ex)
             {
@@ -45,7 +51,7 @@ namespace TestHotel.Service.Service.Services
         {
             try
             {
-                var hotelResult = await GetHotelByIdAsync(id);
+                var hotelResult = await _hotelRepository.GetHotelByIdAsync(id);
                 if (hotelResult is not null)
                 {
                     return await _hotelRepository.DeleteHotelAsync(hotelResult);
@@ -67,11 +73,11 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<List<Hotel>> GetAllHotelsAsync()
+        public async Task<List<HotelResponseDto>> GetAllHotelsAsync()
         {
             try
             {
-                return await _hotelRepository.GetAllHotelsAsync();
+                return _mapper.Map<List<HotelResponseDto>>(await _hotelRepository.GetAllHotelsAsync());
             }
             catch (InvalidOperationException ex)
             {
@@ -85,11 +91,11 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<Hotel> GetHotelByIdAsync(int id)
+        public async Task<HotelResponseDto> GetHotelByIdAsync(int id)
         {
             try
             {
-                return await _hotelRepository.GetHotelByIdAsync(id);
+                return _mapper.Map<HotelResponseDto>(await _hotelRepository.GetHotelByIdAsync(id));
             }
             catch (ArgumentNullException ex)
             {
@@ -108,13 +114,19 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<int> UpdateHotelAsync(int id)
+        public async Task<int> UpdateHotelAsync(int id, HotelRequestDto hotelRequestDto)
         {
             try
             {
-                var hotelResult = await GetHotelByIdAsync(id);
+                var hotelResult = await _hotelRepository.GetHotelByIdAsync(id);
                 if (hotelResult is not null)
                 {
+                    hotelResult.HotelName = hotelRequestDto.HotelName;
+                    hotelResult.Address = hotelRequestDto.Address;
+                    hotelResult.City = hotelRequestDto.City;
+                    hotelResult.Country = hotelRequestDto.Country;
+                    hotelResult.NumberOfRooms = hotelRequestDto.NumberOfRooms;
+                    hotelResult.PhoneNumber = hotelRequestDto.PhoneNumber;
                     return await _hotelRepository.UpdateHotelAsync(hotelResult);
                 }
                 else

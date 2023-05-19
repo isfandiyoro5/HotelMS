@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.16">
@@ -29,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TestHotel.DataAccess\TestHotel.DataAccess.csproj" />
+    <ProjectReference Include="..\TestHotel.Service\TestHotel.Service.csproj" />
   </ItemGroup>
 
 </Project>

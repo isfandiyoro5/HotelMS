@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using TestHotel.DataAccess.DbConnection;
+using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
+using TestHotel.Service.DTO.AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
@@ -16,6 +19,8 @@ var config = builder.Configuration.GetSection("ConnectionStrings");
 builder.Services.AddDbContext<HotelDbContext>(option => option.UseNpgsql(config["Connect"]));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
