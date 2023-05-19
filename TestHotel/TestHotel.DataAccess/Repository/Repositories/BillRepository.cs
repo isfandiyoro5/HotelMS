@@ -12,31 +12,21 @@ namespace TestHotel.DataAccess.Repository.Repositories
     {
         private readonly ILogger<BillRepository> _logger;
         private readonly HotelDbContext _context;
-        private IValidator<Bill> _validator;
 
-        public BillRepository(HotelDbContext context, ILogger<BillRepository> logger, IValidator<Bill> validator)
+        public BillRepository(HotelDbContext context, ILogger<BillRepository> logger)
         {
             _logger = logger;
             _context = context;
-            _validator = validator;
         }
 
         public async Task<int> AddBillAsync(Bill bill)
         {
             try
             {
-                ValidationResult validationResult = await _validator.ValidateAsync(bill);
-                if (validationResult.IsValid)
-                {
                     _context.Bills.Add(bill);
                     await _context.SaveChangesAsync();
                     _logger.LogInformation("Bill muvaffaqiyatli qoshildi");
                     return bill.InvoiceNumber;
-                }
-                else
-                {
-                    throw new Exception("Kiritilgan Bill talabga javob bermaydi");
-                }
             }
             catch
             {
