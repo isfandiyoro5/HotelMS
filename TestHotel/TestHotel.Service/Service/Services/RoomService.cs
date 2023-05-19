@@ -73,11 +73,11 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<List<>> GetAllRoomsAsync()
+        public async Task<List<RoomResponseDto>> GetAllRoomsAsync()
         {
             try
             {
-                return await _roomRepository.GetAllRoomsAsync();
+                return _mapper.Map<List<RoomResponseDto>>(await _roomRepository.GetAllRoomsAsync());
             }
             catch (InvalidOperationException ex)
             {
@@ -91,11 +91,11 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<Room> GetRoomByIdAsync(int id)
+        public async Task<RoomResponseDto> GetRoomByIdAsync(int id)
         {
             try
             {
-                return await _roomRepository.GetRoomByIdAsync(id);
+                return _mapper.Map<RoomResponseDto>(await _roomRepository.GetRoomByIdAsync(id));
             }
             catch (InvalidOperationException ex)
             {

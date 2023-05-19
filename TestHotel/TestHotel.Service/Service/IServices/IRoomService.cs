@@ -19,6 +19,6 @@ namespace TestHotel.Service.Service.IServices
 
         Task<RoomResponseDto> GetRoomByIdAsync(int id);
 
-        Task<List<RoomRequestDto>> GetAllRoomsAsync();
+        Task<List<RoomResponseDto>> GetAllRoomsAsync();
     }
 }
