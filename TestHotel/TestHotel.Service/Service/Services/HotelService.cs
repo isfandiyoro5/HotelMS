@@ -13,6 +13,8 @@ using TestHotel.Service.DTO.RequestDto;
 using TestHotel.Service.DTO.ResponseDto;
 using AutoMapper;
 using System.Security.AccessControl;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace TestHotel.Service.Service.Services
 {
@@ -21,19 +23,29 @@ namespace TestHotel.Service.Service.Services
         private readonly IHotelRepository _hotelRepository;
         private readonly ILogger<HotelService> _logger;
         private readonly IMapper _mapper;
+        private readonly IValidator<HotelRequestDto> _hotelRequestDtoValidator;
 
-        public HotelService(HotelRepository hotelRepository, ILogger<HotelService> logger, IMapper mapper)
+        public HotelService(HotelRepository hotelRepository, ILogger<HotelService> logger, IMapper mapper, IValidator<HotelRequestDto> hotelRequestDtoValidator)
         {
             _hotelRepository = hotelRepository;
             _logger = logger;
             _mapper = mapper;
+            _hotelRequestDtoValidator = hotelRequestDtoValidator;
         }
 
         public async Task<int> AddHotelAsync(HotelRequestDto hotelRequestDto)
         {
             try
             {
-                return await _hotelRepository.AddHotelAsync(_mapper.Map<Hotel>(hotelRequestDto));
+                ValidationResult validationResult = await _hotelRequestDtoValidator.ValidateAsync(hotelRequestDto);
+                if (!validationResult.IsValid)
+                {
+                    return await _hotelRepository.AddHotelAsync(_mapper.Map<Hotel>(hotelRequestDto));
+                }
+                else
+                {
+                    throw new Exception("Qiymatlarni noto'g'ri yoki chala kiritgansiz, qaytadan barchasini to'g'ri va to'liq kiritishga urinib ko'ring");
+                }
             }
             catch (DbUpdateException ex)
             {
@@ -118,20 +130,28 @@ namespace TestHotel.Service.Service.Services
         {
             try
             {
-                var hotelResult = await _hotelRepository.GetHotelByIdAsync(id);
-                if (hotelResult is not null)
+                ValidationResult validationResult = await _hotelRequestDtoValidator.ValidateAsync(hotelRequestDto);
+                if (!validationResult.IsValid)
                 {
-                    hotelResult.HotelName = hotelRequestDto.HotelName;
-                    hotelResult.Address = hotelRequestDto.Address;
-                    hotelResult.City = hotelRequestDto.City;
-                    hotelResult.Country = hotelRequestDto.Country;
-                    hotelResult.NumberOfRooms = hotelRequestDto.NumberOfRooms;
-                    hotelResult.PhoneNumber = hotelRequestDto.PhoneNumber;
-                    return await _hotelRepository.UpdateHotelAsync(hotelResult);
+                    var hotelResult = await _hotelRepository.GetHotelByIdAsync(id);
+                    if (hotelResult is not null)
+                    {
+                        hotelResult.HotelName = hotelRequestDto.HotelName;
+                        hotelResult.Address = hotelRequestDto.Address;
+                        hotelResult.City = hotelRequestDto.City;
+                        hotelResult.Country = hotelRequestDto.Country;
+                        hotelResult.NumberOfRooms = hotelRequestDto.NumberOfRooms;
+                        hotelResult.PhoneNumber = hotelRequestDto.PhoneNumber;
+                        return await _hotelRepository.UpdateHotelAsync(hotelResult);
+                    }
+                    else
+                    {
+                        throw new Exception("Update uchun Hotel mavjud emas");
+                    }
                 }
                 else
                 {
-                    throw new Exception("Update uchun Hotel mavjud emas");
+                    throw new Exception("Qiymatlarni noto'g'ri yoki chala kiritgansiz, qaytadan barchasini to'g'ri va to'liq kiritishga urinib ko'ring");
                 }
             }
             catch (DbUpdateException ex)

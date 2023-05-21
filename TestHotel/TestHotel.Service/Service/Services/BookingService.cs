@@ -14,6 +14,8 @@ using TestHotel.Service.Service.IServices;
 using TestHotel.Service.DTO.RequestDto;
 using TestHotel.Service.DTO.ResponseDto;
 using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace TestHotel.Service.Service.Services
 {
@@ -22,19 +24,29 @@ namespace TestHotel.Service.Service.Services
         private readonly IBookingRepository _bookingRepository;
         private readonly ILogger<BookingService> _logger;
         private readonly IMapper _mapper;
+        private readonly IValidator<BookingRequestDto> _bookingRequestDtoValidator;
 
-        public BookingService(BookingRepository bookingRepository, ILogger<BookingService> logger, IMapper mapper)
+        public BookingService(BookingRepository bookingRepository, ILogger<BookingService> logger, IMapper mapper, IValidator<BookingRequestDto> bookingRequestDtoValidator)
         {
             _bookingRepository = bookingRepository;
             _logger = logger;
             _mapper = mapper;
+            _bookingRequestDtoValidator = bookingRequestDtoValidator;
         }
 
         public async Task<int> AddBookingAsync(BookingRequestDto bookingRequestDto)
         {
             try 
             {
-                return await _bookingRepository.AddBookingAsync(_mapper.Map<Booking>(bookingRequestDto));
+                ValidationResult validationResult = await _bookingRequestDtoValidator.ValidateAsync(bookingRequestDto);
+                if (!validationResult.IsValid)
+                {
+                    return await _bookingRepository.AddBookingAsync(_mapper.Map<Booking>(bookingRequestDto));
+                }
+                else
+                {
+                    throw new Exception("Qiymatlarni noto'g'ri yoki chala kiritgansiz, qaytadan barchasini to'g'ri va to'liq kiritishga urinib ko'ring");
+                }
             }
             catch (DbUpdateException ex)
             {
@@ -52,20 +64,28 @@ namespace TestHotel.Service.Service.Services
         {
             try
             {
-                var bookingResult = await _bookingRepository.GetBookingByIdAsync(id);
-                if (bookingResult is not null)
+                ValidationResult validationResult = await _bookingRequestDtoValidator.ValidateAsync(bookingRequestDto);
+                if (!validationResult.IsValid)
                 {
-                    bookingResult.BookingDate = bookingRequestDto.BookingDate;
-                    bookingResult.BookingTime = bookingRequestDto.BookingTime;
-                    bookingResult.ArrivalDate = bookingRequestDto.ArrivalDate;
-                    bookingResult.DepartureDate = bookingRequestDto.DepartureDate;
-                    bookingResult.NumberAdults = bookingRequestDto.NumberAdults;
-                    bookingResult.NumberChildren = bookingRequestDto.NumberChildren;
-                    return await _bookingRepository.UpdateBookingAsync(bookingResult);
+                    var bookingResult = await _bookingRepository.GetBookingByIdAsync(id);
+                    if (bookingResult is not null)
+                    {
+                        bookingResult.BookingDate = bookingRequestDto.BookingDate;
+                        bookingResult.BookingTime = bookingRequestDto.BookingTime;
+                        bookingResult.ArrivalDate = bookingRequestDto.ArrivalDate;
+                        bookingResult.DepartureDate = bookingRequestDto.DepartureDate;
+                        bookingResult.NumberAdults = bookingRequestDto.NumberAdults;
+                        bookingResult.NumberChildren = bookingRequestDto.NumberChildren;
+                        return await _bookingRepository.UpdateBookingAsync(bookingResult);
+                    }
+                    else
+                    {
+                        throw new Exception("Update uchun Booking mavjud emas");
+                    }
                 }
                 else
                 {
-                    throw new Exception("Update uchun Booking mavjud emas");
+                    throw new Exception("Qiymatlarni noto'g'ri yoki chala kiritgansiz, qaytadan barchasini to'g'ri va to'liq kiritishga urinib ko'ring");
                 }
             }
             catch (DbUpdateException ex)

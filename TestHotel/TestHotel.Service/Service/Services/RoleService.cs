@@ -14,6 +14,9 @@ using TestHotel.Service.DTO.RequestDto;
 using TestHotel.Service.DTO.ResponseDto;
 using AutoMapper;
 using System.Security.AccessControl;
+using FluentValidation;
+using Microsoft.AspNetCore.Components.Forms;
+using FluentValidation.Results;
 
 namespace TestHotel.Service.Service.Services
 {
@@ -22,19 +25,29 @@ namespace TestHotel.Service.Service.Services
         private readonly IRoleRepository _roleRepository;
         private readonly ILogger<RoleService> _logger;
         private readonly IMapper _mapper;
+        private readonly IValidator<RoleRequestDto> _roleRequestDtoValidator;
 
-        public RoleService(RoleRepository roleRepository, ILogger<RoleService> logger, IMapper mapper)
+        public RoleService(RoleRepository roleRepository, ILogger<RoleService> logger, IMapper mapper, IValidator<RoleRequestDto> roleRequestDtoValidator)
         {
             _roleRepository = roleRepository;
             _logger = logger;
             _mapper = mapper;
+            _roleRequestDtoValidator = roleRequestDtoValidator;
         }
 
         public async Task<int> AddRoleAsync(RoleRequestDto roleRequestDto)
         {
             try
             {
-                return await _roleRepository.AddRoleAsync(_mapper.Map<Role>(roleRequestDto));
+                ValidationResult validationResult = await _roleRequestDtoValidator.ValidateAsync(roleRequestDto);
+                if (!validationResult.IsValid)
+                {
+                    return await _roleRepository.AddRoleAsync(_mapper.Map<Role>(roleRequestDto));
+                }
+                else
+                {
+                    throw new Exception("Qiymatlarni noto'g'ri yoki chala kiritgansiz, qaytadan barchasini to'g'ri va to'liq kiritishga urinib ko'ring");
+                }
             }
             catch (DbUpdateException ex)
             {
@@ -115,16 +128,24 @@ namespace TestHotel.Service.Service.Services
         {
             try
             {
-                var roleResult = await _roleRepository.GetRoleByIdAsync(id);
-                if (roleResult is not null)
+                ValidationResult validationResult = await _roleRequestDtoValidator.ValidateAsync(roleRequestDto);
+                if (!validationResult.IsValid)
                 {
-                    roleResult.RoleTitle = roleRequestDto.RoleTitle;
-                    roleResult.RoleDescription = roleRequestDto.RoleDescription;
-                    return await _roleRepository.UpdateRoleAsync(roleResult);
+                    var roleResult = await _roleRepository.GetRoleByIdAsync(id);
+                    if (roleResult is not null)
+                    {
+                        roleResult.RoleTitle = roleRequestDto.RoleTitle;
+                        roleResult.RoleDescription = roleRequestDto.RoleDescription;
+                        return await _roleRepository.UpdateRoleAsync(roleResult);
+                    }
+                    else
+                    {
+                        throw new Exception("Update uchun Role mavjud emas");
+                    }
                 }
                 else
                 {
-                    throw new Exception("Update uchun Role mavjud emas");
+                    throw new Exception("Qiymatlarni noto'g'ri yoki chala kiritgansiz, qaytadan barchasini to'g'ri va to'liq kiritishga urinib ko'ring");
                 }
             }
             catch (DbUpdateException ex)

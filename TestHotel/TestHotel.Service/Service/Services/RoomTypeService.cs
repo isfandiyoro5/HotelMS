@@ -12,6 +12,9 @@ using TestHotel.Service.Service.IServices;
 using TestHotel.Service.DTO.RequestDto;
 using TestHotel.Service.DTO.ResponseDto;
 using AutoMapper;
+using TestHotel.DataAccess.Repository.Repositories;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace TestHotel.Service.Service.Services
 {
@@ -20,19 +23,29 @@ namespace TestHotel.Service.Service.Services
         private readonly IRoomTypeRepository _roomTypeRepository;
         private readonly ILogger<RoomTypeService> _logger;
         private readonly IMapper _mapper;
+        private readonly IValidator<RoomTypeRequestDto> _roomTypeRequestDtoValidator;
 
-        public RoomTypeService(IRoomTypeRepository roomTypeRepository, ILogger<RoomTypeService> logger, IMapper mapper)
+        public RoomTypeService(IRoomTypeRepository roomTypeRepository, ILogger<RoomTypeService> logger, IMapper mapper, IValidator<RoomTypeRequestDto> roomTypeRequestDtoValidator)
         {
             _roomTypeRepository = roomTypeRepository;
             _logger = logger;
             _mapper = mapper;
+            _roomTypeRequestDtoValidator = roomTypeRequestDtoValidator;
         }
 
         public async Task<int> AddRoomTypeAsync(RoomTypeRequestDto roomTypeRequestDto)
         {
             try
             {
-                return await _roomTypeRepository.AddRoomTypeAsync(_mapper.Map<RoomType>(roomTypeRequestDto));
+                ValidationResult validationResult = await _roomTypeRequestDtoValidator.ValidateAsync(roomTypeRequestDto);
+                if (!validationResult.IsValid)
+                {
+                    return await _roomTypeRepository.AddRoomTypeAsync(_mapper.Map<RoomType>(roomTypeRequestDto));
+                }
+                else
+                {
+                    throw new Exception("Qiymatlarni noto'g'ri yoki chala kiritgansiz, qaytadan barchasini to'g'ri va to'liq kiritishga urinib ko'ring");
+                }
             }
             catch (DbUpdateException ex)
             {
@@ -113,16 +126,24 @@ namespace TestHotel.Service.Service.Services
         {
             try
             {
-                var roomTypeResult = await _roomTypeRepository.GetRoomTypeByIdAsync(id);
-                if (roomTypeResult is not null)
+                ValidationResult validationResult = await _roomTypeRequestDtoValidator.ValidateAsync(roomTypeRequestDto);
+                if (!validationResult.IsValid)
                 {
-                    roomTypeResult.RoomTypes = roomTypeResult.RoomTypes;
-                    roomTypeResult.RoomsDescription = roomTypeResult.RoomsDescription;
-                    return await _roomTypeRepository.UpdateRoomTypeAsync(roomTypeResult);
+                    var roomTypeResult = await _roomTypeRepository.GetRoomTypeByIdAsync(id);
+                    if (roomTypeResult is not null)
+                    {
+                        roomTypeResult.RoomTypes = roomTypeResult.RoomTypes;
+                        roomTypeResult.RoomsDescription = roomTypeResult.RoomsDescription;
+                        return await _roomTypeRepository.UpdateRoomTypeAsync(roomTypeResult);
+                    }
+                    else
+                    {
+                        throw new Exception("Update uchun RoomType mavjud emas");
+                    }
                 }
                 else
                 {
-                    throw new Exception("Update uchun RoomType mavjud emas");
+                    throw new Exception("Qiymatlarni noto'g'ri yoki chala kiritgansiz, qaytadan barchasini to'g'ri va to'liq kiritishga urinib ko'ring");
                 }
             }
             catch (DbUpdateException ex)

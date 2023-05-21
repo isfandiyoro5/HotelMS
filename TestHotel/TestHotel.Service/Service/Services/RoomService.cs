@@ -12,6 +12,8 @@ using TestHotel.Service.Service.IServices;
 using TestHotel.Service.DTO.RequestDto;
 using TestHotel.Service.DTO.ResponseDto;
 using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace TestHotel.Service.Service.Services
 {
@@ -20,19 +22,29 @@ namespace TestHotel.Service.Service.Services
         private readonly IRoomRepository _roomRepository;
         private readonly ILogger<RoomService> _logger;
         private readonly IMapper _mapper;
+        private readonly IValidator<RoomRequestDto> _roomRequestDtoValidator;
 
-        public RoomService(RoomRepository roomRepository, ILogger<RoomService> logger, IMapper mapper)
+        public RoomService(RoomRepository roomRepository, ILogger<RoomService> logger, IMapper mapper, IValidator<RoomRequestDto> roomRequestDtoValidator)
         {
             _roomRepository = roomRepository;
             _logger = logger;
             _mapper = mapper;
+            _roomRequestDtoValidator = roomRequestDtoValidator;
         }
 
         public async Task<int> AddRoomAsync(RoomRequestDto roomRequestDto)
         {
             try
             {
-                return await _roomRepository.AddRoomAsync(_mapper.Map<Room>(roomRequestDto));
+                ValidationResult validationResult = await _roomRequestDtoValidator.ValidateAsync(roomRequestDto);
+                if (!validationResult.IsValid)
+                {
+                    return await _roomRepository.AddRoomAsync(_mapper.Map<Room>(roomRequestDto));
+                }
+                else
+                {
+                    throw new Exception("Qiymatlarni noto'g'ri yoki chala kiritgansiz, qaytadan barchasini to'g'ri va to'liq kiritishga urinib ko'ring");
+                }
             }
             catch (DbUpdateException ex)
             {
@@ -113,16 +125,24 @@ namespace TestHotel.Service.Service.Services
         {
             try
             {
-                var roomResult = await _roomRepository.GetRoomByIdAsync(id);
-                if (roomResult is not null)
+                ValidationResult validationResult = await _roomRequestDtoValidator.ValidateAsync(roomRequestDto);
+                if (!validationResult.IsValid)
                 {
-                    roomResult.RoomNumber = roomResult.RoomNumber;
-                    roomResult.roomType = roomResult.roomType;
-                    return await _roomRepository.UpdateRoomAsync(roomResult);
+                    var roomResult = await _roomRepository.GetRoomByIdAsync(id);
+                    if (roomResult is not null)
+                    {
+                        roomResult.RoomNumber = roomResult.RoomNumber;
+                        roomResult.roomType = roomResult.roomType;
+                        return await _roomRepository.UpdateRoomAsync(roomResult);
+                    }
+                    else
+                    {
+                        throw new Exception("Update uchun Room mavjud emas");
+                    }
                 }
                 else
                 {
-                    throw new Exception("Update uchun Room mavjud emas");
+                    throw new Exception("Qiymatlarni noto'g'ri yoki chala kiritgansiz, qaytadan barchasini to'g'ri va to'liq kiritishga urinib ko'ring");
                 }
             }
             catch (DbUpdateException ex)
