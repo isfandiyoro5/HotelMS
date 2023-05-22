@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestHotel.DataAccess.Model;
+﻿using TestHotel.DataAccess.Model;
 
 namespace TestHotel.Service.DTO.RequestDto
 {
@@ -13,7 +8,7 @@ namespace TestHotel.Service.DTO.RequestDto
 
         public DateTime PaymentDate { get; set; }
 
-        public PaymentMode paymentMode { get; set; }
+        public PaymentMode PaymentMode { get; set; }
 
         public int CreditCardNumber { get; set; }
 

@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
 using TestHotel.DataAccess.Repository.Repositories;
@@ -13,7 +8,7 @@ using TestHotel.Service.Service.IServices;
 
 namespace TestHotel.Service.Service.Services
 {
-    internal class BookingService : IBookingService
+    public class BookingService : IBookingService
     {
         private readonly IBookingRepository _bookingRepository;
         private readonly ILogger<BookingService> _logger;
@@ -26,7 +21,7 @@ namespace TestHotel.Service.Service.Services
 
         public async Task<int> AddBookingAsync(Booking booking)
         {
-            try 
+            try
             {
                 return await _bookingRepository.AddBookingAsync(booking);
             }

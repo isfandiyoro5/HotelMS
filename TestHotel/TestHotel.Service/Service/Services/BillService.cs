@@ -1,18 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
-using TestHotel.DataAccess.Repository.Repositories;
 using TestHotel.Service.Service.IServices;
 
 namespace TestHotel.Service.Service.Services
 {
-    internal class BillService: IBillService
+    public class BillService : IBillService
     {
         private readonly IBillRepository _billRepository;
         private readonly ILogger<BillService> _logger;

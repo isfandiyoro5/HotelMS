@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
 using TestHotel.DataAccess.Repository.Repositories;
@@ -12,7 +7,7 @@ using TestHotel.Service.Service.IServices;
 
 namespace TestHotel.Service.Service.Services
 {
-    internal class HotelService:IHotelService
+    public class HotelService : IHotelService
     {
         private readonly IHotelRepository _hotelRepository;
         private readonly ILogger<HotelService> _logger;

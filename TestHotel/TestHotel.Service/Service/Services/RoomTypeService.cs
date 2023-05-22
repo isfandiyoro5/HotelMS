@@ -1,21 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
 using TestHotel.Service.Service.IServices;
 
 namespace TestHotel.Service.Service.Services
 {
-    internal class RoomTypeService:IRoomTypeService
+    public class RoomTypeService : IRoomTypeService
     {
         private readonly IRoomTypeRepository _roomTypeRepository;
-        private readonly ILogger<RoomTypeService> _logger; 
+        private readonly ILogger<RoomTypeService> _logger;
 
         public RoomTypeService(IRoomTypeRepository roomTypeRepository, ILogger<RoomTypeService> logger)
         {

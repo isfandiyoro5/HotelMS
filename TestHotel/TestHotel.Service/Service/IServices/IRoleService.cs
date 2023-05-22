@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestHotel.DataAccess.Model;
+﻿using TestHotel.DataAccess.Model;
 
 namespace TestHotel.Service.Service.IServices
 {
-    internal interface IRoleService
+    public interface IRoleService
     {
         Task<int> AddRoleAsync(Role role);
 
