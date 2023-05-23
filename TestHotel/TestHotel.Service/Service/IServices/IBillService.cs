@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestHotel.DataAccess.Model;
+using TestHotel.Service.DTO.RequestDto;
+using TestHotel.Service.DTO.ResponseDto;
 
 namespace TestHotel.Service.Service.IServices
 {
-    internal interface IBillService
+    public interface IBillService
     {
-        Task<int> AddBillAsync(Bill bill);
+        Task<int> AddBillAsync(BillRequestDto billRequestDto);
 
-        Task<int> UpdateBillAsync(int invoiceNumber);
+        Task<int> UpdateBillAsync(int invoiceNumber, BillRequestDto billRequestDto);
 
         Task<int> DeleteBillAsync(int invoiceNumber);
 
-        Task<Bill> GetBillByIdAsync(int invoiceNumber);
+        Task<BillResponseDto> GetBillByInvoiceNumberAsync(int invoiceNumber);
 
-        Task<List<Bill>> GetAllBillsAsync();
+        Task<List<BillResponseDto>> GetAllBillsAsync();
     }
 }

@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using TestHotel.DataAccess.DbConnection;
+using Microsoft.Extensions.DependencyInjection;
+using TestHotel.Service.DTO.AutoMapper;
+using TestHotel.Service.DTO.RequestDto;
+using TestHotel.Service.ServiceExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
@@ -14,8 +18,10 @@ builder.Services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.
 
 var config = builder.Configuration.GetSection("ConnectionStrings");
 builder.Services.AddDbContext<HotelDbContext>(option => option.UseNpgsql(config["Connect"]));
+builder.Services.RegisterServices(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
