@@ -10,25 +10,42 @@ using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
 using TestHotel.DataAccess.Repository.Repositories;
 using TestHotel.Service.Service.IServices;
+using TestHotel.Service.DTO.RequestDto;
+using TestHotel.Service.DTO.ResponseDto;
+using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace TestHotel.Service.Service.Services
 {
-    internal class GuestService: IGuestService
+    public class GuestService : IGuestService
     {
         private readonly IGuestRepository _guestRepository;
         private readonly ILogger<GuestService> _logger;
+        private readonly IMapper _mapper;
+        private readonly IValidator<GuestRequestDto> _guestRequestDtoValidator;
 
-        public GuestService(GuestRepository guestRepository, ILogger<GuestService> logger)
+        public GuestService(IGuestRepository guestRepository, ILogger<GuestService> logger, IMapper mapper, IValidator<GuestRequestDto> guestRequestDtoValidator)
         {
             _guestRepository = guestRepository;
             _logger = logger;
+            _mapper = mapper;
+            _guestRequestDtoValidator = guestRequestDtoValidator;
         }
 
-        public async Task<int> AddGuestAsync(Guest guest)
+        public async Task<int> AddGuestAsync(GuestRequestDto guestRequestDto)
         {
             try
             {
-                return await _guestRepository.AddGuestAsync(guest);
+                ValidationResult validationResult = await _guestRequestDtoValidator.ValidateAsync(guestRequestDto);
+                if (!validationResult.IsValid)
+                {
+                    return await _guestRepository.AddGuestAsync(_mapper.Map<Guest>(guestRequestDto));
+                }
+                else
+                {
+                    throw new Exception("Qiymatlarni noto'g'ri yoki chala kiritgansiz, qaytadan barchasini to'g'ri va to'liq kiritishga urinib ko'ring");
+                }
             }
             catch (DbUpdateException ex)
             {
@@ -46,7 +63,7 @@ namespace TestHotel.Service.Service.Services
         {
             try
             {
-                var guestResult = await GetGuestByIdAsync(id);
+                var guestResult = await _guestRepository.GetGuestByIdAsync(id);
                 if (guestResult is not null)
                 {
                     return await _guestRepository.DeleteGuestAsync(guestResult);
@@ -68,11 +85,11 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<List<Guest>> GetAllGuestsAsync()
+        public async Task<List<GuestResponseDto>> GetAllGuestsAsync()
         {
             try
             {
-                return await _guestRepository.GetAllGuestsAsync();
+                return _mapper.Map<List<GuestResponseDto>>(await _guestRepository.GetAllGuestsAsync());
             }
             catch (SqlException ex)
             {
@@ -91,11 +108,11 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<Guest> GetGuestByIdAsync(int id)
+        public async Task<GuestResponseDto> GetGuestByIdAsync(int id)
         {
             try
             {
-                return await _guestRepository.GetGuestByIdAsync(id);
+                return _mapper.Map<GuestResponseDto>(await _guestRepository.GetGuestByIdAsync(id));
             }
             catch (ArgumentNullException ex)
             {
@@ -114,18 +131,38 @@ namespace TestHotel.Service.Service.Services
             }
         }
 
-        public async Task<int> UpdateGuestAsync(int id)
+        public async Task<int> UpdateGuestAsync(int id, GuestRequestDto guestRequestDto)
         {
             try
             {
-                var guestResult = await GetGuestByIdAsync(id);
-                if (guestResult is not null)
+                ValidationResult validationResult = await _guestRequestDtoValidator.ValidateAsync(guestRequestDto);
+                if (!validationResult.IsValid)
                 {
-                    return await _guestRepository.UpdateGuestAsync(guestResult);
+                    var guestResult = await _guestRepository.GetGuestByIdAsync(id);
+                    if (guestResult is not null)
+                    {
+                        guestResult.GuestPriority = guestRequestDto.GuestPriority;
+                        guestResult.FirstName = guestRequestDto.FirstName;
+                        guestResult.LastName = guestRequestDto.LastName;
+                        guestResult.BirthDate = guestRequestDto.BirthDate;
+                        guestResult.Gender = guestRequestDto.Gender;
+                        guestResult.PhoneNumber = guestRequestDto.PhoneNumber;
+                        guestResult.Email = guestRequestDto.Email;
+                        guestResult.Password = guestRequestDto.Password;
+                        guestResult.PassportNumber = guestRequestDto.PassportNumber;
+                        guestResult.Address = guestRequestDto.Address;
+                        guestResult.City = guestRequestDto.City;
+                        guestResult.Country = guestRequestDto.Country;
+                        return await _guestRepository.UpdateGuestAsync(guestResult);
+                    }
+                    else
+                    {
+                        throw new Exception("Update uchun Guest mavjud emas");
+                    }
                 }
                 else
                 {
-                    throw new Exception("Update uchun Guest mavjud emas");
+                    throw new Exception("Qiymatlarni noto'g'ri yoki chala kiritgansiz, qaytadan barchasini to'g'ri va to'liq kiritishga urinib ko'ring");
                 }
             }
             catch (DbUpdateException ex)

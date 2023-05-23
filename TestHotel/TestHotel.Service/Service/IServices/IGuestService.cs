@@ -4,19 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
+using TestHotel.Service.DTO.RequestDto;
+using TestHotel.Service.DTO.ResponseDto;
 
 namespace TestHotel.Service.Service.IServices
 {
-    internal interface IGuestService
+    public interface IGuestService
     {
-        Task<int> AddGuestAsync(Guest guest);
+        Task<int> AddGuestAsync(GuestRequestDto guestRequestDto);
 
-        Task<int> UpdateGuestAsync(int id);
+        Task<int> UpdateGuestAsync(int id, GuestRequestDto guestRequestDto);
 
         Task<int> DeleteGuestAsync(int id);
 
-        Task<Guest> GetGuestByIdAsync(int id);
+        Task<GuestResponseDto> GetGuestByIdAsync(int id);
 
-        Task<List<Guest>> GetAllGuestsAsync();
+        Task<List<GuestResponseDto>> GetAllGuestsAsync();
     }
 }
