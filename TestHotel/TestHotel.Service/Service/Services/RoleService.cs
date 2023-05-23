@@ -27,7 +27,7 @@ namespace TestHotel.Service.Service.Services
         private readonly IMapper _mapper;
         private readonly IValidator<RoleRequestDto> _roleRequestDtoValidator;
 
-        public RoleService(RoleRepository roleRepository, ILogger<RoleService> logger, IMapper mapper, IValidator<RoleRequestDto> roleRequestDtoValidator)
+        public RoleService(IRoleRepository roleRepository, ILogger<RoleService> logger, IMapper mapper, IValidator<RoleRequestDto> roleRequestDtoValidator)
         {
             _roleRepository = roleRepository;
             _logger = logger;

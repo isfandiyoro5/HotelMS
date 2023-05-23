@@ -25,7 +25,7 @@ namespace TestHotel.Service.Service.Services
         private readonly IMapper _mapper;
         private readonly IValidator<HotelRequestDto> _hotelRequestDtoValidator;
 
-        public HotelService(HotelRepository hotelRepository, ILogger<HotelService> logger, IMapper mapper, IValidator<HotelRequestDto> hotelRequestDtoValidator)
+        public HotelService(IHotelRepository hotelRepository, ILogger<HotelService> logger, IMapper mapper, IValidator<HotelRequestDto> hotelRequestDtoValidator)
         {
             _hotelRepository = hotelRepository;
             _logger = logger;
