@@ -1,7 +1,10 @@
-﻿namespace TestHotel.DataAccess.Model
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TestHotel.DataAccess.Model
 {
     public class Bill
     {
+        [Key]
         public int InvoiceNumber { get; set; }
 
         public int BookingId { get; set; }

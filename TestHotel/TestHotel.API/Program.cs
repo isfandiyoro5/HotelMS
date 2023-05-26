@@ -4,14 +4,10 @@ using TestHotel.DataAccess.DbConnection;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
-    .WriteTo.File("./logs/log-.txt",
-        rollingInterval: RollingInterval.Day)
-    .WriteTo.Seq("http://localhost:5341",
-        Serilog.Events.LogEventLevel.Warning)
-    .MinimumLevel.Debug()
     .ReadFrom.Configuration(builder.Configuration)
     .Enrich.FromLogContext()
     .CreateLogger();
+builder.Host.UseSerilog(logger);//
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 
