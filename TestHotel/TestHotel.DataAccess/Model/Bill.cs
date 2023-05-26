@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TestHotel.DataAccess.Model
 {
     public class Bill
     {
+        [Required]
+        [Key]
         public int InvoiceNumber { get; set; }
 
         public int BookingId { get; set; }
@@ -29,16 +27,16 @@ namespace TestHotel.DataAccess.Model
         public DateTime PaymentDate { get; set; }
 
         public PaymentMode paymentMode { get; set; }
-       
+
         public int CreditCardNumber { get; set; }
-        
+
         public DateTime ExpireDate { get; set; }
-        
+
         public int ChequeNumber { get; set; }
 
 
         public Guest Guest { get; set; }
-        
+
         public Booking Booking { get; set; }
     }
 

@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentValidation;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TestHotel.Service.DTO.AutoMapper;
+using TestHotel.DataAccess.DbConnection;
+using TestHotel.DataAccess.Repository.IRepositories;
+using TestHotel.DataAccess.Repository.Repositories;
 using TestHotel.Service.DTO.RequestDto;
 using TestHotel.Service.Service.IServices;
 using TestHotel.Service.Service.Services;
-using FluentValidation;
-using AutoMapper;
 
 namespace TestHotel.Service.ServiceExtensions
 {
@@ -30,8 +31,17 @@ namespace TestHotel.Service.ServiceExtensions
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<IRoomTypeService, RoomTypeService>();
+            services.AddScoped<IBillRepository, BillRepository>();
+            services.AddScoped<IBookingRepository, BookingRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IGuestRepository, GuestRepository>();
+            services.AddScoped<IHotelRepository, HotelRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
+            services.AddScoped<HotelDbContext>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            
+
         }
     }
 }
