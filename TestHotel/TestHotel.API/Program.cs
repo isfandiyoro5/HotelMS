@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using TestHotel.Service.DTO.AutoMapper;
 using TestHotel.Service.DTO.RequestDto;
 using TestHotel.Service.ServiceExtensions;
+using TestHotel.Service.Service.IServices;
+using TestHotel.Service.Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
