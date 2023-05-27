@@ -45,6 +45,5 @@ namespace TestHotel.API.Controllers
         {
             return await _employeeService.DeleteEmployeeAsync(id);
         }
-
     }
 }
