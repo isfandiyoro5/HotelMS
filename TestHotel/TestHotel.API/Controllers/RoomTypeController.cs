@@ -19,31 +19,66 @@ namespace TestHotel.API.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> AddRoomType(RoomTypeRequestDto roomTypeRequestDto)
         {
-            return await _roomTypeService.AddRoomTypeAsync(roomTypeRequestDto);
+            try
+            {
+                return await _roomTypeService.AddRoomTypeAsync(roomTypeRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet("Id")]
         public async Task<ActionResult<RoomTypeResponseDto>> GetRoomTypeById(int id)
         {
-            return await _roomTypeService.GetRoomTypeByIdAsync(id);
+            try
+            {
+                return await _roomTypeService.GetRoomTypeByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet]
         public async Task<ActionResult<List<RoomTypeResponseDto>>> GetAllRoomTypes()
         {
-            return await _roomTypeService.GetAllRoomTypesAsync();
+            try
+            {
+                return await _roomTypeService.GetAllRoomTypesAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPut]
         public async Task<ActionResult<int>> UpdateRoomType(int id, RoomTypeRequestDto roomTypeRequestDto)
         {
-            return await _roomTypeService.UpdateRoomTypeAsync(id, roomTypeRequestDto);
+            try
+            {
+                return await _roomTypeService.UpdateRoomTypeAsync(id, roomTypeRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpDelete]
         public async Task<ActionResult<int>> DeleteRoomType(int id)
         {
-            return await _roomTypeService.DeleteRoomTypeAsync(id);
+            try
+            {
+                return await _roomTypeService.DeleteRoomTypeAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

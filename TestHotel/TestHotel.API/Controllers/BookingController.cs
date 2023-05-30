@@ -20,31 +20,66 @@ namespace TestHotel.API.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> AddBooking(BookingRequestDto bookingRequestDto)
         {
-            return await _bookingService.AddBookingAsync(bookingRequestDto);
+            try
+            {
+                return await _bookingService.AddBookingAsync(bookingRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet("Id")]
         public async Task<ActionResult<BookingResponseDto>> GetBookingById(int id)
         {
-            return await _bookingService.GetBookingByIdAsync(id);
+            try
+            {
+                return await _bookingService.GetBookingByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet]
         public async Task<ActionResult<List<BookingResponseDto>>> GetAllBookings()
         {
-            return await _bookingService.GetAllBookingsAsync();
+            try
+            {
+                return await _bookingService.GetAllBookingsAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPut]
         public async Task<ActionResult<int>> UpdateBooking(int id, BookingRequestDto bookingRequestDto)
         {
-            return await _bookingService.UpdateBookingAsync(id, bookingRequestDto);
+            try
+            {
+                return await _bookingService.UpdateBookingAsync(id, bookingRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpDelete]
         public async Task<ActionResult<int>> DeleteBooking(int id)
         {
-            return await _bookingService.DeleteBookingAsync(id);
+            try
+            {
+                return await _bookingService.DeleteBookingAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

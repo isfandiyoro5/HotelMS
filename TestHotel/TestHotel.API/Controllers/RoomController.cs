@@ -19,31 +19,66 @@ namespace TestHotel.API.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> AddRoom(RoomRequestDto roomRequestDto)
         {
-            return await _roomService.AddRoomAsync(roomRequestDto);
+            try
+            {
+                return await _roomService.AddRoomAsync(roomRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet("Id")]
         public async Task<ActionResult<RoomResponseDto>> GetRoomById(int id)
         {
-            return await _roomService.GetRoomByIdAsync(id);
+            try
+            {
+                return await _roomService.GetRoomByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet]
         public async Task<ActionResult<List<RoomResponseDto>>> GetAllRooms()
         {
-            return await _roomService.GetAllRoomsAsync();
+            try
+            {
+                return await _roomService.GetAllRoomsAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPut]
         public async Task<ActionResult<int>> UpdateRoom(int id, RoomRequestDto roomRequestDto)
         {
-            return await _roomService.UpdateRoomAsync(id, roomRequestDto);
+            try
+            {
+                return await _roomService.UpdateRoomAsync(id, roomRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpDelete]
         public async Task<ActionResult<int>> DeleteRoom(int id)
         {
-            return await _roomService.DeleteRoomAsync(id);
+            try
+            {
+                return await _roomService.DeleteRoomAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

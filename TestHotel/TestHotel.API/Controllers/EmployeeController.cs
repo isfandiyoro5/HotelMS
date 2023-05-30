@@ -19,31 +19,66 @@ namespace TestHotel.API.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> AddEmployee(EmployeeRequestDto employeeRequestDto)
         {
-            return await _employeeService.AddEmployeeAsync(employeeRequestDto);
+            try
+            {
+                return await _employeeService.AddEmployeeAsync(employeeRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet("Id")]
         public async Task<ActionResult<EmployeeResponseDto>> GetEmployeeByid(int id)
         {
-            return await _employeeService.GetEmployeeByIdAsync(id);
+            try
+            {
+                return await _employeeService.GetEmployeeByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet]
         public async Task<ActionResult<List<EmployeeResponseDto>>> GetAllEmployees()
         {
-            return await _employeeService.GetAllEmployeesAsync();
+            try
+            {
+                return await _employeeService.GetAllEmployeesAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPut]
         public async Task<ActionResult<int>> UpdateEmployee(int id, EmployeeRequestDto employeeRequestDto)
         {
-            return await _employeeService.UpdateEmployeeAsync(id, employeeRequestDto);
+            try
+            {
+                return await _employeeService.UpdateEmployeeAsync(id, employeeRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpDelete]
         public async Task<ActionResult<int>> DeleteEmployee(int id)
         {
-            return await _employeeService.DeleteEmployeeAsync(id);
+            try
+            {
+                return await _employeeService.DeleteEmployeeAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

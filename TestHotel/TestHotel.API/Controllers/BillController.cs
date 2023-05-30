@@ -19,31 +19,66 @@ namespace TestHotel.API.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> AddBill(BillRequestDto billRequestDto)
         {
-            return await _billService.AddBillAsync(billRequestDto);
+            try
+            {
+                return await _billService.AddBillAsync(billRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet("InvoiceNumber")]
         public async Task<ActionResult<BillResponseDto>> GetBillByInvoiceNumber(int invoiceNumber)
         {
-            return await _billService.GetBillByInvoiceNumberAsync(invoiceNumber);
+            try
+            {
+                return await _billService.GetBillByInvoiceNumberAsync(invoiceNumber);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet]
         public async Task<ActionResult<List<BillResponseDto>>> GetAllBills()
         {
-            return await _billService.GetAllBillsAsync();
+            try
+            {
+                return await _billService.GetAllBillsAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPut]
         public async Task<ActionResult<int>> UpdateBill(int invoiceNumber, BillRequestDto billRequestDto)
         {
-            return await _billService.UpdateBillAsync(invoiceNumber, billRequestDto);
+            try
+            {
+                return await _billService.UpdateBillAsync(invoiceNumber, billRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpDelete]
         public async Task<ActionResult<int>> DeleteBill(int invoiceNumber)
         {
-            return await _billService.DeleteBillAsync(invoiceNumber);
+            try
+            {
+                return await _billService.DeleteBillAsync(invoiceNumber);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

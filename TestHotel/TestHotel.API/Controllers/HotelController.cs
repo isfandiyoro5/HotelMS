@@ -19,31 +19,66 @@ namespace TestHotel.API.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> AddHotel(HotelRequestDto hotelRequestDto)
         {
-            return await _hotelService.AddHotelAsync(hotelRequestDto);
+            try
+            {
+                return await _hotelService.AddHotelAsync(hotelRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet("Id")]
         public async Task<ActionResult<HotelResponseDto>> GetHotelById(int id)
         {
-            return await _hotelService.GetHotelByIdAsync(id);
+            try
+            {
+                return await _hotelService.GetHotelByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet]
         public async Task<ActionResult<List<HotelResponseDto>>> GetAllHotels()
         {
-            return await _hotelService.GetAllHotelsAsync();
+            try
+            {
+                return await _hotelService.GetAllHotelsAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPut]
         public async Task<ActionResult<int>> UpdateHotel(int id, HotelRequestDto hotelRequestDto)
         {
-            return await _hotelService.UpdateHotelAsync(id, hotelRequestDto);
+            try
+            {
+                return await _hotelService.UpdateHotelAsync(id, hotelRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpDelete]
         public async Task<ActionResult<int>> DeleteHotel(int id)
         {
-            return await _hotelService.DeleteHotelAsync(id);
+            try
+            {
+                return await _hotelService.DeleteHotelAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

@@ -19,31 +19,66 @@ namespace TestHotel.API.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> AddRole(RoleRequestDto roleRequestDto)
         {
-            return await _roleService.AddRoleAsync(roleRequestDto);
+            try
+            {
+                return await _roleService.AddRoleAsync(roleRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet("Id")]
         public async Task<ActionResult<RoleResponseDto>> GetRoleById(int id)
         {
-            return await _roleService.GetRoleByIdAsync(id);
+            try
+            {
+                return await _roleService.GetRoleByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet]
         public async Task<ActionResult<List<RoleResponseDto>>> GetAllRoles()
         {
-            return await _roleService.GetAllRolesAsync();
+            try
+            {
+                return await _roleService.GetAllRolesAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPut]
         public async Task<ActionResult<int>> UpdateRole(int id, RoleRequestDto roleRequestDto)
         {
-            return await _roleService.UpdateRoleAsync(id, roleRequestDto);
+            try
+            {
+                return await _roleService.UpdateRoleAsync(id, roleRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpDelete]
         public async Task<ActionResult<int>> DeleteRole(int id)
         {
-            return await _roleService.DeleteRoleAsync(id);
+            try
+            {
+                return await _roleService.DeleteRoleAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

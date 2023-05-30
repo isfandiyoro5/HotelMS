@@ -19,31 +19,66 @@ namespace TestHotel.API.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> AddGuest(GuestRequestDto guestRequestDto)
         {
-            return await _guestService.AddGuestAsync(guestRequestDto);
+            try
+            {
+                return await _guestService.AddGuestAsync(guestRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet("Id")]
         public async Task<ActionResult<GuestResponseDto>> GetGuestId(int id)
         {
-            return await _guestService.GetGuestByIdAsync(id);
+            try
+            {
+                return await _guestService.GetGuestByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet]
         public async Task<ActionResult<List<GuestResponseDto>>> GetAllGuests()
         {
-            return await _guestService.GetAllGuestsAsync();
+            try
+            {
+                return await _guestService.GetAllGuestsAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPut]
         public async Task<ActionResult<int>> UpdateGuest(int id, GuestRequestDto guestRequestDto)
         {
-            return await _guestService.UpdateGuestAsync(id, guestRequestDto);
+            try
+            {
+                return await _guestService.UpdateGuestAsync(id, guestRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpDelete]
         public async Task<ActionResult<int>> DeleteGuest(int id)
         {
-            return await _guestService.DeleteGuestAsync(id);
+            try
+            {
+                return await _guestService.DeleteGuestAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }
