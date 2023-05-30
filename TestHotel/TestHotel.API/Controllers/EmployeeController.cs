@@ -68,7 +68,7 @@ namespace TestHotel.API.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("Id")]
         public async Task<ActionResult<int>> DeleteEmployee(int id)
         {
             try
