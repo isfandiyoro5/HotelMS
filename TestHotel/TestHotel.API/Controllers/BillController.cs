@@ -68,7 +68,7 @@ namespace TestHotel.API.Controllers
             }
         }
 
-        [HttpDelete("Id")]
+        [HttpDelete("InvoiceNumber")]
         public async Task<ActionResult<int>> DeleteBill(int invoiceNumber)
         {
             try
