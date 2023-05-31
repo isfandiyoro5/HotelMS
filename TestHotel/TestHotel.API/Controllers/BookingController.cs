@@ -69,7 +69,7 @@ namespace TestHotel.API.Controllers
             }
         }
 
-        [HttpDelete("Id")]
+        [HttpDelete("id")]
         public async Task<ActionResult<int>> DeleteBooking(int id)
         {
             try
