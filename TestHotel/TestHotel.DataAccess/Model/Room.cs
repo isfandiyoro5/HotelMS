@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TestHotel.DataAccess.Model
 {
     public class Room
     {
+        [Required]
+        [Key]
         public int RoomNumber { get; set; }
 
         public RoomTypes RoomTypes { get; set; }
@@ -20,10 +18,10 @@ namespace TestHotel.DataAccess.Model
 
 
         public List<RoomType> roomType { get; set; }
-                
+
         public List<Booking> bookings { get; set; }
-        
-        public Hotel Hotel { get; set; } 
+
+        public Hotel Hotel { get; set; }
     }
 
     public enum RoomTypes
