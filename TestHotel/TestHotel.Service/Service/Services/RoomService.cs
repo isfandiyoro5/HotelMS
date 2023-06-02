@@ -31,7 +31,6 @@ namespace TestHotel.Service.Service.Services
             _mapper = mapper;
             _roomRequestDtoValidator = roomRequestDtoValidator;
         }
-
         public async Task<int> AddRoomAsync(RoomRequestDto roomRequestDto)
         {
             try
