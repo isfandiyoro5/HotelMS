@@ -1,20 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestHotel.DataAccess.Model;
-using TestHotel.DataAccess.Repository.IRepositories;
-using TestHotel.Service.Service.IServices;
-using TestHotel.Service.DTO.RequestDto;
-using TestHotel.Service.DTO.ResponseDto;
-using AutoMapper;
-using TestHotel.DataAccess.Repository.Repositories;
+﻿using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using TestHotel.DataAccess.Model;
+using TestHotel.DataAccess.Repository.IRepositories;
+using TestHotel.Service.DTO.RequestDto;
+using TestHotel.Service.DTO.ResponseDto;
+using TestHotel.Service.Service.IServices;
 
 namespace TestHotel.Service.Service.Services
 {

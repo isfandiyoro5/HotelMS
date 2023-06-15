@@ -91,11 +91,6 @@ namespace TestHotel.Service.Service.Services
             {
                 return _mapper.Map<List<GuestResponseDto>>(await _guestRepository.GetAllGuestsAsync());
             }
-            catch (SqlException ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new Exception("SQL so'rovini bajarishda xatolik yuz berdi.", ex);
-            }
             catch (InvalidOperationException ex)
             {
                 _logger.LogError("Databazada barcha Guestlarni olishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);

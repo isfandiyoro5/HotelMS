@@ -16,13 +16,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestHotel.API", "TestHotel.
 		{DBED404B-A184-415A-9D51-1CFE666B43FA} = {DBED404B-A184-415A-9D51-1CFE666B43FA}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit.Test", "Unit.Test", "{A55C1B63-4295-4613-9EB7-BA09FA92A5AF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HotelMS.Unit.Tests", "HotelMS.Unit.Tests", "{A55C1B63-4295-4613-9EB7-BA09FA92A5AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Test", "API.Test\API.Test.csproj", "{B5A45118-EA35-4CF4-B931-BB40260B8B65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API.Test", "API.Test\API.Test.csproj", "{B5A45118-EA35-4CF4-B931-BB40260B8B65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Test", "DataAccess.Test\DataAccess.Test.csproj", "{0BFBD887-1EE8-400F-9A18-31F0A9334D92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.Test", "DataAccess.Test\DataAccess.Test.csproj", "{0BFBD887-1EE8-400F-9A18-31F0A9334D92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Test", "Service.Test\Service.Test.csproj", "{B4B61F35-E4E1-4894-AB07-71B279DF854E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Test", "Service.Test\Service.Test.csproj", "{B4B61F35-E4E1-4894-AB07-71B279DF854E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
