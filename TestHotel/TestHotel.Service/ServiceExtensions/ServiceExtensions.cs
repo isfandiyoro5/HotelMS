@@ -38,7 +38,6 @@ namespace TestHotel.Service.ServiceExtensions
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<HotelDbContext>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
         }
     }
 }
