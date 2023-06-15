@@ -4,8 +4,6 @@ namespace TestHotel.DataAccess.Model
 {
     public class Room
     {
-        [Required]
-        [Key]
         public int RoomId { get; set; }
 
         public int HotelId { get; set; }

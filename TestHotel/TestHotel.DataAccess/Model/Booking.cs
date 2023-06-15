@@ -8,7 +8,7 @@
 
         public int GuestId { get; set; }
 
-        public int RoomNumber { get; set; }
+        public int RoomId { get; set; }
 
         public DateTime BookingDate { get; set; }
 

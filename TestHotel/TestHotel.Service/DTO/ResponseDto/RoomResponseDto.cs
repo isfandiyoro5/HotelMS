@@ -6,8 +6,12 @@
 
         public int HotelId { get; set; }
 
-        public int RoomNumer { get; set; }
+        public int RoomNumber { get; set; }
 
         public string Occupancy { get; set; }
+
+        public string RoomsDescription { get; set; }
+
+        public double RoomPrice { get; set; }
     }
 }
