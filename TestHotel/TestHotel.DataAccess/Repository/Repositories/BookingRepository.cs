@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Data.Common;
 using TestHotel.DataAccess.DbConnection;
@@ -66,10 +65,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
             try
             {
                 return await _context.Bookings
-                    .Include(u => u.Bills)
-                    .Include(u => u.Guests)
+                    .Include(u => u.Bill)
+                    .Include(u => u.Guest)
                     .Include(u => u.Hotel)
-                    .Include(u => u.Room)
+                    .Include(u => u.Rooms)
                     .AsSplitQuery()
                     .ToListAsync();
             }
@@ -91,10 +90,10 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _logger.LogInformation("BookingById muvaffaqiyatli topildi");
                 return await _context.Bookings
-                    .Include(u => u.Bills)
-                    .Include(u => u.Guests)
+                    .Include(u => u.Bill)
+                    .Include(u => u.Guest)
                     .Include(u => u.Hotel)
-                    .Include(u => u.Room)
+                    .Include(u => u.Rooms)
                     .AsSplitQuery()
                     .FirstOrDefaultAsync(u => u.BookingId == id);
             }

@@ -1,9 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 
 namespace TestHotel.Service.DTO.RequestDto
@@ -28,11 +23,11 @@ namespace TestHotel.Service.DTO.RequestDto
 
         public string PassportNumber { get; set; }
 
-        public string Address { get; set; }
+        public string Country { get; set; }
 
         public string City { get; set; }
 
-        public string Country { get; set; }
+        public string Street { get; set; }
     }
 
     public class GuestRequestDtoValidator : AbstractValidator<GuestRequestDto>
@@ -77,7 +72,7 @@ namespace TestHotel.Service.DTO.RequestDto
                 .NotNull().WithMessage("Passport number ni kiritish kerak.")
                 .NotEmpty().WithMessage("Passport number bo'sh bo'la olmaydi.");
 
-            RuleFor(u => u.Address)
+            RuleFor(u => u.Street)
                 .NotNull().WithMessage("Address ni kiritish kerak.")
                 .NotEmpty().WithMessage("Address bo'sh bo'la olmaydi.");
 

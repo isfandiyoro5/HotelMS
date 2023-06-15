@@ -1,20 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestHotel.DataAccess.Model;
-using TestHotel.DataAccess.Repository.IRepositories;
-using TestHotel.DataAccess.Repository.Repositories;
-using TestHotel.Service.Service.IServices;
-using TestHotel.Service.DTO.RequestDto;
-using TestHotel.Service.DTO.ResponseDto;
-using AutoMapper;
+﻿using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using TestHotel.DataAccess.Model;
+using TestHotel.DataAccess.Repository.IRepositories;
+using TestHotel.Service.DTO.RequestDto;
+using TestHotel.Service.DTO.ResponseDto;
+using TestHotel.Service.Service.IServices;
 
 namespace TestHotel.Service.Service.Services
 {
@@ -91,11 +84,6 @@ namespace TestHotel.Service.Service.Services
             {
                 return _mapper.Map<List<GuestResponseDto>>(await _guestRepository.GetAllGuestsAsync());
             }
-            catch (SqlException ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new Exception("SQL so'rovini bajarishda xatolik yuz berdi.", ex);
-            }
             catch (InvalidOperationException ex)
             {
                 _logger.LogError("Databazada barcha Guestlarni olishda xatolik yuz berdi: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
@@ -150,7 +138,7 @@ namespace TestHotel.Service.Service.Services
                         guestResult.Email = guestRequestDto.Email;
                         guestResult.Password = guestRequestDto.Password;
                         guestResult.PassportNumber = guestRequestDto.PassportNumber;
-                        guestResult.Address = guestRequestDto.Address;
+                        guestResult.Street = guestRequestDto.Street;
                         guestResult.City = guestRequestDto.City;
                         guestResult.Country = guestRequestDto.Country;
                         return await _guestRepository.UpdateGuestAsync(guestResult);

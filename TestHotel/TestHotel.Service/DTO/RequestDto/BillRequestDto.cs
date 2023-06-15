@@ -1,9 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 
 namespace TestHotel.Service.DTO.RequestDto
@@ -16,7 +11,7 @@ namespace TestHotel.Service.DTO.RequestDto
 
         public PaymentMode PaymentMode { get; set; }
 
-        public int CreditCardNumber { get; set; }
+        public string CreditCardNumber { get; set; }
 
         public DateTime ExpireDate { get; set; }
     }

@@ -1,9 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestHotel.Service.DTO.RequestDto
 {
@@ -11,11 +6,11 @@ namespace TestHotel.Service.DTO.RequestDto
     {
         public string HotelName { get; set; }
 
-        public string Address { get; set; }
+        public string Country { get; set; }
 
         public string City { get; set; }
 
-        public string Country { get; set; }
+        public string Street { get; set; }
 
         public int NumberOfRooms { get; set; }
 
@@ -30,7 +25,7 @@ namespace TestHotel.Service.DTO.RequestDto
                 .NotNull().WithMessage("Hotel name ni kiritish kerak.")
                 .NotEmpty().WithMessage("Hotel name bo'sh bo'la olmaydi.");
 
-            RuleFor(u => u.Address)
+            RuleFor(u => u.Street)
                 .NotNull().WithMessage("Address ni kiritish kerak.")
                 .NotEmpty().WithMessage("Address bo'sh bo'la olmaydi.");
 
