@@ -1,19 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
-using TestHotel.DataAccess.Repository.Repositories;
-using TestHotel.Service.Service.IServices;
 using TestHotel.Service.DTO.RequestDto;
 using TestHotel.Service.DTO.ResponseDto;
-using AutoMapper;
-using FluentValidation;
-using FluentValidation.Results;
+using TestHotel.Service.Service.IServices;
 
 namespace TestHotel.Service.Service.Services
 {
@@ -84,7 +78,7 @@ namespace TestHotel.Service.Service.Services
                 {
                     throw new Exception("Qiymatlarni noto'g'ri yoki chala kiritgansiz, qaytadan barchasini to'g'ri va to'liq kiritishga urinib ko'ring");
                 }
-                
+
             }
             catch (DbUpdateException ex)
             {

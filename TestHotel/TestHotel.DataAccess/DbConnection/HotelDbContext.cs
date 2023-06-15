@@ -23,7 +23,5 @@ namespace TestHotel.DataAccess.DbConnection
         public DbSet<Role> Roles { get; set; }
 
         public DbSet<Room> Rooms { get; set; }
-
-        public DbSet<RoomType> RoomTypes { get; set; }
     }
 }

@@ -22,7 +22,6 @@ namespace TestHotel.Service.ServiceExtensions
             services.AddScoped<IValidator<HotelRequestDto>, HotelRequestDtoValidator>();
             services.AddScoped<IValidator<RoleRequestDto>, RoleRequestDtoValidator>();
             services.AddScoped<IValidator<RoomRequestDto>, RoomRequestDtoValidator>();
-            services.AddScoped<IValidator<RoomTypeRequestDto>, RoomTypeRequestDtoValidator>();
             services.AddScoped<IBillService, BillService>();
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
@@ -30,7 +29,6 @@ namespace TestHotel.Service.ServiceExtensions
             services.AddScoped<IHotelService, HotelService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IRoomService, RoomService>();
-            services.AddScoped<IRoomTypeService, RoomTypeService>();
             services.AddScoped<IBillRepository, BillRepository>();
             services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
@@ -38,10 +36,8 @@ namespace TestHotel.Service.ServiceExtensions
             services.AddScoped<IHotelRepository, HotelRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
-            services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
             services.AddScoped<HotelDbContext>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
         }
     }
 }
