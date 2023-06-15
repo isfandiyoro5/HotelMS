@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace TestHotel.DataAccess.Model
+﻿namespace TestHotel.DataAccess.Model
 {
     public class Hotel
     {
