@@ -14,7 +14,7 @@ namespace TestHotel.DataAccess.Model
 
         public RoomTypes RoomType { get; set; }
 
-        public Occupency Occupancy { get; set; }
+        public Occupancy Occupancy { get; set; }
 
         public double RoomPrice { get; set; }
 
@@ -28,7 +28,7 @@ namespace TestHotel.DataAccess.Model
         public Hotel Hotel { get; set; }
     }
 
-    public enum Occupency
+    public enum Occupancy
     {
         Empty,
         Busy
