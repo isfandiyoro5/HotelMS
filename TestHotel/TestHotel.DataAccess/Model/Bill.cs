@@ -26,9 +26,9 @@ namespace TestHotel.DataAccess.Model
 
         public DateTime PaymentDate { get; set; }
 
-        public PaymentMode paymentMode { get; set; }
+        public PaymentMode PaymentMode { get; set; }
 
-        public int CreditCardNumber { get; set; }
+        public string CreditCardNumber { get; set; }
 
         public DateTime ExpireDate { get; set; }
 

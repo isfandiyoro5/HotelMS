@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Data.SqlClient;
 using TestHotel.DataAccess.DbConnection;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
@@ -36,7 +35,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
             catch (Exception ex)
             {
                 _logger.LogError("Roomni databazaga saqlashda kutilmagan xatolik: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
-                throw new Exception("Roomni saqlashda kutilmagan xatolik. Iltimos keyinroq qayta urinib ko'ring.");
+                throw new Exception($"Roomni saqlashda kutilmagan xatolik. Iltimos keyinroq qayta urinib ko'ring.{ex.Message}, {ex.StackTrace}");
             }
         }
 
@@ -66,8 +65,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
             try
             {
                 return await _context.Rooms
-                    .Include(u => u.roomType)
-                    .Include(u => u.bookings)
+                    .Include(u => u.Bookings)
                     .Include(u => u.Hotel)
                     .AsSplitQuery()
                     .ToListAsync();
@@ -84,17 +82,16 @@ namespace TestHotel.DataAccess.Repository.Repositories
             }
         }
 
-        public async Task<Room> GetRoomByIdAsync(int roomNumber)
+        public async Task<Room> GetRoomByIdAsync(int id)
         {
             try
             {
                 _logger.LogInformation("RoomById muvaffaqiyatli topildi");
                 return await _context.Rooms
-                    .Include(u => u.roomType)
-                    .Include(u => u.bookings)
+                    .Include(u => u.Bookings)
                     .Include(u => u.Hotel)
                     .AsSplitQuery()
-                    .FirstOrDefaultAsync(u => u.RoomNumber == roomNumber);
+                    .FirstOrDefaultAsync(u => u.RoomId == id);
             }
             catch (InvalidOperationException ex)
             {

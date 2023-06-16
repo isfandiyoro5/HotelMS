@@ -9,6 +9,6 @@
         public string RoleDescription { get; set; }
 
 
-        public List<Employee> Employee { get; set; }
+        public List<Employee> Employees { get; set; }
     }
 }

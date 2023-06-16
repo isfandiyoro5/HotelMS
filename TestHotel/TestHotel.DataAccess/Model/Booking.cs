@@ -1,17 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace TestHotel.DataAccess.Model
+﻿namespace TestHotel.DataAccess.Model
 {
     public class Booking
     {
-        [Key]
         public int BookingId { get; set; }
 
         public int HotelId { get; set; }
 
         public int GuestId { get; set; }
 
-        public int RoomNumber { get; set; }
+        public int RoomId { get; set; }
 
         public DateTime BookingDate { get; set; }
 
@@ -26,12 +23,12 @@ namespace TestHotel.DataAccess.Model
         public int NumberChildren { get; set; }
 
 
-        public Room Room { get; set; }
+        public List<Room> Rooms { get; set; }
 
         public Hotel Hotel { get; set; }
 
-        public List<Guest> Guests { get; set; }
+        public Guest Guest { get; set; }
 
-        public List<Bill> Bills { get; set; }
+        public Bill Bill { get; set; }
     }
 }

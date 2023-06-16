@@ -65,7 +65,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
             try
             {
                 return await _context.Roles
-                    .Include(u => u.Employee)
+                    .Include(u => u.Employees)
                     .AsSplitQuery()
                     .ToListAsync();
             }
@@ -87,7 +87,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _logger.LogInformation("RoleById muvaffaqiyatli topildi");
                 return await _context.Roles
-                    .Include(u => u.Employee)
+                    .Include(u => u.Employees)
                     .AsSplitQuery()
                     .FirstOrDefaultAsync(u => u.RoleId == id);
             }

@@ -1,22 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
-using TestHotel.DataAccess.Repository.Repositories;
-using TestHotel.Service.Service.IServices;
 using TestHotel.Service.DTO.RequestDto;
 using TestHotel.Service.DTO.ResponseDto;
-using AutoMapper;
-using System.Security.AccessControl;
-using FluentValidation;
-using Microsoft.AspNetCore.Components.Forms;
-using FluentValidation.Results;
+using TestHotel.Service.Service.IServices;
 
 namespace TestHotel.Service.Service.Services
 {
@@ -40,7 +31,7 @@ namespace TestHotel.Service.Service.Services
             try
             {
                 ValidationResult validationResult = await _roleRequestDtoValidator.ValidateAsync(roleRequestDto);
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     return await _roleRepository.AddRoleAsync(_mapper.Map<Role>(roleRequestDto));
                 }
@@ -129,7 +120,7 @@ namespace TestHotel.Service.Service.Services
             try
             {
                 ValidationResult validationResult = await _roleRequestDtoValidator.ValidateAsync(roleRequestDto);
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     var roleResult = await _roleRepository.GetRoleByIdAsync(id);
                     if (roleResult is not null)

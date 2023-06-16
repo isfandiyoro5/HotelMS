@@ -1,13 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace TestHotel.DataAccess.Model
+﻿namespace TestHotel.DataAccess.Model
 {
     public class Guest
     {
-        [Key]
         public int GuestId { get; set; }
-
-        public int BookingId { get; set; }
 
         public GuestPriority GuestPriority { get; set; }
 
@@ -27,11 +22,11 @@ namespace TestHotel.DataAccess.Model
 
         public string PassportNumber { get; set; }
 
-        public string Address { get; set; }
+        public string Country { get; set; }
 
         public string City { get; set; }
 
-        public string Country { get; set; }
+        public string Street { get; set; }
 
 
         public List<Booking> Bookings { get; set; }

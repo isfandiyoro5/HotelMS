@@ -1,20 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace TestHotel.DataAccess.Model
+﻿namespace TestHotel.DataAccess.Model
 {
     public class Hotel
     {
-        [Key]
         public int HotelId { get; set; }
 
         public string HotelName { get; set; }
-
-        public string Address { get; set; }
-
-        public string City { get; set; }
-
+        
         public string Country { get; set; }
-
+        
+        public string City { get; set; }
+        
+        public string Street { get; set; }
+        
         public int NumberOfRooms { get; set; }
 
         public string PhoneNumber { get; set; }
