@@ -4,8 +4,6 @@
     {
         public int GuestId { get; set; }
 
-        public int BookingId { get; set; }
-
         public GuestPriority GuestPriority { get; set; }
 
         public string FirstName { get; set; }

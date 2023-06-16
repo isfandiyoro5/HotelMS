@@ -5,8 +5,6 @@ namespace TestHotel.Service.DTO.RequestDto
 {
     public class GuestRequestDto
     {
-        public int BookingId { get; set; }
-
         public GuestPriority GuestPriority { get; set; }
 
         public string FirstName { get; set; }
