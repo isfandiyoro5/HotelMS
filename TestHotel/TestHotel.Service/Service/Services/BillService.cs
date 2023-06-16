@@ -64,7 +64,7 @@ namespace TestHotel.Service.Service.Services
                     {
                         billResult.IfLateCheckout = billRequestDto.IfLateCheckout;
                         billResult.PaymentDate = billRequestDto.PaymentDate;
-                        billResult.paymentMode = billRequestDto.PaymentMode;
+                        billResult.PaymentMode = billRequestDto.PaymentMode;
                         billResult.CreditCardNumber = billRequestDto.CreditCardNumber;
                         billResult.ExpireDate = billRequestDto.ExpireDate;
                         return await _billRepository.UpdateBillAsync(billResult);

@@ -5,6 +5,10 @@ namespace TestHotel.Service.DTO.RequestDto
 {
     public class BillRequestDto
     {
+        public int BookingId { get; set; }
+
+        public int GuestId { get; set; }
+
         public DateTime IfLateCheckout { get; set; }
 
         public DateTime PaymentDate { get; set; }
