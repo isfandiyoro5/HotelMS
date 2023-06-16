@@ -49,7 +49,7 @@ namespace TestHotel.Service.Service.Services
             catch (Exception ex)
             {
                 _logger.LogError("Roomni databazaga saqlashda kutilmagan xatolik: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
-                throw new Exception($"Roomni saqlashda kutilmagan xatolik. Iltimos keyinroq qayta urinib ko'ring.{ex.Message}, {ex.StackTrace}");
+                throw new Exception("Roomni saqlashda kutilmagan xatolik. Iltimos keyinroq qayta urinib ko'ring.");
             }
         }
 
