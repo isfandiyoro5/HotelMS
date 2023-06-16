@@ -12,7 +12,7 @@ namespace TestHotel.API.Controllers
     {
         public readonly IBookingService _bookingService;
 
-        public BookingController(BookingService bookingService)
+        public BookingController(IBookingService bookingService)
         {
             _bookingService = bookingService;
         }
