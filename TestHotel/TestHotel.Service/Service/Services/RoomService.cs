@@ -31,7 +31,7 @@ namespace TestHotel.Service.Service.Services
             try
             {
                 ValidationResult validationResult = await _roomRequestDtoValidator.ValidateAsync(roomRequestDto);
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     return await _roomRepository.AddRoomAsync(_mapper.Map<Room>(roomRequestDto));
                 }
@@ -49,7 +49,7 @@ namespace TestHotel.Service.Service.Services
             catch (Exception ex)
             {
                 _logger.LogError("Roomni databazaga saqlashda kutilmagan xatolik: {0} StackTrace: {1}", ex.Message, ex.StackTrace);
-                throw new Exception("Roomni saqlashda kutilmagan xatolik. Iltimos keyinroq qayta urinib ko'ring.");
+                throw new Exception($"Roomni saqlashda kutilmagan xatolik. Iltimos keyinroq qayta urinib ko'ring.{ex.Message}, {ex.StackTrace}");
             }
         }
 
@@ -120,7 +120,7 @@ namespace TestHotel.Service.Service.Services
             try
             {
                 ValidationResult validationResult = await _roomRequestDtoValidator.ValidateAsync(roomRequestDto);
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     var roomResult = await _roomRepository.GetRoomByIdAsync(id);
                     if (roomResult is not null)

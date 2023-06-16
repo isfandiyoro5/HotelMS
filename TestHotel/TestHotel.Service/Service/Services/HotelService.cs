@@ -31,7 +31,7 @@ namespace TestHotel.Service.Service.Services
             try
             {
                 ValidationResult validationResult = await _hotelRequestDtoValidator.ValidateAsync(hotelRequestDto);
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     return await _hotelRepository.AddHotelAsync(_mapper.Map<Hotel>(hotelRequestDto));
                 }
@@ -124,7 +124,7 @@ namespace TestHotel.Service.Service.Services
             try
             {
                 ValidationResult validationResult = await _hotelRequestDtoValidator.ValidateAsync(hotelRequestDto);
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     var hotelResult = await _hotelRepository.GetHotelByIdAsync(id);
                     if (hotelResult is not null)

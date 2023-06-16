@@ -31,7 +31,7 @@ namespace TestHotel.Service.Service.Services
             try
             {
                 ValidationResult validationResult = await _billRequestDtoValidator.ValidateAsync(billRequestDto);
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     return await _billRepository.AddBillAsync(_mapper.Map<Bill>(billRequestDto));
                 }
@@ -57,7 +57,7 @@ namespace TestHotel.Service.Service.Services
             try
             {
                 ValidationResult validationResult = await _billRequestDtoValidator.ValidateAsync(billRequestDto);
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     var billResult = await _billRepository.GetBillByInvoiceNumberAsync(invoiceNumber);
                     if (billResult is not null)

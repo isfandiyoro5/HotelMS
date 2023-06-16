@@ -31,7 +31,7 @@ namespace TestHotel.Service.Service.Services
             try
             {
                 ValidationResult validationResult = await _employeeRequestDtoValidator.ValidateAsync(employeeRequestDto);
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     return await _employeeRepository.AddEmployeeAsync(_mapper.Map<Employee>(employeeRequestDto));
                 }
@@ -119,7 +119,7 @@ namespace TestHotel.Service.Service.Services
             try
             {
                 ValidationResult validationResult = await _employeeRequestDtoValidator.ValidateAsync(employeeRequestDto);
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     var employeeResult = await _employeeRepository.GetEmployeeByIdAsync(id);
                     if (employeeResult is not null)

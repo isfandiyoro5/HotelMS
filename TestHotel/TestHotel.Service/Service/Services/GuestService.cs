@@ -31,7 +31,7 @@ namespace TestHotel.Service.Service.Services
             try
             {
                 ValidationResult validationResult = await _guestRequestDtoValidator.ValidateAsync(guestRequestDto);
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     return await _guestRepository.AddGuestAsync(_mapper.Map<Guest>(guestRequestDto));
                 }
@@ -124,7 +124,7 @@ namespace TestHotel.Service.Service.Services
             try
             {
                 ValidationResult validationResult = await _guestRequestDtoValidator.ValidateAsync(guestRequestDto);
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     var guestResult = await _guestRepository.GetGuestByIdAsync(id);
                     if (guestResult is not null)

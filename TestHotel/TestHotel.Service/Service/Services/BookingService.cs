@@ -32,7 +32,7 @@ namespace TestHotel.Service.Service.Services
             try
             {
                 ValidationResult validationResult = await _bookingRequestDtoValidator.ValidateAsync(bookingRequestDto);
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     return await _bookingRepository.AddBookingAsync(_mapper.Map<Booking>(bookingRequestDto));
                 }
@@ -58,7 +58,7 @@ namespace TestHotel.Service.Service.Services
             try
             {
                 ValidationResult validationResult = await _bookingRequestDtoValidator.ValidateAsync(bookingRequestDto);
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     var bookingResult = await _bookingRepository.GetBookingByIdAsync(id);
                     if (bookingResult is not null)

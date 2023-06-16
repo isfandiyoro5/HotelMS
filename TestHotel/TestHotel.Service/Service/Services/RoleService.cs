@@ -31,7 +31,7 @@ namespace TestHotel.Service.Service.Services
             try
             {
                 ValidationResult validationResult = await _roleRequestDtoValidator.ValidateAsync(roleRequestDto);
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     return await _roleRepository.AddRoleAsync(_mapper.Map<Role>(roleRequestDto));
                 }
@@ -120,7 +120,7 @@ namespace TestHotel.Service.Service.Services
             try
             {
                 ValidationResult validationResult = await _roleRequestDtoValidator.ValidateAsync(roleRequestDto);
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     var roleResult = await _roleRepository.GetRoleByIdAsync(id);
                     if (roleResult is not null)

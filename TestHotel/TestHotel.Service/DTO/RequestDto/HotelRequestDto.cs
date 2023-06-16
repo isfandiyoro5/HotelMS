@@ -43,8 +43,8 @@ namespace TestHotel.Service.DTO.RequestDto
 
             RuleFor(u => u.PhoneNumber)
                 .NotNull().WithMessage("Phone number ni kiritish kerak.")
-                .NotEmpty().WithMessage("Phone number bo'sh bo'la olmaydi.")
-                .Matches(@"^[0-9]{10}$").WithMessage("Telefon raqami noto'g'ri kiritilgan.");
+                .NotEmpty().WithMessage("Phone number bo'sh bo'la olmaydi.");
+                /*.Matches(@"^[0-9]{10}$").WithMessage("Telefon raqami noto'g'ri kiritilgan.");*/
         }
     }
 }
