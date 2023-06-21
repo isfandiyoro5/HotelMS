@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EmailService;
+using Microsoft.AspNetCore.Mvc;
 using TestHotel.Service.DTO.RequestDto;
 using TestHotel.Service.DTO.ResponseDto;
 using TestHotel.Service.Service.IServices;
@@ -10,10 +11,12 @@ namespace TestHotel.API.Controllers
     public class GuestController : ControllerBase
     {
         private readonly IGuestService _guestService;
+        private readonly IEmailSender _emailSender;
 
-        public GuestController(IGuestService guestService)
+        public GuestController(IGuestService guestService, IEmailSender emailSender)
         {
             _guestService = guestService;
+            _emailSender = emailSender;
         }
 
         [HttpPost]
@@ -21,7 +24,12 @@ namespace TestHotel.API.Controllers
         {
             try
             {
-                return await _guestService.AddGuestAsync(guestRequestDto);
+                int result = await _guestService.AddGuestAsync(guestRequestDto);
+                var message = new Message(new string[] { guestRequestDto.Email }, "HotelMS", "Hotelga yangi Guest qo'shildi"
+                    ,$"{guestRequestDto.FirstName} {guestRequestDto.LastName}");
+
+                _emailSender.SendEmail(message);
+                return result;
             }
             catch (Exception ex)
             {
@@ -60,7 +68,12 @@ namespace TestHotel.API.Controllers
         {
             try
             {
-                return await _guestService.UpdateGuestAsync(id, guestRequestDto);
+                int result = await _guestService.UpdateGuestAsync(id, guestRequestDto);
+                var message = new Message(new string[] { guestRequestDto.Email }, "HotelMS", "Hoteldagi Guest yangilandi"
+                    ,$"{guestRequestDto.FirstName} {guestRequestDto.LastName}");
+
+                _emailSender.SendEmail(message);
+                return result;
             }
             catch (Exception ex)
             {
