@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TestHotel.DataAccess.Model
 {
@@ -8,8 +9,10 @@ namespace TestHotel.DataAccess.Model
         [Key]
         public int InvoiceNumber { get; set; }
 
+        [ForeignKey("Booking")]
         public int BookingId { get; set; }
 
+        [ForeignKey("Guest")]
         public int GuestId { get; set; }
 
         public int RoomCharge { get; set; }

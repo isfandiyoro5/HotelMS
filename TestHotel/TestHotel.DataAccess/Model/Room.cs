@@ -1,9 +1,12 @@
-﻿namespace TestHotel.DataAccess.Model
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace TestHotel.DataAccess.Model
 {
     public class Room
     {
         public int RoomId { get; set; }
 
+        [ForeignKey("Hotel")]
         public int HotelId { get; set; }
 
         public int RoomNumber { get; set; }

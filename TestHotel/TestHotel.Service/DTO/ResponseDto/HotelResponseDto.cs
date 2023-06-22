@@ -10,6 +10,8 @@ namespace TestHotel.Service.DTO.ResponseDto
 
         public string Address { get; set; }
 
+        public int NumberOfRooms { get; set; }
+
         public string PhoneNumber { get; set; }
 
         public StarRating StarRating { get; set; }
