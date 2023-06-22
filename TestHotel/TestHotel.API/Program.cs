@@ -17,10 +17,9 @@ builder.Services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.
 
 var config = builder.Configuration.GetSection("ConnectionStrings");
 builder.Services.AddDbContext<HotelDbContext>(option => option.UseNpgsql(config["DefaultConnect"]));
-var emailConfig = builder.Configuration.GetSection("EmailConfiguration")
+var emailConfig = builder.Configuration
+    .GetSection("EmailConfiguration")
     .Get<EmailConfiguration>();
-Console.WriteLine("-----------------------");
-Console.WriteLine(emailConfig.Password);
 
 builder.Services.AddSingleton(emailConfig);
 builder.Services.AddScoped<IEmailSender, EmailSender>();
