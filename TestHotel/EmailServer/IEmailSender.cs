@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace EmailService
 {
-    internal class EmailConfiguration
+    public interface IEmailSender
     {
+        void SendEmail(Message message);
     }
 }
