@@ -6,7 +6,6 @@ namespace TestHotel.DataAccess.Model
     {
         public int RoomId { get; set; }
 
-        [ForeignKey("Hotel")]
         public int HotelId { get; set; }
 
         public int RoomNumber { get; set; }
@@ -22,7 +21,7 @@ namespace TestHotel.DataAccess.Model
         public string RoomsDescription { get; set; }
 
 
-        public List<Booking> Bookings { get; set; }
+        public List<BookingRoom> BookingRooms { get; set; }
 
         public Hotel Hotel { get; set; }
     }

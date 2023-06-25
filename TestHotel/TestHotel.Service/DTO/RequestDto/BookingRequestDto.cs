@@ -8,7 +8,7 @@ namespace TestHotel.Service.DTO.RequestDto
 
         public int GuestId { get; set; }
 
-        public List<int> RoomsId { get; set; }
+        public List<int> RoomId { get; set; }
 
         public DateTime BookingDate { get; set; }
 

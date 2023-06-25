@@ -21,9 +21,7 @@ namespace TestHotel.Service.DTO.AutoMapper
                 .ForMember(bookingResponseDto => bookingResponseDto.HotelName,
                 opt => opt.MapFrom(booking => booking.Hotel.HotelName))
                 .ForMember(bookingResponseDto => bookingResponseDto.GuestFullName,
-                opt => opt.MapFrom(booking => $"{booking.Guest.FirstName} {booking.Guest.LastName}"))
-                .ForMember(bookingRequestDto => bookingRequestDto.RoomsNumber,
-                opt => opt.MapFrom(booking => booking.Rooms.Select(room => room.RoomNumber).ToList()));
+                opt => opt.MapFrom(booking => $"{booking.Guest.FirstName} {booking.Guest.LastName}"));
 
             //EmployeeAutoMapper
             CreateMap<EmployeeRequestDto, Employee>();

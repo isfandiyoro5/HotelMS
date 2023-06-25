@@ -8,7 +8,7 @@
 
         public int GuestId { get; set; }
 
-        public List<int> RoomsId { get; set; }
+        public List<int> RoomId { get; set; }
 
         public DateTime BookingDate { get; set; }
 
@@ -23,7 +23,7 @@
         public int NumberChildren { get; set; }
 
 
-        public List<Room> Rooms { get; set; }
+        public List<BookingRoom> BookingRooms { get; set; }
 
         public Hotel Hotel { get; set; }
 

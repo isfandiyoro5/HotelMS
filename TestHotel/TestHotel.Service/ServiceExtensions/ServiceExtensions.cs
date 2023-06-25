@@ -31,6 +31,7 @@ namespace TestHotel.Service.ServiceExtensions
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<IBillRepository, BillRepository>();
             services.AddScoped<IBookingRepository, BookingRepository>();
+            services.AddScoped<IBookingRoomRepository, BookingRoomRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IGuestRepository, GuestRepository>();
             services.AddScoped<IHotelRepository, HotelRepository>();

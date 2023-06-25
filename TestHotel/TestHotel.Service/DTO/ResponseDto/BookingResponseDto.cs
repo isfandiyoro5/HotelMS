@@ -1,4 +1,6 @@
-﻿namespace TestHotel.Service.DTO.ResponseDto
+﻿using TestHotel.DataAccess.Model;
+
+namespace TestHotel.Service.DTO.ResponseDto
 {
     public class BookingResponseDto
     {
@@ -8,7 +10,7 @@
 
         public string HotelName { get; set; }
 
-        public List<int> RoomsNumber { get; set; }
+        public List<int> RoomNumbers { get; set; }
 
         public DateTime ArrivalDate { get; set; }
 

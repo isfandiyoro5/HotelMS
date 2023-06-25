@@ -11,11 +11,14 @@ namespace TestHotel.DataAccess.Repository.Repositories
     {
         private readonly ILogger<BookingRepository> _logger;
         private readonly HotelDbContext _context;
+        private readonly IBookingRoomRepository _bookingRoomrepository;
+        BookingRoom bookingRoom = new BookingRoom();
 
-        public BookingRepository(HotelDbContext context, ILogger<BookingRepository> logger)
+        public BookingRepository(HotelDbContext context, ILogger<BookingRepository> logger, IBookingRoomRepository bookingRoomrepository)
         {
             _logger = logger;
             _context = context;
+            _bookingRoomrepository = bookingRoomrepository;
         }
 
         public async Task<int> AddBookingAsync(Booking booking)
@@ -24,6 +27,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Bookings.Add(booking);
                 await _context.SaveChangesAsync();
+                for(int i = 0; i < booking.RoomId.Count(); i++)
+                {
+                    bookingRoom.BookingId = booking.BookingId;
+                    bookingRoom.RoomId = booking.RoomId[i];
+                    await _bookingRoomrepository.AddBookingRoomAsync(bookingRoom);
+                }
                 _logger.LogInformation("Booking muvaffaqiyatli qo'shildi");
                 return booking.BookingId;
             }
@@ -45,6 +54,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Bookings.Remove(booking);
                 await _context.SaveChangesAsync();
+                for (int i = 0; i < booking.RoomId.Count(); i++)
+                {
+                    bookingRoom.BookingId = booking.BookingId;
+                    bookingRoom.RoomId = booking.RoomId[i];
+                    await _bookingRoomrepository.DeleteBookingRoomAsync(bookingRoom);
+                }
                 _logger.LogInformation("Booking muvaffaqiyatli o'chirildi");
                 return booking.BookingId;
             }
@@ -68,7 +83,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.Bill)
                     .Include(u => u.Guest)
                     .Include(u => u.Hotel)
-                    .Include(u => u.Rooms)
+                    .Include(u => u.BookingRooms)
                     .AsSplitQuery()
                     .ToListAsync();
             }
@@ -93,7 +108,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.Bill)
                     .Include(u => u.Guest)
                     .Include(u => u.Hotel)
-                    .Include(u => u.Rooms)
+                    .Include(u => u.BookingRooms)
                     .AsSplitQuery()
                     .FirstOrDefaultAsync(u => u.BookingId == id);
             }
@@ -115,6 +130,12 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _context.Bookings.Update(booking);
                 await _context.SaveChangesAsync();
+                for (int i = 0; i < booking.RoomId.Count(); i++)
+                {
+                    bookingRoom.BookingId = booking.BookingId;
+                    bookingRoom.RoomId = booking.RoomId[i];
+                    await _bookingRoomrepository.UpdateBookingRoomAsync(bookingRoom);
+                }
                 _logger.LogInformation("Booking muvaffaqiyatli yangilandi");
                 return booking.BookingId;
             }

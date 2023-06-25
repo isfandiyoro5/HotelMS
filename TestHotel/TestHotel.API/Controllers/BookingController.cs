@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TestHotel.DataAccess.Model;
+using TestHotel.DataAccess.Repository.IRepositories;
 using TestHotel.Service.DTO.RequestDto;
 using TestHotel.Service.DTO.ResponseDto;
 using TestHotel.Service.Service.IServices;
-using TestHotel.Service.Service.Services;
 
 namespace TestHotel.API.Controllers
 {
@@ -11,10 +12,12 @@ namespace TestHotel.API.Controllers
     public class BookingController : ControllerBase
     {
         public readonly IBookingService _bookingService;
+        public readonly IBookingRepository _bookingRepository;
 
-        public BookingController(IBookingService bookingService)
+        public BookingController(IBookingService bookingService, IBookingRepository bookingRepository)
         {
             _bookingService = bookingService;
+            _bookingRepository = bookingRepository;
         }
 
         [HttpPost]
@@ -75,6 +78,19 @@ namespace TestHotel.API.Controllers
             try
             {
                 return await _bookingService.DeleteBookingAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("IdTest")]
+        public async Task<ActionResult<Booking>> GetBookingByIdTest(int id)
+        {
+            try
+            {
+                return await _bookingRepository.GetBookingByIdAsync(id);
             }
             catch (Exception ex)
             {

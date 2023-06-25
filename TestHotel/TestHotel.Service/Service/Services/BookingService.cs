@@ -4,6 +4,7 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Data.Common;
+using System.Security.Cryptography.X509Certificates;
 using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
 using TestHotel.Service.DTO.RequestDto;
@@ -123,7 +124,15 @@ namespace TestHotel.Service.Service.Services
         {
             try
             {
-                return _mapper.Map<BookingResponseDto>(await _bookingRepository.GetBookingByIdAsync(id));
+                var resultBooking = await _bookingRepository.GetBookingByIdAsync(id);
+                var resultRoomNumbers = new List<int>();
+                for (int i = 0; i < resultBooking.BookingRooms.Count(); i++)
+                {
+                    resultRoomNumbers.Add(resultBooking.BookingRooms[i].Room.RoomNumber);
+                }
+                var resultBookingResponseDto = _mapper.Map<BookingResponseDto>(resultBooking);
+                resultBookingResponseDto.RoomNumbers = resultRoomNumbers;
+                return resultBookingResponseDto;
             }
             catch (DbException ex)
             {

@@ -30,7 +30,7 @@ namespace TestHotel.Service.DTO.RequestDto
                 .GreaterThan(0).WithMessage("Room number 0dan katta bo'lishi kerak.");
             
             RuleFor(u => u.RoomTypes)
-               .NotNull().WithMessage("Room types ni kiritish kerak.");
+                .NotNull().WithMessage("Room types ni kiritish kerak.");
 
             RuleFor(u => u.Occupancy)
                 .NotNull().WithMessage("Occupancy ni kiritish kerak.");
