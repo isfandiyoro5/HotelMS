@@ -29,7 +29,7 @@ namespace TestHotel.DataAccess.DbConnection
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BookingRoom>()
-                .HasKey(br => new { br.BookingId, br.RoomId });
+                .HasKey(br => new { br.BookingRoomId });
             modelBuilder.Entity<BookingRoom>()
                 .HasOne(b => b.Booking)
                 .WithMany(br => br.BookingRooms)

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TestHotel.DataAccess.Model;
 using TestHotel.DataAccess.Repository.IRepositories;
 using TestHotel.Service.DTO.RequestDto;
 using TestHotel.Service.DTO.ResponseDto;
@@ -78,19 +77,6 @@ namespace TestHotel.API.Controllers
             try
             {
                 return await _bookingService.DeleteBookingAsync(id);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpGet("IdTest")]
-        public async Task<ActionResult<Booking>> GetBookingByIdTest(int id)
-        {
-            try
-            {
-                return await _bookingRepository.GetBookingByIdAsync(id);
             }
             catch (Exception ex)
             {

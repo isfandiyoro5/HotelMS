@@ -9,5 +9,7 @@ namespace TestHotel.DataAccess.Repository.IRepositories
         Task UpdateBookingRoomAsync(BookingRoom bookingRoom);
 
         Task DeleteBookingRoomAsync(BookingRoom bookingRoom);
+
+        Task<List<BookingRoom>> GetAllBookingRoomsByBookingIdAsync(int id);
     }
 }
