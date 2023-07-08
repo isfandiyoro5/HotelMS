@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EmailService;
+using Microsoft.AspNetCore.Mvc;
 using TestHotel.Service.DTO.RequestDto;
 using TestHotel.Service.DTO.ResponseDto;
 using TestHotel.Service.Service.IServices;
-using TestHotel.Service.Service.Services;
 
 namespace TestHotel.API.Controllers
 {
@@ -10,11 +10,15 @@ namespace TestHotel.API.Controllers
     [ApiController]
     public class BookingController : ControllerBase
     {
-        public readonly IBookingService _bookingService;
+        private readonly IBookingService _bookingService;
+        private readonly IGuestService _guestService;
+        private readonly IEmailSender _emailSender;
 
-        public BookingController(IBookingService bookingService)
+        public BookingController(IBookingService bookingService, IEmailSender emailSender, IGuestService guestService)
         {
             _bookingService = bookingService;
+            _emailSender = emailSender;
+            _guestService = guestService;
         }
 
         [HttpPost]
@@ -22,7 +26,13 @@ namespace TestHotel.API.Controllers
         {
             try
             {
-                return await _bookingService.AddBookingAsync(bookingRequestDto);
+                int result = await _bookingService.AddBookingAsync(bookingRequestDto);
+                var guestResponseDto = await _guestService.GetGuestByIdAsync(bookingRequestDto.GuestId);
+                var message = new Message(new string[] {guestResponseDto.Email}, "HotelMS", "Hotelga yangi Booking qoshildi" 
+                    ,guestResponseDto.FullName);
+
+                _emailSender.SendEmail(message);
+                return result;
             }
             catch (Exception ex)
             {
@@ -61,7 +71,13 @@ namespace TestHotel.API.Controllers
         {
             try
             {
-                return await _bookingService.UpdateBookingAsync(id, bookingRequestDto);
+                int result = await _bookingService.UpdateBookingAsync(id, bookingRequestDto);
+                var guestResponseDto = await _guestService.GetGuestByIdAsync(bookingRequestDto.GuestId);
+                var message = new Message(new string[] { guestResponseDto.Email }, "HotelMS", "Hoteldagi Booking yangilandi"
+                    ,guestResponseDto.FullName);
+
+                _emailSender.SendEmail(message);
+                return result;
             }
             catch (Exception ex)
             {

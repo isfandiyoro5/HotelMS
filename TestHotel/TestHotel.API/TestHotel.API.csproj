@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>762fbb93-b154-42f8-9caf-491220baf6bf</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +18,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.8" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
     <PackageReference Include="Serilog.UI" Version="2.4.0" />
@@ -24,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EmailServer\EmailService.csproj" />
     <ProjectReference Include="..\TestHotel.DataAccess\TestHotel.DataAccess.csproj" />
     <ProjectReference Include="..\TestHotel.Service\TestHotel.Service.csproj" />
   </ItemGroup>

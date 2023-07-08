@@ -25,7 +25,7 @@ namespace TestHotel.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
 
