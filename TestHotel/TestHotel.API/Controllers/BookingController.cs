@@ -1,5 +1,6 @@
-﻿using EmailService;
 using Microsoft.AspNetCore.Mvc;
+using EmailService;
+using TestHotel.DataAccess.Repository.IRepositories;
 using TestHotel.Service.DTO.RequestDto;
 using TestHotel.Service.DTO.ResponseDto;
 using TestHotel.Service.Service.IServices;

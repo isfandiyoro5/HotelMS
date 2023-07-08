@@ -6,11 +6,9 @@ namespace TestHotel.Service.DTO.ResponseDto
     {
         public int GuestId { get; set; }
 
-        public int BookingId { get; set; }
+        public string FullName { get; set; }
 
         public GuestPriority GuestPriority { get; set; }
-
-        public string FullName { get; set; }
 
         public string PhoneNumber { get; set; }
 

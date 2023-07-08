@@ -8,7 +8,7 @@ namespace TestHotel.Service.DTO.RequestDto
 
         public int GuestId { get; set; }
 
-        public int RoomId { get; set; }
+        public List<int> RoomId { get; set; }
 
         public DateTime BookingDate { get; set; }
 
@@ -32,7 +32,8 @@ namespace TestHotel.Service.DTO.RequestDto
                 .GreaterThan(DateTime.UtcNow).WithMessage("Booking date sanasi kelajakda bo'lishi kerak.");
 
             RuleFor(u => u.BookingTime)
-                .NotEmpty().WithMessage("Booking time ni kiritish kerak.");
+                .NotEmpty().WithMessage("Booking time ni kiritish kerak.")
+                .GreaterThanOrEqualTo(DateTime.UtcNow).WithMessage("Booking time sanasi kelajakda bo'lishi kerak.");
 
             RuleFor(u => u.ArrivalDate)
                 .NotEmpty().WithMessage("Arrival date ni kiritish kerak.")
@@ -40,10 +41,9 @@ namespace TestHotel.Service.DTO.RequestDto
 
             RuleFor(u => u.DepartureDate)
                 .NotEmpty().WithMessage("Departure date ni kiritish kerak.")
-                .GreaterThanOrEqualTo(u => u.ArrivalDate).WithMessage("Departure date kelish sanasida yoki undan keyin bo'lishi kerak.");
+                .GreaterThan(u => u.ArrivalDate).WithMessage("Departure date kelish sanasida yoki undan keyin bo'lishi kerak.");
 
             RuleFor(u => u.NumberAdults)
-                .NotEmpty().WithMessage("Number of adults ni kiritish kerak.")
                 .GreaterThan(0).WithMessage("Number of adults soni no'ldan ketta bo'lishi kerak.");
 
             RuleFor(u => u.NumberChildren)

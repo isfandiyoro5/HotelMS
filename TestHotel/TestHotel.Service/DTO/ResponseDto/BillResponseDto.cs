@@ -6,7 +6,7 @@
 
         public int BookingId { get; set; }
 
-        public int GuestId { get; set; }
+        public string GuestFullName { get; set; }
 
         public int RoomCharge { get; set; }
 

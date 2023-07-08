@@ -68,7 +68,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.Bill)
                     .Include(u => u.Guest)
                     .Include(u => u.Hotel)
-                    .Include(u => u.Rooms)
+                    .Include(u => u.BookingRooms)
                     .AsSplitQuery()
                     .ToListAsync();
             }
@@ -93,7 +93,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
                     .Include(u => u.Bill)
                     .Include(u => u.Guest)
                     .Include(u => u.Hotel)
-                    .Include(u => u.Rooms)
+                    .Include(u => u.BookingRooms)
                     .AsSplitQuery()
                     .FirstOrDefaultAsync(u => u.BookingId == id);
             }

@@ -25,7 +25,8 @@ namespace TestHotel.Service.DTO.RequestDto
         public BillRequestDtoValidator()
         {
             RuleFor(u => u.IfLateCheckout)
-                .NotNull().WithMessage("Late checkout ni kiritish kerak.");
+                .NotNull().WithMessage("Late checkout ni kiritish kerak.")
+                .GreaterThan(DateTime.Today).WithMessage("Payment date bugundan keyin bo'lishi kerak.");
 
             RuleFor(u => u.PaymentDate)
                 .NotNull().WithMessage("Payment date ni kiritish kerak.")
@@ -36,7 +37,7 @@ namespace TestHotel.Service.DTO.RequestDto
 
             RuleFor(u => u.CreditCardNumber)
                 .NotNull().WithMessage("Credit card number ni kiritish kerak.")
-                .NotEmpty().WithMessage("Credit card number bo'sh bo'lishi mumkin emas.");
+                .Length(16).WithMessage("Credit card number belgilari 16 ta belgiga teng bo'lishi kerak.");
 
             RuleFor(u => u.ExpireDate)
                 .NotNull().WithMessage("Expiration date ni kiritish kerak.")

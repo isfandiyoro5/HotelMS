@@ -32,11 +32,15 @@ namespace TestHotel.Service.DTO.RequestDto
         {
             RuleFor(u => u.FirstName)
                 .NotNull().WithMessage("First name ni kiritish kerak.")
-                .NotEmpty().WithMessage("First name bo'sh bo'la olmaydi.");
+                .NotEmpty().WithMessage("First name bo'sh bo'la olmaydi.")
+                .MinimumLength(2).WithMessage("First name 2 ta belgidan kam bo'la olmaydi.")
+                .MaximumLength(20).WithMessage("First name 20 ta blgidan ko'p bo'la olmaydi.");
 
             RuleFor(u => u.LastName)
                 .NotNull().WithMessage("Last name ni kiritish kerak.")
-                .NotEmpty().WithMessage("Last name bo'sh bo'la olmaydi.");
+                .NotEmpty().WithMessage("Last name bo'sh bo'la olmaydi.")
+                .MinimumLength(2).WithMessage("Last name 2 ta belgidan kam bo'la olmaydi.")
+                .MaximumLength(20).WithMessage("Last name 20 ta blgidan ko'p bo'la olmaydi.");
 
             RuleFor(u => u.BirthDate)
                 .NotNull().WithMessage("Birth date ni kiritish kerak.")

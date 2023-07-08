@@ -65,7 +65,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
             try
             {
                 return await _context.Rooms
-                    .Include(u => u.Bookings)
+                    .Include(u => u.BookingRooms)
                     .Include(u => u.Hotel)
                     .AsSplitQuery()
                     .ToListAsync();
@@ -88,7 +88,7 @@ namespace TestHotel.DataAccess.Repository.Repositories
             {
                 _logger.LogInformation("RoomById muvaffaqiyatli topildi");
                 return await _context.Rooms
-                    .Include(u => u.Bookings)
+                    .Include(u => u.BookingRooms)
                     .Include(u => u.Hotel)
                     .AsSplitQuery()
                     .FirstOrDefaultAsync(u => u.RoomId == id);

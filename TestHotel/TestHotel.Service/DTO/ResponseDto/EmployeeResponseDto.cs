@@ -4,11 +4,11 @@
     {
         public int EmployeeId { get; set; }
 
-        public int HotelId { get; set; }
-
-        public int RoleId { get; set; }
-
         public string FullName { get; set; }
+
+        public int HotelName { get; set; }
+
+        public int RoleTitle { get; set; }
 
         public string PhoneNumber { get; set; }
 

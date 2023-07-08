@@ -18,13 +18,15 @@ namespace TestHotel.Service.Service.Services
         private readonly ILogger<BookingService> _logger;
         private readonly IMapper _mapper;
         private readonly IValidator<BookingRequestDto> _bookingRequestDtoValidator;
+        private readonly IBookingRoomRepository _bookingRoomRepository;
 
-        public BookingService(IBookingRepository bookingRepository, ILogger<BookingService> logger, IMapper mapper, IValidator<BookingRequestDto> bookingRequestDtoValidator)
+        public BookingService(IBookingRepository bookingRepository, ILogger<BookingService> logger, IMapper mapper, IValidator<BookingRequestDto> bookingRequestDtoValidator, IBookingRoomRepository bookingRoomRepository)
         {
             _bookingRepository = bookingRepository;
             _logger = logger;
             _mapper = mapper;
             _bookingRequestDtoValidator = bookingRequestDtoValidator;
+            _bookingRoomRepository = bookingRoomRepository;
         }
 
         public async Task<int> AddBookingAsync(BookingRequestDto bookingRequestDto)
@@ -34,7 +36,17 @@ namespace TestHotel.Service.Service.Services
                 ValidationResult validationResult = await _bookingRequestDtoValidator.ValidateAsync(bookingRequestDto);
                 if (validationResult.IsValid)
                 {
-                    return await _bookingRepository.AddBookingAsync(_mapper.Map<Booking>(bookingRequestDto));
+                    var resultAddingBooking = await _bookingRepository.AddBookingAsync(_mapper.Map<Booking>(bookingRequestDto));
+                    for (int i = 0; i < bookingRequestDto.RoomId.Count; i++)
+                    {
+                        var bookingRoom = new BookingRoom
+                        {
+                            BookingId = resultAddingBooking,
+                            RoomId = bookingRequestDto.RoomId[i]
+                        };
+                        await _bookingRoomRepository.AddBookingRoomAsync(bookingRoom);
+                    }
+                    return resultAddingBooking;
                 }
                 else
                 {
@@ -100,6 +112,11 @@ namespace TestHotel.Service.Service.Services
                 var bookingResult = await _bookingRepository.GetBookingByIdAsync(id);
                 if (bookingResult is not null)
                 {
+                    var resultOfGetBookingRooms = await _bookingRoomRepository.GetAllBookingRoomsByBookingIdAsync(bookingResult.BookingId);
+                    foreach (var objectsForDelete in resultOfGetBookingRooms)
+                    {
+                        await _bookingRoomRepository.DeleteBookingRoomAsync(objectsForDelete);
+                    }
                     return await _bookingRepository.DeleteBookingAsync(bookingResult);
                 }
                 else
@@ -123,7 +140,16 @@ namespace TestHotel.Service.Service.Services
         {
             try
             {
-                return _mapper.Map<BookingResponseDto>(await _bookingRepository.GetBookingByIdAsync(id));
+                var resultBooking = await _bookingRepository.GetBookingByIdAsync(id);
+                var resultBookingRoom = await _bookingRoomRepository.GetAllBookingRoomsByBookingIdAsync(id);
+                var resultRoomNumbers = new List<int>();
+                for (int i = 0; i < resultBookingRoom.Count; i++)
+                {
+                    resultRoomNumbers.Add(resultBookingRoom[i].Room.RoomNumber);
+                }
+                var resultBookingResponseDto = _mapper.Map<BookingResponseDto>(resultBooking);
+                resultBookingResponseDto.RoomNumbers = resultRoomNumbers;
+                return resultBookingResponseDto;
             }
             catch (DbException ex)
             {
@@ -141,7 +167,18 @@ namespace TestHotel.Service.Service.Services
         {
             try
             {
-                return _mapper.Map<List<BookingResponseDto>>(await _bookingRepository.GetAllBookingsAsync());
+                var resultMappingToBookingResponseDto = _mapper.Map<List<BookingResponseDto>>(await _bookingRepository.GetAllBookingsAsync());
+                foreach (BookingResponseDto bookingResponseDto in resultMappingToBookingResponseDto)
+                {
+                    var resultGetBookingRooms = await _bookingRoomRepository.GetAllBookingRoomsByBookingIdAsync(bookingResponseDto.BookingId);
+                    var resultRoomNumbers = new List<int>();
+                    for (int i = 0; i < resultGetBookingRooms.Count; i++)
+                    {
+                        resultRoomNumbers.Add(resultGetBookingRooms[i].Room.RoomNumber);
+                    }
+                    bookingResponseDto.RoomNumbers = resultRoomNumbers;
+                }
+                return resultMappingToBookingResponseDto;
             }
             catch (InvalidOperationException ex)
             {
