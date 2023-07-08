@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EmailService;
+using Microsoft.AspNetCore.Mvc;
 using TestHotel.Service.DTO.RequestDto;
 using TestHotel.Service.DTO.ResponseDto;
 using TestHotel.Service.Service.IServices;
@@ -10,10 +11,12 @@ namespace TestHotel.API.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
+        private readonly IEmailSender _emailSender;
 
-        public EmployeeController(IEmployeeService employeeService)
+        public EmployeeController(IEmployeeService employeeService, IEmailSender emailSender)
         {
             _employeeService = employeeService;
+            _emailSender = emailSender;
         }
 
         [HttpPost]
@@ -21,7 +24,12 @@ namespace TestHotel.API.Controllers
         {
             try
             {
-                return await _employeeService.AddEmployeeAsync(employeeRequestDto);
+                int result = await _employeeService.AddEmployeeAsync(employeeRequestDto);
+                var message = new Message(new string[] { employeeRequestDto.Email }, "HotelMS", "Hotelga yangi Employee qo'shildi"
+                    ,$"{employeeRequestDto.FirstName} {employeeRequestDto.LastName}");
+
+                _emailSender.SendEmail(message);
+                return result;
             }
             catch (Exception ex)
             {
@@ -60,7 +68,12 @@ namespace TestHotel.API.Controllers
         {
             try
             {
-                return await _employeeService.UpdateEmployeeAsync(id, employeeRequestDto);
+                int result = await _employeeService.UpdateEmployeeAsync(id, employeeRequestDto);
+                var message = new Message(new string[] { employeeRequestDto.Email }, "HotelMS", "Hoteldagi Employee yangilandi"
+                    ,$"{employeeRequestDto.FirstName} {employeeRequestDto.LastName}");
+
+                _emailSender.SendEmail(message);
+                return result;
             }
             catch (Exception ex)
             {

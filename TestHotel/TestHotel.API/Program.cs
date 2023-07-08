@@ -1,3 +1,4 @@
+using EmailService;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using TestHotel.DataAccess.DbConnection;
@@ -16,6 +17,12 @@ builder.Services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.
 
 var config = builder.Configuration.GetSection("ConnectionStrings");
 builder.Services.AddDbContext<HotelDbContext>(option => option.UseNpgsql(config["DefaultConnect"]));
+var emailConfig = builder.Configuration
+    .GetSection("EmailConfiguration")
+    .Get<EmailConfiguration>();
+
+builder.Services.AddSingleton(emailConfig);
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.RegisterServices(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -1,4 +1,5 @@
-﻿using TestHotel.Service.DTO.RequestDto;
+﻿using FluentValidation;
+using TestHotel.Service.DTO.RequestDto;
 using TestHotel.Service.DTO.ResponseDto;
 
 namespace TestHotel.Service.Service.IServices
